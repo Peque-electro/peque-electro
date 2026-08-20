@@ -3,117 +3,125 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Peque Elektro - Catálogo de Productos</title>
+  <title>Peque Elektro - Catálogo Oficial</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    .gallery-thumbs { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; }
-    .gallery-thumb { width: 60px; height: 60px; border-radius: 6px; object-fit: cover; cursor: pointer; border: 2px solid transparent; }
-    .gallery-thumb.active { border-color: #38bdf8; }
-    .color-pill { padding: 6px 14px; border-radius: 20px; border: 1px solid #38bdf8; background: #0b132b; color: white; cursor: pointer; font-size: 13px; }
-    .color-pill.selected { background: #38bdf8; color: #0b132b; font-weight: bold; }
-  </style>
 </head>
 <body>
 
-  <!-- BANNER DE LOGO Y ESLOGAN -->
-<header class="banner-header">
-  <img src="banner.png" alt="Peque Elektro" class="banner-img" onerror="this.onerror=null; this.src='https://i.ibb.co/JR3T5Gb/D-NQ-NP-2-X-962804-MLA78891500481-092024-F.webp';">
-</header>
+  <!-- BANNER DE LOGO -->
+  <header class="banner-header">
+    <img src="banner.png" alt="Peque Elektro" class="banner-img" onerror="this.onerror=null; this.src='https://i.ibb.co/JR3T5Gb/D-NQ-NP-2-X-962804-MLA78891500481-092024-F.webp';">
+  </header>
 
-<!-- PRESENTACIÓN Y ESLOGAN -->
-<section class="hero-slogan">
-  <div class="slogan-container">
-    <h2>⚡ Tu tecnología ideal, al alcance de tu mano ⚡</h2>
-    <p>En <strong>Peque Elektro</strong> nos apasiona acercarte lo último en gadgets, smartwatches y accesorios de alta calidad con la atención personalizada y la rapidez que te mereces.</p>
-  </div>
-</section>
+  <!-- NUEVO ESLOGAN DE PRESENTACIÓN -->
+  <section class="hero-slogan">
+    <div class="slogan-container">
+      <h2>Peque Elektro: Tu solución integral.</h2>
+      <p class="slogan-intro">Simplificamos tu búsqueda ofreciéndote variedad y calidad en un solo lugar:</p>
+      
+      <ul class="slogan-list">
+        <li><span>🫖</span> <strong>Hogar y Bazar:</strong> Pavas eléctricas, termos y esenciales para tu cocina.</li>
+        <li><span>⌚</span> <strong>Tecnología y Accesorios:</strong> Smartwatches y mochilas para seguir tu ritmo.</li>
+        <li><span>🛠️</span> <strong>Herramientas:</strong> Todo lo necesario para tus proyectos y reparaciones.</li>
+      </ul>
+      
+      <p class="slogan-badge">🚀 Calidad garantizada para potenciar tu día a día.</p>
+    </div>
+  </section>
 
-  <main class="container">
+  <!-- CONTENEDOR PRINCIPAL DE PRODUCTOS -->
+  <main class="main-container">
     
-    <!-- BARRA DE BÚSQUEDA -->
-    <div class="search-bar-container">
-      <div class="search-box">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input type="text" id="search-input" placeholder="Buscar productos por nombre..." oninput="filtrarPorBusqueda()">
+    <!-- BARRA DE BÚSQUEDA Y FILTROS -->
+    <div class="search-filter-box">
+      <div class="search-wrapper">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="input-busqueda" placeholder="Buscar productos por nombre...">
+      </div>
+      <div id="contenedor-categorias" class="categories-bar">
+        <!-- Se generan dinámicamente -->
       </div>
     </div>
 
-    <!-- FILTROS POR CATEGORÍA -->
-    <div id="categories-container" class="categories-bar"></div>
-    
-    <!-- FILTROS POR SUBCATEGORÍA -->
-    <div id="subcategories-wrapper" class="subcategories-container hidden">
-      <div id="subcategories-container" class="subcategories-bar"></div>
-    </div>
-
-    <h2 class="section-title">Nuestros Productos</h2>
-
-    <!-- GRILLA DE PRODUCTOS -->
-    <div id="grid-productos" class="grid-productos"></div>
-
-    <!-- SECCIÓN TU PEDIDO -->
-    <section class="checkout-section">
-      <div class="checkout-card">
-        <h2 class="checkout-title"><i class="fa-solid fa-cart-shopping"></i> Tu Pedido</h2>
-        
-        <div id="carrito-lista" class="carrito-lista">
-          <p class="carrito-vacio-msg">Aún no has agregado productos a tu lista.</p>
-        </div>
-
-        <div class="carrito-total-container">
-          <span>Total Estimado: <strong id="carrito-total-monto">$0.00</strong></span>
-        </div>
-
-        <button id="btn-whatsapp-pedido" class="btn-whatsapp-giant" onclick="enviarPedidoFirebaseYWhatsapp()" disabled>
-          <i class="fa-brands fa-whatsapp"></i> Finalizar y Enviar Pedido
-        </button>
+    <!-- SECCIÓN CATÁLOGO -->
+    <section>
+      <h2 class="section-title">Nuestros Productos</h2>
+      <div id="grid-productos" class="products-grid">
+        <p style="text-align:center; color: #94a3b8; grid-column: 1/-1;">Cargando catálogo...</p>
       </div>
     </section>
 
   </main>
 
-  <!-- VENTANA MODAL DETALLES DEL PRODUCTO -->
-  <div id="modal-producto" class="modal-overlay hidden" onclick="cerrarModalAfuera(event)">
+  <!-- SECCIÓN RESEÑAS Y OPINIONES -->
+  <section class="reviews-section">
+    <div class="reviews-container">
+      <h2><i class="fa-solid fa-comments"></i> Lo que dicen nuestros clientes</h2>
+      
+      <!-- Grid donde se cargan las opiniones de Firebase -->
+      <div id="grid-reviews" class="reviews-grid">
+        <p style="text-align:center; color: #94a3b8; grid-column: 1/-1;">Cargando opiniones...</p>
+      </div>
+
+      <!-- Formulario para publicar reseña -->
+      <div class="add-review-box">
+        <h3><i class="fa-solid fa-pen-to-square"></i> ¡Déjanos tu opinión!</h3>
+        <form id="form-resena">
+          <div class="review-inputs">
+            <input type="text" id="rev-nombre" placeholder="Tu Nombre *" required>
+            <select id="rev-estrellas" required>
+              <option value="5">⭐⭐⭐⭐⭐ (5/5) - ¡Excelente!</option>
+              <option value="4">⭐⭐⭐⭐ (4/5) - Muy Buena</option>
+              <option value="3">⭐⭐⭐ (3/5) - Buena</option>
+              <option value="2">⭐⭐ (2/5) - Regular</option>
+              <option value="1">⭐ (1/5) - Mala</option>
+            </select>
+          </div>
+          <textarea id="rev-comentario" placeholder="Cuéntanos tu experiencia de compra o cómo fue la atención recibida..." required></textarea>
+          <button type="submit" class="btn-submit-review"><i class="fa-solid fa-paper-plane"></i> Publicar Reseña</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIE DE PÁGINA -->
+  <footer>
+    <p>&copy; 2026 Peque Elektro - Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- MODAL DE DETALLES DEL PRODUCTO -->
+  <div id="modal-detalle" class="modal-overlay">
     <div class="modal-content">
-      <button class="modal-close" onclick="cerrarModal()"><i class="fa-solid fa-xmark"></i></button>
-      <div class="modal-body">
-        
-        <!-- GALERÍA DE HASTA 4 FOTOS -->
-        <div>
-          <img id="modal-img-main" class="modal-img" src="" alt="Producto">
+      <button class="modal-close" onclick="cerrarModal()">&times;</button>
+      <div class="modal-grid">
+        <div class="modal-images">
+          <img id="modal-img-principal" src="" alt="Producto">
           <div id="modal-gallery" class="gallery-thumbs"></div>
         </div>
+        <div class="modal-info">
+          <h2 id="modal-titulo"></h2>
+          <p id="modal-precio" class="modal-price"></p>
+          
+          <div id="modal-box-colores" style="display:none; margin-bottom: 15px;">
+            <label style="font-weight:bold; color:#38bdf8; display:block; margin-bottom:5px;">Color:</label>
+            <select id="modal-select-color"></select>
+          </div>
 
-        <h2 id="modal-titulo" style="color:#38bdf8;"></h2>
-        <p id="modal-precio" style="font-size:22px; font-weight:bold; color:#22c55e;"></p>
-        
-        <!-- SELECCIÓN DE COLOR -->
-        <div id="modal-color-wrapper" style="display:none;">
-          <h4 style="color:#94a3b8; margin-bottom:8px;"><i class="fa-solid fa-palette"></i> Selecciona un Color:</h4>
-          <div id="modal-colors-container" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+          <div class="modal-desc-box">
+            <h4>Descripción:</h4>
+            <div id="modal-descripcion"></div>
+          </div>
+
+          <button id="modal-btn-wsp" class="btn-wsp"><i class="fa-brands fa-whatsapp"></i> Pedir por WhatsApp</button>
         </div>
-
-        <!-- DESCRIPCIÓN -->
-        <div>
-          <h4 style="color:#94a3b8; margin-bottom:8px;"><i class="fa-solid fa-circle-info"></i> Descripción del Producto:</h4>
-          <div id="modal-descripcion" class="modal-desc"></div>
-        </div>
-
-        <button id="modal-btn-add" class="btn-add-cart" style="padding:14px; font-size:16px;">
-          <i class="fa-solid fa-cart-plus"></i> Agregar al carrito
-        </button>
       </div>
     </div>
   </div>
 
-  <footer>
-    <p>&copy; Peque Elektro - Todos los derechos reservados</p>
-  </footer>
-
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, addDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
@@ -127,354 +135,154 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    let productosData = [];
-    let carrito = [];
-    let catSeleccionada = "Todas";
-    let subcatSeleccionada = "Todas";
-    let textoBusqueda = "";
-    let colorSeleccionadoActual = "";
+    let productosGlobal = [];
+    let categoriaSeleccionada = "Todas";
 
+    // CARGAR PRODUCTOS
     async function cargarProductos() {
-      try {
-        const snap = await getDocs(collection(db, "productos"));
-        productosData = [];
-        snap.forEach(doc => {
-          const prod = doc.data();
-          const imagenes = prod.imagenes && prod.imagenes.length > 0 ? prod.imagenes : [prod.imagen || 'https://via.placeholder.com/300'];
-          productosData.push({ id: doc.id, ...prod, imagenes });
-        });
-        generarCategoriasUI();
-        renderizarProductos();
-        renderizarCarrito();
-      } catch (e) {
-        console.error("Error al cargar productos:", e);
-      }
+      const snap = await getDocs(collection(db, "productos"));
+      productosGlobal = [];
+      snap.forEach(d => productosGlobal.push({ id: d.id, ...d.data() }));
+      renderizarCategorias();
+      renderizarProductos();
     }
 
-    function generarCategoriasUI() {
-      const container = document.getElementById('categories-container');
-      const categoriasUnicas = ["Todas", ...new Set(productosData.map(p => p.categoria).filter(Boolean))];
-      container.innerHTML = "";
-      categoriasUnicas.forEach(cat => {
-        container.innerHTML += `<button class="btn-cat ${cat === catSeleccionada ? 'active' : ''}" onclick="filtrarCat('${cat}')">${cat}</button>`;
-      });
-      generarSubcategoriasUI();
+    function renderizarCategorias() {
+      const contenedor = document.getElementById('contenedor-categorias');
+      const cats = ["Todas", ...new Set(productosGlobal.map(p => p.categoria).filter(Boolean))];
+      
+      contenedor.innerHTML = cats.map(c => `
+        <button class="btn-cat ${c === categoriaSeleccionada ? 'active' : ''}" onclick="filtrarCategoria('${c}')">${c}</button>
+      `).join('');
     }
 
-    window.filtrarCat = (cat) => {
-      catSeleccionada = cat;
-      subcatSeleccionada = "Todas";
-      generarCategoriasUI();
+    window.filtrarCategoria = (cat) => {
+      categoriaSeleccionada = cat;
+      renderizarCategorias();
       renderizarProductos();
     };
 
-    window.filtrarSub = (sub) => {
-      subcatSeleccionada = sub;
-      generarSubcategoriasUI();
-      renderizarProductos();
-    };
-
-    window.filtrarPorBusqueda = () => {
-      textoBusqueda = document.getElementById('search-input').value.toLowerCase().trim();
-      renderizarProductos();
-    };
-
-    function generarSubcategoriasUI() {
-      const wrapper = document.getElementById('subcategories-wrapper');
-      const container = document.getElementById('subcategories-container');
-      if (catSeleccionada === "Todas") {
-        wrapper.classList.add('hidden');
-        return;
-      }
-      const subcats = ["Todas", ...new Set(productosData.filter(p => p.categoria === catSeleccionada).map(p => p.subcategoria).filter(Boolean))];
-      if (subcats.length <= 1) {
-        wrapper.classList.add('hidden');
-        return;
-      }
-      wrapper.classList.remove('hidden');
-      container.innerHTML = "";
-      subcats.forEach(sub => {
-        container.innerHTML += `<button class="btn-subcat ${sub === subcatSeleccionada ? 'active' : ''}" onclick="filtrarSub('${sub}')">${sub}</button>`;
-      });
-    }
+    document.getElementById('input-busqueda').addEventListener('input', renderizarProductos);
 
     function renderizarProductos() {
-      const contenedor = document.getElementById('grid-productos');
-      contenedor.innerHTML = "";
+      const grid = document.getElementById('grid-productos');
+      const busqueda = document.getElementById('input-busqueda').value.toLowerCase();
 
-      let filtrados = productosData;
-      if (catSeleccionada !== "Todas") filtrados = filtrados.filter(p => p.categoria === catSeleccionada);
-      if (subcatSeleccionada !== "Todas") filtrados = filtrados.filter(p => p.subcategoria === subcatSeleccionada);
-      if (textoBusqueda !== "") filtrados = filtrados.filter(p => p.nombre.toLowerCase().includes(textoBusqueda));
+      let filtrados = productosGlobal.filter(p => {
+        const cumpleCat = categoriaSeleccionada === "Todas" || p.categoria === categoriaSeleccionada;
+        const cumpleBusqueda = p.nombre.toLowerCase().includes(busqueda);
+        return cumpleCat && cumpleBusqueda;
+      });
 
       if (filtrados.length === 0) {
-        contenedor.innerHTML = `<p style="color: #94a3b8; grid-column: 1/-1; text-align:center; padding: 30px;">No se encontraron productos.</p>`;
+        grid.innerHTML = `<p style="text-align:center; color: #94a3b8; grid-column: 1/-1;">No se encontraron productos.</p>`;
         return;
       }
 
-      filtrados.forEach(prod => {
-        const imagenUrl = prod.imagenes[0];
-        contenedor.innerHTML += `
-          <div class="card" onclick="verDetalleProducto('${prod.id}')">
-            <div class="card-img-container">
-              <img src="${imagenUrl}" alt="${prod.nombre}" onerror="this.src='https://via.placeholder.com/200?text=Sin+Imagen'">
-            </div>
-            <h3>${prod.nombre}</h3>
-            <p class="precio">$${prod.precio.toLocaleString('es-AR')}</p>
-            <button class="btn-add-cart" onclick="event.stopPropagation(); verDetalleProducto('${prod.id}')">
-              Ver Detalles / Agregar
-            </button>
+      grid.innerHTML = filtrados.map(p => {
+        const img = (p.imagenes && p.imagenes[0]) || p.imagen || 'https://via.placeholder.com/200';
+        return `
+          <div class="product-card">
+            <img src="${img}" alt="${p.nombre}" onerror="this.src='https://via.placeholder.com/200'">
+            <h3>${p.nombre}</h3>
+            <p class="price">$${parseFloat(p.precio || 0).toLocaleString('es-AR')}</p>
+            <button onclick="verDetalle('${p.id}')" class="btn-detail">Ver Detalles / Agregar</button>
           </div>
         `;
-      });
+      }).join('');
     }
 
-    // VER DETALLES EN MODAL
-    window.verDetalleProducto = (id) => {
-      const prod = productosData.find(p => p.id === id);
-      if (!prod) return;
+    window.verDetalle = (id) => {
+      const p = productosGlobal.find(item => item.id === id);
+      if (!p) return;
 
-      const mainImg = document.getElementById('modal-img-main');
-      mainImg.src = prod.imagenes[0];
+      document.getElementById('modal-titulo').innerText = p.nombre;
+      document.getElementById('modal-precio').innerText = `$${parseFloat(p.precio || 0).toLocaleString('es-AR')}`;
+      document.getElementById('modal-descripcion').innerText = p.descripcion || "Sin descripción disponible.";
 
-      // GALERÍA FOTOS
+      const imgs = p.imagenes && p.imagenes.length > 0 ? p.imagenes : [p.imagen];
+      document.getElementById('modal-img-principal').src = imgs[0];
+
       const gallery = document.getElementById('modal-gallery');
-      gallery.innerHTML = "";
-      if (prod.imagenes.length > 1) {
-        prod.imagenes.forEach((img, idx) => {
-          gallery.innerHTML += `<img src="${img}" class="gallery-thumb ${idx === 0 ? 'active' : ''}" onclick="cambiarImagenModal('${img}', this)">`;
-        });
+      gallery.innerHTML = imgs.map(img => `<img src="${img}" onclick="document.getElementById('modal-img-principal').src='${img}'">`).join('');
+
+      const selectColor = document.getElementById('modal-select-color');
+      const boxColores = document.getElementById('modal-box-colores');
+      if (p.colores && p.colores.length > 0) {
+        boxColores.style.display = 'block';
+        selectColor.innerHTML = p.colores.map(c => `<option value="${c}">${c}</option>`).join('');
+      } else {
+        boxColores.style.display = 'none';
       }
 
-      document.getElementById('modal-titulo').innerText = prod.nombre;
-      document.getElementById('modal-precio').innerText = `$${prod.precio.toLocaleString('es-AR')}`;
-
-      // COLORES
-      const colorWrapper = document.getElementById('modal-color-wrapper');
-      const colorsContainer = document.getElementById('modal-colors-container');
-      colorWrapper.style.display = 'none';
-      colorsContainer.innerHTML = "";
-      colorSeleccionadoActual = "";
-
-      if (prod.colores && prod.colores.length > 0) {
-        colorWrapper.style.display = 'block';
-        colorSeleccionadoActual = prod.colores[0]; // Por defecto el primero
-        prod.colores.forEach((c, idx) => {
-          colorsContainer.innerHTML += `<button type="button" class="color-pill ${idx === 0 ? 'selected' : ''}" onclick="seleccionarColor('${c}', this)">${c}</button>`;
-        });
-      }
-
-      // DESCRIPCIÓN
-      const descHtml = prod.descripcion || "¡Producto disponible para entrega inmediata! 🔥🎒";
-      document.getElementById('modal-descripcion').innerHTML = descHtml;
-
-      const btnAdd = document.getElementById('modal-btn-add');
-      btnAdd.onclick = () => {
-        agregarAlCarrito(prod.id, colorSeleccionadoActual);
-        cerrarModal();
+      document.getElementById('modal-btn-wsp').onclick = () => {
+        const color = boxColores.style.display !== 'none' ? selectColor.value : '';
+        const msg = `Hola Peque Elektro! Quisiera consultar sobre el producto: *${p.nombre}* ($${p.precio}) ${color ? 'en color ' + color : ''}`;
+        window.open(`https://wa.me/5491112345678?text=${encodeURIComponent(msg)}`, '_blank');
       };
 
-      document.getElementById('modal-producto').classList.remove('hidden');
+      document.getElementById('modal-detalle').style.display = 'flex';
     };
 
-    window.cambiarImagenModal = (src, elem) => {
-      document.getElementById('modal-img-main').src = src;
-      document.querySelectorAll('.gallery-thumb').forEach(e => e.classList.remove('active'));
-      elem.classList.add('active');
+    window.cerrarModal = () => {
+      document.getElementById('modal-detalle').style.display = 'none';
     };
 
-    window.seleccionarColor = (color, elem) => {
-      colorSeleccionadoActual = color;
-      document.querySelectorAll('.color-pill').forEach(e => e.classList.remove('selected'));
-      elem.classList.add('selected');
-    };
+    // CARGAR Y PUBLICAR RESEÑAS
+    async function cargarResenas() {
+      const contenedor = document.getElementById('grid-reviews');
+      try {
+        const q = query(collection(db, "resenas"), orderBy("fecha", "desc"));
+        const snap = await getDocs(q);
 
-    window.cerrarModal = () => { document.getElementById('modal-producto').classList.add('hidden'); };
-    window.cerrarModalAfuera = (e) => { if (e.target.id === 'modal-producto') cerrarModal(); };
+        if (snap.empty) {
+          contenedor.innerHTML = `<p style="text-align:center; color: #94a3b8; grid-column: 1/-1;">Aún no hay opiniones. ¡Sé el primero en dejar la tuya!</p>`;
+          return;
+        }
 
-    // CARRITO
-    window.agregarAlCarrito = (id, colorElegido) => {
-      const producto = productosData.find(p => p.id === id);
-      if (!producto) return;
-
-      const cartKey = `${id}_${colorElegido || 'normal'}`;
-      const itemExistente = carrito.find(item => item.cartKey === cartKey);
-
-      if (itemExistente) {
-        itemExistente.cantidad++;
-      } else {
-        carrito.push({
-          cartKey: cartKey,
-          id: producto.id,
-          nombre: producto.nombre,
-          precio: producto.precio,
-          colorSeleccionado: colorElegido || "",
-          cantidad: 1,
-          imagen: producto.imagenes[0]
+        let html = "";
+        snap.forEach(docSnap => {
+          const r = docSnap.data();
+          const estrellas = "⭐".repeat(r.estrellas || 5);
+          html += `
+            <div class="review-card">
+              <div class="review-header">
+                <strong>${r.nombre}</strong>
+                <span class="stars">${estrellas}</span>
+              </div>
+              <p class="review-text">"${r.comentario}"</p>
+            </div>
+          `;
         });
+        contenedor.innerHTML = html;
+      } catch (err) {
+        console.error("Error al cargar reseñas:", err);
       }
-      renderizarCarrito();
-    };
-
-    window.cambiarCantidad = (cartKey, delta) => {
-      const item = carrito.find(i => i.cartKey === cartKey);
-      if (!item) return;
-      item.cantidad += delta;
-      if (item.cantidad <= 0) {
-        carrito = carrito.filter(i => i.cartKey !== cartKey);
-      }
-      renderizarCarrito();
-    };
-
-    window.eliminarItemCarrito = (cartKey) => {
-      carrito = carrito.filter(i => i.cartKey !== cartKey);
-      renderizarCarrito();
-    };
-
-    function renderizarCarrito() {
-      const contenedor = document.getElementById('carrito-lista');
-      const totalMontoElem = document.getElementById('carrito-total-monto');
-      const btnWhatsapp = document.getElementById('btn-whatsapp-pedido');
-
-      if (carrito.length === 0) {
-        contenedor.innerHTML = `<p class="carrito-vacio-msg">Aún no has agregado productos a tu lista.</p>`;
-        totalMontoElem.innerText = "$0.00";
-        btnWhatsapp.disabled = true;
-        return;
-      }
-
-      btnWhatsapp.disabled = false;
-      let html = "";
-      let total = 0;
-
-      carrito.forEach(item => {
-        const subtotal = item.precio * item.cantidad;
-        total += subtotal;
-        const colorTxt = item.colorSeleccionado ? `<br><small style="color:#38bdf8">Color: ${item.colorSeleccionado}</small>` : '';
-
-        html += `
-          <div class="carrito-item" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); margin-bottom: 8px; border-radius: 8px;">
-            <div style="flex: 1;">
-              <strong>${item.nombre}</strong>${colorTxt}<br>
-              <small>$${item.precio.toLocaleString('es-AR')} c/u</small>
-            </div>
-            <div style="margin: 0 10px;">
-              <button onclick="cambiarCantidad('${item.cartKey}', -1)" style="padding: 2px 8px;">-</button>
-              <span style="margin: 0 5px;">${item.cantidad}</span>
-              <button onclick="cambiarCantidad('${item.cartKey}', 1)" style="padding: 2px 8px;">+</button>
-            </div>
-            <div style="font-weight: bold; margin-right: 10px;">$${subtotal.toLocaleString('es-AR')}</div>
-            <button onclick="eliminarItemCarrito('${item.cartKey}')" style="background:none; border:none; color:#ef4444; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
-          </div>
-        `;
-      });
-
-      contenedor.innerHTML = html;
-      totalMontoElem.innerText = `$${total.toLocaleString('es-AR', {minimumFractionDigits: 2})}`;
     }
 
-    // FINALIZAR PEDIDO
-    window.enviarPedidoFirebaseYWhatsapp = async () => {
-      if (carrito.length === 0) return;
-
-      const btn = document.getElementById('btn-whatsapp-pedido');
-      btn.innerText = "Procesando pedido...";
-      btn.disabled = true;
-
-      let total = 0;
-      const itemsPedido = carrito.map(i => {
-        const subtotal = i.precio * i.cantidad;
-        total += subtotal;
-        return {
-          id: i.id,
-          nombre: i.nombre,
-          precio: i.precio,
-          colorSeleccionado: i.colorSeleccionado || "",
-          cantidad: i.cantidad,
-          subtotal: subtotal
-        };
-      });
+    document.getElementById('form-resena').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById('rev-nombre').value.trim();
+      const estrellas = parseInt(document.getElementById('rev-estrellas').value);
+      const comentario = document.getElementById('rev-comentario').value.trim();
 
       try {
-        await addDoc(collection(db, "pedidos"), {
-          items: itemsPedido,
-          total: total,
-          estado: "Pendiente",
-          fecha: serverTimestamp()
+        await addDoc(collection(db, "resenas"), {
+          nombre,
+          estrellas,
+          comentario,
+          fecha: new Date()
         });
-      } catch (e) {
-        console.error("Error al registrar pedido:", e);
+        alert("✅ ¡Gracias por tu opinión!");
+        document.getElementById('form-resena').reset();
+        cargarResenas();
+      } catch (err) {
+        alert("⚠️ Error al guardar reseña: " + err.message);
       }
-
-      const numeroTel = "5491134970171";
-      let mensaje = "Hola *Peque Elektro*, quisiera realizar el siguiente pedido:\n\n";
-
-      itemsPedido.forEach((item, index) => {
-        const colorTxt = item.colorSeleccionado ? ` (Color: ${item.colorSeleccionado})` : '';
-        mensaje += `*${index + 1}.* ${item.nombre}${colorTxt}\n   - Cantidad: *${item.cantidad}*\n   - Subtotal: *$${item.subtotal.toLocaleString('es-AR')}*\n\n`;
-      });
-
-      mensaje += `*TOTAL ESTIMADO: $${total.toLocaleString('es-AR', {minimumFractionDigits: 2})}*\n\n¡Quedo a la espera para coordinar el pago y envío!`;
-
-      carrito = [];
-      renderizarCarrito();
-      btn.innerHTML = `<i class="fa-brands fa-whatsapp"></i> Finalizar y Enviar Pedido`;
-
-      const urlWhatsApp = `https://wa.me/${numeroTel}?text=${encodeURIComponent(mensaje)}`;
-      window.open(urlWhatsApp, '_blank');
-    };
+    });
 
     cargarProductos();
+    cargarResenas();
   </script>
-
 </body>
-</html><!-- ... Aquí termina la sección de tus productos o carrito ... -->
-
-
-    <!-- ======================================================== -->
-    <!-- PEGAR EL CÓDIGO AQUÍ MISMO (ANTES DEL FOOTER)           -->
-    <!-- ======================================================== -->
-    <!-- SECCIÓN RESEÑAS DE CLIENTES -->
-    <section class="reviews-section">
-      <div class="reviews-container">
-        <h2><i class="fa-solid fa-comments"></i> Lo que dicen nuestros clientes</h2>
-        
-        <!-- Lista de Reseñas -->
-        <div id="grid-reviews" class="reviews-grid">
-          <p style="text-align:center; color: #94a3b8;">Cargando opiniones...</p>
-        </div>
-
-        <!-- Formulario para Dejar Reseña -->
-        <div class="add-review-box">
-          <h3><i class="fa-solid fa-pen-to-square"></i> ¡Déjanos tu opinión!</h3>
-          <form id="form-reseña">
-            <div class="review-inputs">
-              <input type="text" id="rev-nombre" placeholder="Tu Nombre *" required>
-              <select id="rev-estrellas" required>
-                <option value="5">⭐⭐⭐⭐⭐ (5/5) - ¡Excelente!</option>
-                <option value="4">⭐⭐⭐⭐ (4/5) - Muy Buena</option>
-                <option value="3">⭐⭐⭐ (3/5) - Buena</option>
-                <option value="2">⭐⭐ (2/5) - Regular</option>
-                <option value="1">⭐ (1/5) - Mala</option>
-              </select>
-            </div>
-            <textarea id="rev-comentario" placeholder="Cuéntanos tu experiencia de compra o cómo fue la atención recibida..." required></textarea>
-            <button type="submit" class="btn-submit-review"><i class="fa-solid fa-paper-plane"></i> Publicar Reseña</button>
-          </form>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- PIE DE PÁGINA (FOOTER) -->
-    <footer>
-      <p>&copy; 2026 Peque Elektro - Todos los derechos reservados.</p>
-    </footer>
-
-    <!-- SCRIPT DE FIREBASE -->
-    <script type="module">
-      // ... tu código JS ...
-    </script>
-  </body>
-</html><!-- ... Aquí termina la sección de tus productos o carrito ... -->
-
+</html>
