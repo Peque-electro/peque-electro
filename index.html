@@ -9,18 +9,9 @@
 </head>
 <body>
 
-  <!-- BANNER / FRANJA DEL LOGO DE LA EMPRESA (5cm de alto aprox) -->
-<!-- BANNER COMPLETO A LO ANCHO -->
+  <!-- BANNER SUPERIOR CON EL LOGO A TODO LO ANCHO -->
   <header class="banner-header">
-    <img src="logo.jpg" alt="Peque Elektro Logo" class="banner-img">
-  </header>
-    <div class="brand-container">
-      <img src="logo.png" alt="Logo Peque Elektro" class="brand-logo" onerror="this.style.display='none'">
-      <div class="brand-text">
-        <h1>Peque Elektro</h1>
-        <p>Tu catálogo de productos en un solo lugar</p>
-      </div>
-    </div>
+    <img src="logo.jpg" alt="Peque Elektro Logo" class="banner-img" onerror="this.src='logo.png'">
   </header>
 
   <main class="container">
@@ -52,7 +43,7 @@
         <h2 class="checkout-title">Tu Pedido</h2>
         
         <div id="carrito-lista" class="carrito-lista">
-          <!-- Se completa vía JS -->
+          <!-- Los productos seleccionados se generan aquí -->
         </div>
 
         <div class="carrito-total-container">
@@ -67,19 +58,19 @@
 
   </main>
 
-  <!-- MODAL ESTILO FRÁVEGA (VISTA PREVIA Y ESPECIFICACIONES) -->
+  <!-- MODAL / VISTA PREVIA DETALLADA (ESTILO FRÁVEGA) -->
   <div id="modal-preview" class="modal-overlay" onclick="cerrarModalAfuera(event)">
     <div class="modal-content-preview">
       <button class="modal-close" onclick="cerrarModalPreview()">&times;</button>
       <div class="preview-layout">
-        <!-- Galería de imágenes -->
+        <!-- Galería de fotos -->
         <div class="preview-gallery">
           <div class="main-img-container">
             <img id="preview-main-img" src="" alt="Producto">
           </div>
           <div id="preview-thumbnails" class="thumbnails-container"></div>
         </div>
-        <!-- Detalles y especificaciones -->
+        <!-- Información del producto -->
         <div class="preview-info">
           <h2 id="preview-title"></h2>
           <p id="preview-price" class="preview-price-tag"></p>
@@ -216,14 +207,14 @@
       });
     }
 
-    // LÓGICA DEL MODAL / ESPECIFICACIONES (FRÁVEGA)
+    // MODAL DE ESPECIFICACIONES / IMÁGENES AL TOCAR EL PRODUCTO
     window.abrirModalPreview = (id) => {
       const prod = productosData.find(p => p.id === id);
       if (!prod) return;
 
       document.getElementById('preview-title').innerText = prod.nombre;
       document.getElementById('preview-price').innerText = `$${prod.precio.toLocaleString('es-AR')}`;
-      document.getElementById('preview-desc').innerText = prod.descripcion || 'Sin especificaciones detalladas disponible para este producto.';
+      document.getElementById('preview-desc').innerText = prod.descripcion || 'Sin especificaciones detalladas disponibles.';
       
       const mainImg = document.getElementById('preview-main-img');
       mainImg.src = prod.imagenes[0];
@@ -262,7 +253,7 @@
       }
     };
 
-    // CARRITO DE COMPRAS
+    // LÓGICA DEL CARRITO
     window.agregarAlCarrito = (id) => {
       const producto = productosData.find(p => p.id === id);
       if (!producto) return;
@@ -341,7 +332,7 @@
       totalMontoElem.innerText = `$${total.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
     }
 
-    // ENVIAR POR WHATSAPP Y REGISTRAR EN ADMIN
+    // REGISTRO DE PEDIDO EN FIREBASE + WHATSAPP
     window.enviarPedidoWhatsApp = async () => {
       if (carrito.length === 0) return;
 
@@ -358,7 +349,7 @@
         };
       });
 
-      // 1. Guardar el pedido en Firebase Firestore
+      // Guardar en la colección 'pedidos' de Firebase
       try {
         await addDoc(collection(db, "pedidos"), {
           items: itemsPedido,
@@ -367,10 +358,10 @@
           fecha: serverTimestamp()
         });
       } catch (e) {
-        console.error("Error al registrar el pedido en la base de datos:", e);
+        console.error("Error guardando el pedido en Firestore:", e);
       }
 
-      // 2. Abrir WhatsApp
+      // Redirigir a WhatsApp
       const numeroTel = "5491134970171";
       let mensaje = "Hola *Peque Elektro*, quisiera realizar el siguiente pedido:\n\n";
 
