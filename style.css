@@ -6,24 +6,19 @@ body {
   padding: 0;
 }
 
-/* BANNER DE LOGO A ANCHO COMPLETO */
+
 .banner-header {
   width: 100%;
-  background-color: #ffffff; /* Fondo blanco para integrarse con la imagen */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 4px solid #38bdf8; /* Borde azul de separación */
-  padding: 15px 0;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  height: 280px; /* Ajusta la altura a tu gusto */
+  background-color: #0f172a;
+  border-bottom: 4px solid #38bdf8;
+  overflow: hidden;
 }
 
 .banner-img {
-  width: 100%;
-  max-width: 550px; /* Tamaño ideal para que se vea claro y centrado */
-  height: auto;
-  max-height: 280px;
-  object-fit: contain;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: fill !important; /* Fuerza a llenar todo el espacio horizontal */
   display: block;
 }
 
