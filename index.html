@@ -9,9 +9,9 @@
 </head>
 <body>
 
-  <!-- BANNER SUPERIOR CON EL LOGO A TODO LO ANCHO -->
+  <!-- BANNER DEL LOGO A TODO LO ANCHO -->
   <header class="banner-header">
-    <img src="logo.jpg" alt="Peque Elektro Logo" class="banner-img" onerror="this.src='logo.png'">
+    <img src="logo.jpeg" alt="Peque Elektro Logo" class="banner-img">
   </header>
 
   <main class="container">
@@ -40,51 +40,23 @@
     <!-- SECCIÓN TU PEDIDO -->
     <section class="checkout-section">
       <div class="checkout-card">
-        <h2 class="checkout-title">Tu Pedido</h2>
+        <h2 class="checkout-title"><i class="fa-solid fa-cart-shopping"></i> Tu Pedido</h2>
         
         <div id="carrito-lista" class="carrito-lista">
-          <!-- Los productos seleccionados se generan aquí -->
+          <p class="carrito-vacio-msg">Aún no has agregado productos a tu lista.</p>
         </div>
 
         <div class="carrito-total-container">
           <span>Total Estimado: <strong id="carrito-total-monto">$0.00</strong></span>
         </div>
 
-        <button id="btn-whatsapp-pedido" class="btn-whatsapp-giant" onclick="enviarPedidoWhatsApp()" disabled>
-          <i class="fa-brands fa-whatsapp"></i> Enviar Pedido por WhatsApp
+        <button id="btn-whatsapp-pedido" class="btn-whatsapp-giant" onclick="enviarPedidoFirebaseYWhatsapp()" disabled>
+          <i class="fa-brands fa-whatsapp"></i> Finalizar y Enviar Pedido
         </button>
       </div>
     </section>
 
   </main>
-
-  <!-- MODAL / VISTA PREVIA DETALLADA (ESTILO FRÁVEGA) -->
-  <div id="modal-preview" class="modal-overlay" onclick="cerrarModalAfuera(event)">
-    <div class="modal-content-preview">
-      <button class="modal-close" onclick="cerrarModalPreview()">&times;</button>
-      <div class="preview-layout">
-        <!-- Galería de fotos -->
-        <div class="preview-gallery">
-          <div class="main-img-container">
-            <img id="preview-main-img" src="" alt="Producto">
-          </div>
-          <div id="preview-thumbnails" class="thumbnails-container"></div>
-        </div>
-        <!-- Información del producto -->
-        <div class="preview-info">
-          <h2 id="preview-title"></h2>
-          <p id="preview-price" class="preview-price-tag"></p>
-          <div class="preview-desc-box">
-            <h4>Especificaciones / Descripción:</h4>
-            <p id="preview-desc"></p>
-          </div>
-          <button id="preview-btn-add" class="btn-add-cart-large">
-            <i class="fa-solid fa-cart-plus"></i> Agregar al Pedido
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <footer>
     <p>&copy; Peque Elektro - Todos los derechos reservados</p>
@@ -193,13 +165,13 @@
       filtrados.forEach(prod => {
         const imagenUrl = prod.imagenes[0];
         contenedor.innerHTML += `
-          <div class="card" onclick="abrirModalPreview('${prod.id}')">
+          <div class="card">
             <div class="card-img-container">
               <img src="${imagenUrl}" alt="${prod.nombre}" onerror="this.src='https://via.placeholder.com/200?text=Sin+Imagen'">
             </div>
             <h3>${prod.nombre}</h3>
             <p class="precio">$${prod.precio.toLocaleString('es-AR')}</p>
-            <button class="btn-add-cart" onclick="event.stopPropagation(); agregarAlCarrito('${prod.id}')">
+            <button class="btn-add-cart" onclick="agregarAlCarrito('${prod.id}')">
               Agregar al carrito
             </button>
           </div>
@@ -207,53 +179,7 @@
       });
     }
 
-    // MODAL DE ESPECIFICACIONES / IMÁGENES AL TOCAR EL PRODUCTO
-    window.abrirModalPreview = (id) => {
-      const prod = productosData.find(p => p.id === id);
-      if (!prod) return;
-
-      document.getElementById('preview-title').innerText = prod.nombre;
-      document.getElementById('preview-price').innerText = `$${prod.precio.toLocaleString('es-AR')}`;
-      document.getElementById('preview-desc').innerText = prod.descripcion || 'Sin especificaciones detalladas disponibles.';
-      
-      const mainImg = document.getElementById('preview-main-img');
-      mainImg.src = prod.imagenes[0];
-
-      const thumbContainer = document.getElementById('preview-thumbnails');
-      thumbContainer.innerHTML = "";
-
-      prod.imagenes.forEach((imgUrl, index) => {
-        const thumb = document.createElement('img');
-        thumb.src = imgUrl;
-        thumb.className = `thumbnail-img ${index === 0 ? 'active' : ''}`;
-        thumb.onclick = () => {
-          mainImg.src = imgUrl;
-          document.querySelectorAll('.thumbnail-img').forEach(t => t.classList.remove('active'));
-          thumb.classList.add('active');
-        };
-        thumbContainer.appendChild(thumb);
-      });
-
-      const btnAdd = document.getElementById('preview-btn-add');
-      btnAdd.onclick = () => {
-        agregarAlCarrito(prod.id);
-        cerrarModalPreview();
-      };
-
-      document.getElementById('modal-preview').classList.add('active');
-    };
-
-    window.cerrarModalPreview = () => {
-      document.getElementById('modal-preview').classList.remove('active');
-    };
-
-    window.cerrarModalAfuera = (e) => {
-      if (e.target.id === 'modal-preview') {
-        cerrarModalPreview();
-      }
-    };
-
-    // LÓGICA DEL CARRITO
+    // CARRITO
     window.agregarAlCarrito = (id) => {
       const producto = productosData.find(p => p.id === id);
       if (!producto) return;
@@ -297,12 +223,10 @@
         contenedor.innerHTML = `<p class="carrito-vacio-msg">Aún no has agregado productos a tu lista.</p>`;
         totalMontoElem.innerText = "$0.00";
         btnWhatsapp.disabled = true;
-        btnWhatsapp.classList.add('disabled');
         return;
       }
 
       btnWhatsapp.disabled = false;
-      btnWhatsapp.classList.remove('disabled');
 
       let html = "";
       let total = 0;
@@ -311,30 +235,33 @@
         const subtotal = item.precio * item.cantidad;
         total += subtotal;
         html += `
-          <div class="carrito-item">
-            <img src="${item.imagen}" alt="${item.nombre}" class="carrito-item-img">
-            <div class="carrito-item-details">
-              <div class="carrito-item-title">${item.nombre}</div>
-              <div class="carrito-item-subtotal">$${item.precio.toLocaleString('es-AR')} c/u</div>
+          <div class="carrito-item" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); margin-bottom: 8px; border-radius: 8px;">
+            <div style="flex: 1;">
+              <strong>${item.nombre}</strong><br>
+              <small>$${item.precio.toLocaleString('es-AR')} c/u</small>
             </div>
-            <div class="carrito-qty-controls">
-              <button onclick="cambiarCantidad('${item.id}', -1)">-</button>
-              <span>${item.cantidad}</span>
-              <button onclick="cambiarCantidad('${item.id}', 1)">+</button>
+            <div style="margin: 0 15px;">
+              <button onclick="cambiarCantidad('${item.id}', -1)" style="padding: 2px 8px;">-</button>
+              <span style="margin: 0 5px;">${item.cantidad}</span>
+              <button onclick="cambiarCantidad('${item.id}', 1)" style="padding: 2px 8px;">+</button>
             </div>
-            <div class="carrito-item-total">$${subtotal.toLocaleString('es-AR')}</div>
-            <button class="btn-remove-item" onclick="eliminarItemCarrito('${item.id}')"><i class="fa-solid fa-trash-can"></i></button>
+            <div style="font-weight: bold; margin-right: 15px;">$${subtotal.toLocaleString('es-AR')}</div>
+            <button onclick="eliminarItemCarrito('${item.id}')" style="background:none; border:none; color:#ef4444; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
           </div>
         `;
       });
 
       contenedor.innerHTML = html;
-      totalMontoElem.innerText = `$${total.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      totalMontoElem.innerText = `$${total.toLocaleString('es-AR', {minimumFractionDigits: 2})}`;
     }
 
-    // REGISTRO DE PEDIDO EN FIREBASE + WHATSAPP
-    window.enviarPedidoWhatsApp = async () => {
+    // REGISTRO EN FIREBASE Y LUEGO REDIRECCIÓN A WHATSAPP
+    window.enviarPedidoFirebaseYWhatsapp = async () => {
       if (carrito.length === 0) return;
+
+      const btn = document.getElementById('btn-whatsapp-pedido');
+      btn.innerText = "Procesando pedido...";
+      btn.disabled = true;
 
       let total = 0;
       const itemsPedido = carrito.map(i => {
@@ -349,8 +276,8 @@
         };
       });
 
-      // Guardar en la colección 'pedidos' de Firebase
       try {
+        // Guarda el pedido en Firestore
         await addDoc(collection(db, "pedidos"), {
           items: itemsPedido,
           total: total,
@@ -358,10 +285,10 @@
           fecha: serverTimestamp()
         });
       } catch (e) {
-        console.error("Error guardando el pedido en Firestore:", e);
+        console.error("Error al registrar pedido en Firestore:", e);
       }
 
-      // Redirigir a WhatsApp
+      // Prepara el mensaje de WhatsApp
       const numeroTel = "5491134970171";
       let mensaje = "Hola *Peque Elektro*, quisiera realizar el siguiente pedido:\n\n";
 
@@ -371,6 +298,12 @@
 
       mensaje += `*TOTAL ESTIMADO: $${total.toLocaleString('es-AR', {minimumFractionDigits: 2})}*\n\n¡Quedo a la espera para coordinar el pago y envío!`;
 
+      // Limpia el carrito
+      carrito = [];
+      renderizarCarrito();
+      btn.innerHTML = `<i class="fa-brands fa-whatsapp"></i> Finalizar y Enviar Pedido`;
+
+      // Abre WhatsApp
       const urlWhatsApp = `https://wa.me/${numeroTel}?text=${encodeURIComponent(mensaje)}`;
       window.open(urlWhatsApp, '_blank');
     };
