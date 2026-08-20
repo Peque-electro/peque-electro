@@ -6,24 +6,25 @@ body {
   padding: 0;
 }
 
-/* BANNER DE LOGO */
+/* BANNER DE LOGO A ANCHO COMPLETO */
 .banner-header {
   width: 100%;
-  background-color: #ffffff;
+  background-color: #0f172a; /* Fondo oscuro integrado con el resto del sitio */
   display: flex;
   justify-content: center;
   align-items: center;
   border-bottom: 3px solid #38bdf8;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  overflow: hidden;
 }
 
 .banner-img {
   width: 100%;
-  max-width: 1100px;
+  max-width: 100%; /* Permite expandirse a todo el ancho de la pantalla */
   height: auto;
-  max-height: 350px;
-  object-fit: contain;
+  max-height: 450px; /* Ajusta la altura máxima a tu gusto */
+  object-fit: cover; /* Adapta la imagen sin deformar las proporciones */
   display: block;
+
 }
 
 /* NUEVO ESLOGAN DE PRESENTACIÓN */
