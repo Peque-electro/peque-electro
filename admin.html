@@ -7,33 +7,24 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    /* Estilos idénticos a index.html para filtros y grilla */
     .categories-bar, .subcategories-bar { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px; }
     .btn-cat, .btn-subcat { background: #1e293b; color: #94a3b8; border: 1px solid #334155; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; }
     .btn-cat.active, .btn-cat:hover { background: #4f46e5; color: white; border-color: #4f46e5; }
     .btn-subcat.active, .btn-subcat:hover { background: #0d9488; color: white; border-color: #0d9488; }
     .subcategories-container { background: #0f172a; padding: 12px; border-radius: 12px; margin-bottom: 25px; }
     
-    /* Barra de Herramientas Admin */
-    .admin-toolbar { background: #0f172a; padding: 15px; border-radius: 12px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 25px; border: 1px solid #334155; }
+    .admin-toolbar { background: #1e293b; padding: 15px; border-radius: 12px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 25px; border: 1px solid #334155; }
     .btn-tool { background: #475569; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
     .btn-tool:hover { background: #334155; }
     .btn-tool.primary { background: #4f46e5; }
     .btn-tool.primary:hover { background: #4338ca; }
 
-    /* Botones de acción en las tarjetas */
-    .card-actions { display: flex; gap: 5px; margin-top: 10px; }
-    .btn-edit, .btn-delete { flex: 1; padding: 8px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; }
-    .btn-edit { background: #f59e0b; }
-    .btn-delete { background: #ef4444; }
-
-    /* Modales para Formularios Admin */
+    /* Modales */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s; }
     .modal-overlay.active { opacity: 1; pointer-events: all; }
     .modal-content { background: #1e293b; color: #fff; padding: 25px; border-radius: 12px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; position: relative; text-align: left; }
     .modal-close { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #94a3b8; font-size: 24px; cursor: pointer; }
     
-    /* Inputs de formularios modales */
     .form-group { margin-bottom: 15px; }
     .form-group label { display: block; margin-bottom: 5px; color: #94a3b8; font-size: 0.9rem; }
     .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #fff; box-sizing: border-box; }
@@ -44,12 +35,12 @@
 
   <header>
     <h1>Peque Elektro</h1>
-    <p>Modo Administrador Activo</p>
+    <p>Panel de Administración de Productos</p>
   </header>
 
   <main class="container">
     
-    <!-- LOGIN SUPERPUESTO -->
+    <!-- LOGIN -->
     <div id="login-section" style="max-width: 400px; margin: 40px auto; background: #1e293b; padding: 25px; border-radius: 12px; text-align: left;">
       <h2 style="text-align: center; margin-bottom: 20px;">Acceso Privado</h2>
       <div class="form-group"><input type="email" id="login-email" placeholder="Correo Electrónico"></div>
@@ -57,24 +48,24 @@
       <button onclick="login()" style="width: 100%; padding: 12px; background: #4f46e5; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Ingresar</button>
     </div>
 
-    <!-- CONTENIDO ADMIN (IDÉNTICO A INDEX) -->
+    <!-- CONTENIDO ADMIN -->
     <div id="admin-content" class="hidden">
       
       <!-- BARRA DE HERRAMIENTAS -->
       <div class="admin-toolbar">
         <button class="btn-tool primary" onclick="abrirModal('modal-producto')"><i class="fa-solid fa-plus"></i> Cargar Producto</button>
-        <button class="btn-tool" onclick="abrirModal('modal-categoria')"><i class="fa-solid fa-folder-plus"></i> Categorías</button>
-        <button class="btn-tool" onclick="abrirModal('modal-password')"><i class="fa-solid fa-key"></i> Clave</button>
+        <button class="btn-tool" onclick="abrirModal('modal-categoria')"><i class="fa-solid fa-folder-plus"></i> Crear Categoría</button>
+        <button class="btn-tool" onclick="abrirModal('modal-password')"><i class="fa-solid fa-key"></i> Cambiar Clave</button>
         <button class="btn-tool" onclick="logout()" style="background: #ef4444;"><i class="fa-solid fa-power-off"></i> Salir</button>
       </div>
 
-      <!-- FILTROS COMO EN EL CATÁLOGO -->
+      <!-- FILTROS -->
       <div id="categories-container" class="categories-bar"></div>
       <div id="subcategories-wrapper" class="subcategories-container hidden">
         <div id="subcategories-container" class="subcategories-bar"></div>
       </div>
 
-      <!-- GRILLA DE PRODUCTOS -->
+      <!-- GRILLA DE PRODUCTOS ESTILO FRAVEGA -->
       <div id="grid-productos" class="grid-productos"></div>
 
     </div>
@@ -87,7 +78,7 @@
       <h2 id="form-title">Cargar Producto</h2>
       <form id="product-form">
         <input type="hidden" id="edit-id">
-        <div class="form-group"><label>Nombre</label><input type="text" id="prod-title" required></div>
+        <div class="form-group"><label>Nombre del Producto</label><input type="text" id="prod-title" required></div>
         <div style="display: flex; gap: 10px;">
           <div class="form-group" style="flex:1;"><label>Categoría</label><select id="prod-category" onchange="actualizarSubcategoriasUI()" required></select></div>
           <div class="form-group" style="flex:1;"><label>Subcategoría</label><select id="prod-subcategory" required disabled></select></div>
@@ -95,14 +86,14 @@
         <div class="form-group"><label>Precio ($)</label><input type="number" id="prod-price" required></div>
         <div class="form-group"><label>Descripción</label><textarea id="prod-desc" rows="3" required></textarea></div>
         <div class="form-group">
-          <label>Links de Fotos (ImgBB)</label>
+          <label>Links de Fotos (Directos de ImgBB)</label>
           <input type="text" id="prod-img-1" placeholder="Foto 1 (Principal)" style="margin-bottom:5px;" required>
           <input type="text" id="prod-img-2" placeholder="Foto 2" style="margin-bottom:5px;">
           <input type="text" id="prod-img-3" placeholder="Foto 3" style="margin-bottom:5px;">
           <input type="text" id="prod-img-4" placeholder="Foto 4" style="margin-bottom:5px;">
           <input type="text" id="prod-img-5" placeholder="Foto 5">
         </div>
-        <button type="submit" style="width:100%; padding:12px; background:#4f46e5; border:none; color:white; border-radius:8px; font-weight:bold;">Guardar</button>
+        <button type="submit" style="width:100%; padding:12px; background:#4f46e5; border:none; color:white; border-radius:8px; font-weight:bold; cursor:pointer;">Guardar Producto</button>
       </form>
     </div>
   </div>
@@ -115,7 +106,7 @@
       <form id="cat-form">
         <div class="form-group"><label>Categoría Principal (Ej: TV y Audio)</label><input type="text" id="new-cat-name" required></div>
         <div class="form-group"><label>Subcategoría (Ej: Smart TVs)</label><input type="text" id="new-subcat-name" required></div>
-        <button type="submit" style="width:100%; padding:12px; background:#0d9488; border:none; color:white; border-radius:8px; font-weight:bold;">Crear</button>
+        <button type="submit" style="width:100%; padding:12px; background:#0d9488; border:none; color:white; border-radius:8px; font-weight:bold; cursor:pointer;">Crear Categoría</button>
       </form>
     </div>
   </div>
@@ -127,7 +118,7 @@
       <h2>Cambiar Contraseña</h2>
       <form id="pass-form">
         <div class="form-group"><label>Nueva Contraseña (Mín. 6 caracteres)</label><input type="password" id="new-pass" required minlength="6"></div>
-        <button type="submit" style="width:100%; padding:12px; background:#f59e0b; border:none; color:white; border-radius:8px; font-weight:bold;">Actualizar Contraseña</button>
+        <button type="submit" style="width:100%; padding:12px; background:#f59e0b; border:none; color:white; border-radius:8px; font-weight:bold; cursor:pointer;">Actualizar Contraseña</button>
       </form>
     </div>
   </div>
@@ -155,7 +146,7 @@
     let catSeleccionada = "Todas";
     let subcatSeleccionada = "Todas";
 
-    // --- AUTENTICACIÓN ---
+    // AUTH
     onAuthStateChanged(auth, (user) => {
       if (user) {
         document.getElementById('login-section').classList.add('hidden');
@@ -170,28 +161,22 @@
     window.login = async () => {
       try {
         await signInWithEmailAndPassword(auth, document.getElementById('login-email').value, document.getElementById('login-pass').value);
-      } catch (e) { alert("Error: " + e.message); }
+      } catch (e) { alert("Error al ingresar: " + e.message); }
     };
     window.logout = () => signOut(auth);
 
-    // --- CAMBIO DE CONTRASEÑA ---
+    // CAMBIO DE CLAVE
     document.getElementById('pass-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const nuevaClave = document.getElementById('new-pass').value;
       try {
-        await updatePassword(auth.currentUser, nuevaClave);
-        alert("¡Contraseña actualizada! Por seguridad, deberás volver a iniciar sesión.");
+        await updatePassword(auth.currentUser, document.getElementById('new-pass').value);
+        alert("Contraseña actualizada con éxito. Inicia sesión nuevamente.");
         cerrarModal('modal-password');
-        document.getElementById('pass-form').reset();
         logout();
-      } catch (e) {
-        if(e.code === 'auth/requires-recent-login') {
-          alert("Por seguridad, debes cerrar sesión y volver a entrar antes de cambiar tu contraseña.");
-        } else { alert("Error: " + e.message); }
-      }
+      } catch (e) { alert("Error: " + e.message); }
     });
 
-    // --- MANEJO DE MODALES ---
+    // MODALES
     window.abrirModal = (id) => { 
       if(id === 'modal-producto' && !document.getElementById('edit-id').value) {
         document.getElementById('product-form').reset();
@@ -205,7 +190,7 @@
       if(id === 'modal-producto') document.getElementById('edit-id').value = ""; 
     };
 
-    // --- CARGA DE DATOS Y RENDERIZADO IDÉNTICO A INDEX ---
+    // CARGA DE DATOS
     async function cargarTodo() {
       await cargarCategorias();
       try {
@@ -267,6 +252,7 @@
       subcats.forEach(sub => container.innerHTML += `<button class="btn-subcat ${sub === subcatSeleccionada ? 'active' : ''}" onclick="filtrarSub('${sub}')">${sub}</button>`);
     }
 
+    // RENDERIZADO DE TARJETAS TIPO FRAVEGA
     function renderizarProductos() {
       const contenedor = document.getElementById('grid-productos');
       contenedor.innerHTML = "";
@@ -274,14 +260,19 @@
       if (catSeleccionada !== "Todas") filtrados = filtrados.filter(p => p.categoria === catSeleccionada);
       if (subcatSeleccionada !== "Todas") filtrados = filtrados.filter(p => p.subcategoria === subcatSeleccionada);
 
-      if (filtrados.length === 0) { contenedor.innerHTML = `<p style="color: #94a3b8; grid-column: 1/-1;">No hay productos.</p>`; return; }
+      if (filtrados.length === 0) { contenedor.innerHTML = `<p style="color: #94a3b8; grid-column: 1/-1; text-align:center;">No hay productos guardados.</p>`; return; }
 
       filtrados.forEach(prod => {
+        const imagenUrl = prod.imagenes && prod.imagenes[0] ? prod.imagenes[0] : 'https://via.placeholder.com/200?text=Sin+Imagen';
         contenedor.innerHTML += `
           <div class="card">
-            <img src="${prod.imagenes[0] || ''}" style="width:100%; height:180px; object-fit:cover; border-radius:8px;" onerror="this.src='https://via.placeholder.com/180?text=X'">
-            <h3>${prod.nombre}</h3>
-            <p class="precio">$${prod.precio}</p>
+            <div>
+              <div class="card-img-container">
+                <img src="${imagenUrl}" alt="${prod.nombre}" onerror="this.src='https://via.placeholder.com/200?text=Error+Imagen'">
+              </div>
+              <h3>${prod.nombre}</h3>
+              <p class="precio">$${prod.precio.toLocaleString('es-AR')}</p>
+            </div>
             <div class="card-actions">
               <button class="btn-edit" onclick="prepararEdicion('${prod.id}')"><i class="fa-solid fa-pen"></i> Editar</button>
               <button class="btn-delete" onclick="eliminarProducto('${prod.id}')"><i class="fa-solid fa-trash"></i></button>
@@ -291,7 +282,7 @@
       });
     }
 
-    // --- ACCIONES ADMIN ---
+    // EDICIÓN / ELIMINACIÓN
     window.prepararEdicion = (id) => {
       const prod = productosData.find(p => p.id === id);
       document.getElementById('edit-id').value = prod.id;
@@ -308,7 +299,7 @@
     };
 
     window.eliminarProducto = async (id) => {
-      if (confirm("¿Eliminar este producto permanentemente?")) {
+      if (confirm("¿Estás seguro de eliminar este producto?")) {
         await deleteDoc(doc(db, "productos", id));
         cargarTodo();
       }

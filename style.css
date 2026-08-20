@@ -3,336 +3,128 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  scroll-behavior: smooth;
-}
-
-:root {
-  --primary-color: #4f46e5;
-  --secondary-color: #06b6d4;
-  --whatsapp-color: #25d366;
-  --bg-dark: #0f172a;
-  --bg-card: #1e293b;
-  --text-light: #f8fafc;
-  --text-muted: #94a3b8;
 }
 
 body {
-  background-color: var(--bg-dark);
-  color: var(--text-light);
-  overflow-x: hidden;
+  background-color: #0f172a;
+  color: #f8fafc;
+  min-height: 100vh;
 }
 
-/* HEADER CENTRADO EN PC Y CELULAR */
-.header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+header {
+  background: #1e293b;
   text-align: center;
-  padding: 15px 5%;
-  background: rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(10px);
-  position: fixed;
-  width: 100%;
-  top: 0;
-  z-index: 1000;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  gap: 12px;
+  padding: 20px;
+  border-bottom: 1px solid #334155;
 }
 
-.logo {
-  font-size: 2.2rem;
-  font-weight: 800;
-  text-align: center;
-  letter-spacing: 0.5px;
+header h1 {
+  color: #38bdf8;
+  font-size: 1.8rem;
 }
 
-.logo span {
-  color: var(--secondary-color);
+header p {
+  color: #94a3b8;
+  font-size: 0.9rem;
 }
 
-.nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 15px;
 }
 
-.nav a {
-  color: var(--text-light);
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 0.95rem;
-  transition: color 0.3s ease;
-}
-
-.nav a:hover {
-  color: var(--secondary-color);
-}
-
-/* HERO SECTION */
-.hero {
-  min-height: 80vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 150px 20px 60px;
-  background: radial-gradient(circle at center, #1e1b4b 0%, var(--bg-dark) 70%);
-}
-
-.hero-content {
-  max-width: 800px;
-}
-
-.badge {
-  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.hero h1 {
-  font-size: 3.2rem;
-  margin: 20px 0;
-  line-height: 1.2;
-}
-
-.hero h1 span {
-  background: linear-gradient(90deg, #818cf8, var(--secondary-color));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.hero p {
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  margin-bottom: 30px;
-}
-
-.btn-primary {
-  display: inline-block;
-  padding: 14px 32px;
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-  color: #fff;
-  text-decoration: none;
-  font-weight: 600;
-  border-radius: 30px;
-  box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4);
-}
-
-/* CONTENEDOR PRINCIPAL */
-.catalog-container {
-  padding: 40px 8%;
-}
-
-.category-section {
-  margin-bottom: 70px;
-  scroll-margin-top: 130px;
-}
-
-.category-title {
-  font-size: 2rem;
-  margin-bottom: 30px;
-  color: var(--secondary-color);
-  border-bottom: 2px solid rgba(6, 182, 212, 0.2);
-  padding-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.products-grid {
+/* GRILLA ESTILO FRÁVEGA / TIENDA */
+.grid-productos {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
 }
 
-.product-card {
-  background-color: var(--bg-card);
-  border-radius: 20px;
-  padding: 25px;
-  text-align: center;
-  position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+/* TARJETA DE PRODUCTO COMPACTA */
+.card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 15px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
 }
 
-.product-card:hover {
-  border-color: var(--secondary-color);
-  transform: translateY(-6px);
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
-.card-tag {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: var(--primary-color);
-  font-size: 0.75rem;
-  padding: 4px 10px;
-  border-radius: 10px;
-  font-weight: bold;
-  z-index: 2;
-}
-
-.product-img {
+/* IMAGEN PROPORCIONADA Y CENTRADA (TIPO FRAVEGA) */
+.card-img-container {
   width: 100%;
   height: 200px;
-  margin: 15px 0;
+  background: #ffffff;
+  border-radius: 8px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   overflow: hidden;
-  border-radius: 12px;
-  background-color: rgba(15, 23, 42, 0.5);
+  margin-bottom: 12px;
 }
 
-.product-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
+.card-img-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Mantiene la proporción sin deformar ni estirar */
 }
 
-.product-card:hover .product-img img {
-  transform: scale(1.05);
+.card h3 {
+  font-size: 0.95rem;
+  color: #f1f5f9;
+  margin-bottom: 8px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 2.6em;
 }
 
-.product-card h3 {
+.card .precio {
   font-size: 1.25rem;
-  margin-bottom: 10px;
-}
-
-.product-card p {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  margin-bottom: 15px;
-  line-height: 1.4;
-}
-
-.price {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 15px;
-  color: #fff;
-}
-
-.btn-add {
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  border: 1px solid var(--secondary-color);
-  padding: 10px 18px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.btn-add:hover {
-  background: var(--secondary-color);
-  color: #000;
-}
-
-/* SECCIÓN CARRITO / CHECKOUT */
-.checkout-section {
-  padding: 60px 8% 100px;
-  display: flex;
-  justify-content: center;
-}
-
-.checkout-card {
-  background: #1e293b;
-  border: 2px solid var(--whatsapp-color);
-  border-radius: 24px;
-  padding: 40px 30px;
-  width: 100%;
-  max-width: 650px;
-  text-align: center;
-}
-
-.checkout-card h2 {
-  font-size: 1.8rem;
-  margin-bottom: 25px;
-  color: #fff;
-}
-
-.cart-list {
-  background: rgba(15, 23, 42, 0.6);
-  border-radius: 16px;
-  padding: 20px;
-  min-height: 100px;
-  margin-bottom: 20px;
-}
-
-.empty-msg {
-  color: var(--text-muted);
-  font-style: italic;
-  padding-top: 20px;
-}
-
-.cart-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.cart-item:last-child {
-  border-bottom: none;
-}
-
-.qty-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.qty-controls button {
-  background: var(--primary-color);
-  color: #fff;
-  border: none;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  cursor: pointer;
   font-weight: bold;
+  color: #38bdf8;
+  margin-bottom: 12px;
 }
 
-.total-box {
-  font-size: 1.4rem;
-  margin-bottom: 25px;
-  color: #fff;
+/* BOTONES DE LA TARJETA EN ADMIN */
+.card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
 }
 
-.btn-whatsapp {
-  background-color: var(--whatsapp-color);
+.btn-edit {
+  flex: 1;
+  background: #f59e0b;
   color: #fff;
-  font-size: 1.2rem;
-  font-weight: 700;
-  padding: 16px 32px;
-  border-radius: 50px;
   border: none;
+  padding: 8px;
+  border-radius: 6px;
+  font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
-  transition: transform 0.3s ease;
-  width: 100%;
 }
 
-.btn-whatsapp:hover {
-  transform: scale(1.02);
-  background-color: #20ba5a;
+.btn-delete {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-footer {
-  text-align: center;
-  padding: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  color: var(--text-muted);
-}
+.btn-edit:hover { background: #d97706; }
+.btn-delete:hover { background: #dc2626; }
