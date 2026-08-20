@@ -7,19 +7,28 @@ body {
 }
 
 
+/* BANNER PANORÁMICO DE ANCHO COMPLETO */
 .banner-header {
   width: 100%;
-  height: 280px; /* Ajusta la altura a tu gusto */
-  background-color: #0f172a;
+  background-color: #ffffff;
   border-bottom: 4px solid #38bdf8;
   overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 .banner-img {
   width: 100% !important;
-  height: 100% !important;
-  object-fit: fill !important; /* Fuerza a llenar todo el espacio horizontal */
+  height: auto !important;
+  max-height: 400px; /* Limita la altura en pantallas muy grandes */
+  object-fit: cover;
   display: block;
+}
+
+/* Ajuste móvil para pantallas pequeñas */
+@media (max-width: 768px) {
+  .banner-img {
+    max-height: 200px;
+  }
 }
 
 /* NUEVO ESLOGAN DE PRESENTACIÓN */
