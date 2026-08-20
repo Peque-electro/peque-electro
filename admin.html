@@ -7,19 +7,21 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
+    /* Filtros idénticos al catálogo de usuarios */
     .categories-bar, .subcategories-bar { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px; }
     .btn-cat, .btn-subcat { background: #1e293b; color: #94a3b8; border: 1px solid #334155; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; }
     .btn-cat.active, .btn-cat:hover { background: #4f46e5; color: white; border-color: #4f46e5; }
     .btn-subcat.active, .btn-subcat:hover { background: #0d9488; color: white; border-color: #0d9488; }
     .subcategories-container { background: #0f172a; padding: 12px; border-radius: 12px; margin-bottom: 25px; }
     
+    /* Barra superior de control admin */
     .admin-toolbar { background: #1e293b; padding: 15px; border-radius: 12px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 25px; border: 1px solid #334155; }
     .btn-tool { background: #475569; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
     .btn-tool:hover { background: #334155; }
     .btn-tool.primary { background: #4f46e5; }
     .btn-tool.primary:hover { background: #4338ca; }
 
-    /* Modales */
+    /* Modales flotantes */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s; }
     .modal-overlay.active { opacity: 1; pointer-events: all; }
     .modal-content { background: #1e293b; color: #fff; padding: 25px; border-radius: 12px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; position: relative; text-align: left; }
@@ -40,7 +42,7 @@
 
   <main class="container">
     
-    <!-- LOGIN -->
+    <!-- SECCIÓN DE LOGIN -->
     <div id="login-section" style="max-width: 400px; margin: 40px auto; background: #1e293b; padding: 25px; border-radius: 12px; text-align: left;">
       <h2 style="text-align: center; margin-bottom: 20px;">Acceso Privado</h2>
       <div class="form-group"><input type="email" id="login-email" placeholder="Correo Electrónico"></div>
@@ -48,10 +50,10 @@
       <button onclick="login()" style="width: 100%; padding: 12px; background: #4f46e5; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Ingresar</button>
     </div>
 
-    <!-- CONTENIDO ADMIN -->
+    <!-- PANEL ADMIN PRINCIPAL -->
     <div id="admin-content" class="hidden">
       
-      <!-- BARRA DE HERRAMIENTAS -->
+      <!-- HERRAMIENTAS -->
       <div class="admin-toolbar">
         <button class="btn-tool primary" onclick="abrirModal('modal-producto')"><i class="fa-solid fa-plus"></i> Cargar Producto</button>
         <button class="btn-tool" onclick="abrirModal('modal-categoria')"><i class="fa-solid fa-folder-plus"></i> Crear Categoría</button>
@@ -59,13 +61,13 @@
         <button class="btn-tool" onclick="logout()" style="background: #ef4444;"><i class="fa-solid fa-power-off"></i> Salir</button>
       </div>
 
-      <!-- FILTROS -->
+      <!-- FILTROS POR CATEGORÍA -->
       <div id="categories-container" class="categories-bar"></div>
       <div id="subcategories-wrapper" class="subcategories-container hidden">
         <div id="subcategories-container" class="subcategories-bar"></div>
       </div>
 
-      <!-- GRILLA DE PRODUCTOS ESTILO FRAVEGA -->
+      <!-- GRILLA DE PRODUCTOS ESTILO FRÁVEGA -->
       <div id="grid-productos" class="grid-productos"></div>
 
     </div>
@@ -146,7 +148,7 @@
     let catSeleccionada = "Todas";
     let subcatSeleccionada = "Todas";
 
-    // AUTH
+    // SESIÓN Y AUTENTICACIÓN
     onAuthStateChanged(auth, (user) => {
       if (user) {
         document.getElementById('login-section').classList.add('hidden');
@@ -165,7 +167,7 @@
     };
     window.logout = () => signOut(auth);
 
-    // CAMBIO DE CLAVE
+    // CAMBIO DE CONTRASEÑA
     document.getElementById('pass-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       try {
@@ -176,7 +178,7 @@
       } catch (e) { alert("Error: " + e.message); }
     });
 
-    // MODALES
+    // CONTROL DE MODALES
     window.abrirModal = (id) => { 
       if(id === 'modal-producto' && !document.getElementById('edit-id').value) {
         document.getElementById('product-form').reset();
@@ -190,7 +192,7 @@
       if(id === 'modal-producto') document.getElementById('edit-id').value = ""; 
     };
 
-    // CARGA DE DATOS
+    // CARGAR DATOS
     async function cargarTodo() {
       await cargarCategorias();
       try {
@@ -252,7 +254,7 @@
       subcats.forEach(sub => container.innerHTML += `<button class="btn-subcat ${sub === subcatSeleccionada ? 'active' : ''}" onclick="filtrarSub('${sub}')">${sub}</button>`);
     }
 
-    // RENDERIZADO DE TARJETAS TIPO FRAVEGA
+    // RENDERIZAR PRODUCTOS
     function renderizarProductos() {
       const contenedor = document.getElementById('grid-productos');
       contenedor.innerHTML = "";
@@ -282,7 +284,7 @@
       });
     }
 
-    // EDICIÓN / ELIMINACIÓN
+    // EDITAR / ELIMINAR
     window.prepararEdicion = (id) => {
       const prod = productosData.find(p => p.id === id);
       document.getElementById('edit-id').value = prod.id;
