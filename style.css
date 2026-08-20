@@ -9,22 +9,22 @@ body {
 /* BANNER DE LOGO A ANCHO COMPLETO */
 .banner-header {
   width: 100%;
-  background-color: #0f172a; /* Fondo oscuro integrado con el resto del sitio */
+  background-color: #ffffff; /* Fondo blanco para integrarse con la imagen */
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 3px solid #38bdf8;
-  overflow: hidden;
+  border-bottom: 4px solid #38bdf8; /* Borde azul de separación */
+  padding: 15px 0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
 .banner-img {
   width: 100%;
-  max-width: 100%; /* Permite expandirse a todo el ancho de la pantalla */
+  max-width: 550px; /* Tamaño ideal para que se vea claro y centrado */
   height: auto;
-  max-height: 450px; /* Ajusta la altura máxima a tu gusto */
-  object-fit: cover; /* Adapta la imagen sin deformar las proporciones */
+  max-height: 280px;
+  object-fit: contain;
   display: block;
-
 }
 
 /* NUEVO ESLOGAN DE PRESENTACIÓN */
