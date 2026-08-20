@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ElectroTech - Pequeños Electrodomésticos</title>
+  <title>ElectroTech - Catálogo por Categorías</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -13,72 +13,307 @@
     <div class="logo">Electro<span>Tech</span></div>
     <nav class="nav">
       <a href="#hero">Inicio</a>
-      <a href="#productos">Productos</a>
-      <a href="#beneficios">Beneficios</a>
+      <a href="#pavas">Pavas Eléctricas</a>
+      <a href="#smartwatches">Smartwatches</a>
+      <a href="#termos">Termos</a>
+      <a href="#electrodomesticos">Electrodomésticos</a>
+      <a href="#carrito">Mi Pedido (<span id="cart-count">0</span>)</a>
     </nav>
   </header>
 
   <section id="hero" class="hero">
     <div class="hero-content">
-      <span class="badge">Innovación para tu hogar</span>
-      <h1>Tecnología Pequeña, <span>Grandes Cambios</span></h1>
-      <p>Descubre nuestra línea de pequeños electrodomésticos diseñados para facilitarte la vida con el máximo estilo y eficiencia.</p>
-      <a href="#productos" class="btn-primary">Ver Catálogo <i class="fa-solid  fa-arrow-down"></i></a>
+      <span class="badge">Catálogo Completo</span>
+      <h1>Encuentra lo que buscas <span>por Categoría</span></h1>
+      <p>Explora nuestras pavas eléctricas, smartwatches, termos e instrumentos para el hogar. Agrega tus favoritos al pedido y cómpralos por WhatsApp.</p>
+      <a href="#pavas" class="btn-primary">Explorar Catálogo <i class="fa-solid fa-arrow-down"></i></a>
     </div>
   </section>
 
-  <section id="productos" class="products-section">
-    <h2 class="section-title">Productos Destacados</h2>
-    <div class="products-grid">
+  <main class="catalog-container">
 
-      <div class="product-card">
-        <div class="card-tag">Oferta</div>
-        <div class="product-img">
-          <i class="fa-solid fa-mug-hot"></i>
+    <!-- CATEGORÍA 1: PAVAS ELÉCTRICAS -->
+    <section id="pavas" class="category-section">
+      <h2 class="category-title"><i class="fa-solid fa-temperature-arrow-up"></i> Pavas Eléctricas</h2>
+      <div class="products-grid">
+
+        <div class="product-card">
+          <div class="card-tag">Más vendida</div>
+          <div class="product-img">
+            <img src="img/pava-inox.jpg" alt="Pava Eléctrica Inox 1.8L">
+          </div>
+          <h3>Pava Eléctrica Inox 1.8L</h3>
+          <p>Corte automático para mate/café y selector de temperatura.</p>
+          <span class="price">$39.99</span>
+          <button class="btn-add" onclick="agregarAlCarrito('Pava Eléctrica Inox 1.8L', 39.99)">
+            <i class="fa-solid fa-cart-plus"></i> Agregar al Pedido
+          </button>
         </div>
-        <h3>Cafetera Express Pro</h3>
-        <p>Prepara el mejor café espresso en segundos con presión profesional de 20 bares.</p>
-        <span class="price">$89.99</span>
-      </div>
 
-      <div class="product-card">
-        <div class="product-img">
-          <i class="fa-solid fa-blender"></i>
+        <div class="product-card">
+          <div class="product-img">
+            <img src="img/pava-vidrio.jpg" alt="Pava de Vidrio con Luz LED">
+          </div>
+          <h3>Pava de Vidrio con Luz LED</h3>
+          <p>Cuerpo de vidrio templado, luz LED azul al hervir y filtro antisarro.</p>
+          <span class="price">$45.99</span>
+          <button class="btn-add" onclick="agregarAlCarrito('Pava de Vidrio con Luz LED', 45.99)">
+            <i class="fa-solid fa-cart-plus"></i> Agregar al Pedido
+          </button>
         </div>
-        <h3>Licuadora NutriPower</h3>
-        <p>Motor de alta velocidad capaz de triturar hielo y semillas sin esfuerzo.</p>
-        <span class="price">$64.99</span>
-      </div>
 
-      <div class="product-card">
-        <div class="card-tag">Popular</div>
-        <div class="product-img">
-          <i class="fa-solid fa-fan"></i>
+        <div class="product-card">
+          <div class="card-tag">Digital</div>
+          <div class="product-img">
+            <img src="img/pava-digital.jpg" alt="Pava Digital Smart Precision">
+          </div>
+          <h3>Pava Digital Smart Precision</h3>
+          <p>Control de temperatura grado a grado en pantalla digital y función Keep Warm.</p>
+          <span class="price">$59.99</span>
+          <button class="btn-add" onclick="agregarAlCarrito('Pava Digital Smart Precision', 59.99)">
+            <i class="fa-solid fa-cart-plus"></i> Agregar al Pedido
+          </button>
         </div>
-        <h3>Freidora de Aire Digital</h3>
-        <p>Cocina crujiente y saludable con hasta 85% menos de aceite. Pantalla táctil.</p>
-        <span class="price">$119.99</span>
+
       </div>
+    </section>
 
-    </div>
-  </section>
 
-  <section class="checkout-section">
+    <!-- CATEGORÍA 2: SMARTWATCHES -->
+    <section id="smartwatches" class="category-section">
+      <h2 class="category-title"><i class="fa-solid fa-stopwatch"></i> Smartwatches</h2>
+      <div class="products-grid">
+
+        <div class="product-card">
+          <div class="card-tag">Nuevo</div>
+          <div class="product-img">
+            <img src="img/smartwatch-fit.jpg" alt="Smartwatch Sport Fit Pro">
+          </div>
+          <h3>Smartwatch Sport Fit Pro</h3>
+          <p>Monitor cardíaco, seguimiento de deportes, llamadas Bluetooth y resistente al agua.</p>
+          <span class="price">$49.99</span>
+          <button class="btn-add" onclick="agregarAlCarrito('Smartwatch Sport Fit Pro', 49.99)">
+            <i class="fa-solid fa-cart-plus"></i> Agregar al Pedido
+          </button>
+        </div>
+
+        <div class="product-card">
+          <div class="product-img">
+            <img src="img/smartwatch-urban.jpg" alt="Smartwatch Urban Style">
+          </div>
+          <h3>Smartwatch Urban Style</h3>
+          <p>Diseño elegante con malla metálica, pantalla AMOLED y notificación de mensajes.</p>
+          <span class="price">$69.99</span>
+          <button class="btn-add" onclick="agregarAlCarrito('Smartwatch Urban Style', 69.99)">
+            <i class="fa-solid fa-cart-plus"></i> Agregar al Pedido
+          </button>
+        </div>
+
+        <div class="product-card">
+          <div class="card-tag">Batería 14 días</div>
+          <div class="product-img">
+            <img src="img/smartwatch-ultra.jpg" alt="Smartwatch Rugged Ultra">
+          </div>
+          <h3>Smartwatch Rugged Ultra</h3>
+          <p>Caja ultra resistente de titanio, GPS integrado y batería de larga duración.</p>
+          <span class="price">$89.99</span>
+          <button class="btn-add" onclick="agregarAlCarrito('Smartwatch Rugged Ultra', 89.99)">
+            <i class="fa-solid fa-cart-plus"></i> Agregar al Pedido
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- CATEGORÍA 3: TERMOS -->
+    <section id="termos" class="category-section">
+      <h2 class="category-title"><i class="fa-solid fa-bottle-water"></i> Termos y Contenedores</h2>
+      <div class="products-grid">
+
+        <div class="product-card">
+          <div class="product-img">
+            <img src="img/termo-digital.jpg" alt="Termo Digital Inteligente 500ml">
+          </div>
+          <h3>Termo Digital Inteligente 500ml</h3>
+          <p>Tapa con indicador táctil de temperatura LED y acero inoxidable de doble capa.</p>
+          <span class="price">$29.99</span>
+          <button class="btn-add" onclick="agregarAlCarrito('Termo Digital Inteligente 500ml', 29.99)">
+            <i class="fa-solid fa-cart-plus"></i> Agregar al Pedido
+          </button>
+        </div>
+
+        <div class="product-card">
+          <div class="card-tag">Ideal Mate</div>
+          <div class="product-img">
+            <img src="img/termo-matero.jpg" alt="Termo Matero Sólido 1L">
+          </div>
+          <h3>Termo Matero Sólido 1L</h3>
+          <p>Pico cebador de precisión. Mantiene el agua caliente por más de 24 horas.</p>
+          <span class="price">$42.99</span>
+          <button class="btn-add" onclick="agregarAlCarrito('Termo Matero Sólido 1L', 42.99)">
+            <i class="fa-solid fa-cart-plus"></i> Agregar al Pedido
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- CATEGORÍA 4: ELECTRODOMÉSTICOS -->
+    <section id="electrodomesticos" class="category-section">
+      <h2 class="category-title"><i class="fa-solid fa-blender"></i> Pequeños Electrodomésticos</h2>
+      <div class="products-grid">
+
+        <div class="product-card">
+          <div class="card-tag">Oferta</div>
+          <div class="product-img">
+            <img src="img/cafetera.jpg" alt="Cafetera Express Pro">
+          </div>
+          <h3>Cafetera Express Pro</h3>
+          <p>Prepara espresso profesional con 20 bares de presión en segundos.</p>
+          <span class="price">$89.99</span>
+          <button class="btn-add" onclick="agregarAlCarrito('Cafetera Express Pro', 89.99)">
+            <i class="fa-solid fa-cart-plus"></i> Agregar al Pedido
+          </button>
+        </div>
+
+        <div class="product-card">
+          <div class="product-img">
+            <img src="img/licuadora.jpg" alt="Licuadora NutriPower">
+          </div>
+          <h3>Licuadora NutriPower</h3>
+          <p>Motor de alta velocidad capaz de triturar hielo y semillas.</p>
+          <span class="price">$64.99</span>
+          <button class="btn-add" onclick="agregarAlCarrito('Licuadora NutriPower', 64.99)">
+            <i class="fa-solid fa-cart-plus"></i> Agregar al Pedido
+          </button>
+        </div>
+
+        <div class="product-card">
+          <div class="card-tag">Popular</div>
+          <div class="product-img">
+            <img src="img/freidora.jpg" alt="Freidora de Aire Digital">
+          </div>
+          <h3>Freidora de Aire Digital</h3>
+          <p>Cocina crujiente y saludable con hasta 85% menos de aceite.</p>
+          <span class="price">$119.99</span>
+          <button class="btn-add" onclick="agregarAlCarrito('Freidora de Aire Digital', 119.99)">
+            <i class="fa-solid fa-cart-plus"></i> Agregar al Pedido
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- SECCIÓN DE CARRITO / CHECKOUT -->
+  <section id="carrito" class="checkout-section">
     <div class="checkout-card">
-      <h2>¿Listo para renovar tu cocina?</h2>
-      <p>Haz tu pedido de forma directa, rápida y personalizada. Al hacer clic abajo, se abrirá un chat directo con nosotros para confirmar tu compra y coordinar el envío.</p>
+      <h2><i class="fa-solid fa-basket-shopping"></i> Tu Selección de Productos</h2>
       
-      <a href="https://wa.me/5491112345678?text=Hola!%20Quiero%20realizar%20una%20compra%20de%20un%20electrodom%C3%A9stico." 
-         target="_blank" 
-         class="btn-whatsapp">
-        <i class="fa-brands fa-whatsapp"></i> Confirmar Compra por WhatsApp
-      </a>
+      <div id="cart-list" class="cart-list">
+        <p class="empty-msg">Aún no has agregado productos a tu lista.</p>
+      </div>
+
+      <div class="total-box">
+        <strong>Total Estimado: $<span id="cart-total">0.00</span></strong>
+      </div>
+
+      <!-- Reemplaza el número de teléfono en la variable JS 'NUMERO_WHATSAPP' -->
+      <button onclick="enviarWhatsApp()" class="btn-whatsapp">
+        <i class="fa-brands fa-whatsapp"></i> Enviar Pedido por WhatsApp
+      </button>
     </div>
   </section>
 
   <footer>
     <p>&copy; 2026 ElectroTech. Todos los derechos reservados.</p>
   </footer>
+
+  <script>
+    // Configura tu número de WhatsApp aquí (código de país + área + número, sin espacios ni '+')
+    const NUMERO_WHATSAPP = "5491112345678"; 
+
+    let carrito = [];
+
+    function agregarAlCarrito(nombre, precio) {
+      const existe = carrito.find(item => item.nombre === nombre);
+      if (existe) {
+        existe.cantidad++;
+      } else {
+        carrito.push({ nombre, precio, cantidad: 1 });
+      }
+      actualizarInterfaz();
+    }
+
+    function cambiarCantidad(nombre, cambio) {
+      const item = carrito.find(i => i.nombre === nombre);
+      if (item) {
+        item.cantidad += cambio;
+        if (item.cantidad <= 0) {
+          carrito = carrito.filter(i => i.nombre !== nombre);
+        }
+      }
+      actualizarInterfaz();
+    }
+
+    function actualizarInterfaz() {
+      const cartList = document.getElementById("cart-list");
+      const cartTotal = document.getElementById("cart-total");
+      const cartCount = document.getElementById("cart-count");
+
+      let total = 0;
+      let cantidadTotal = 0;
+
+      if (carrito.length === 0) {
+        cartList.innerHTML = '<p class="empty-msg">Aún no has agregado productos a tu lista.</p>';
+      } else {
+        cartList.innerHTML = "";
+        carrito.forEach(item => {
+          const subtotal = item.precio * item.cantidad;
+          total += subtotal;
+          cantidadTotal += item.cantidad;
+
+          cartList.innerHTML += `
+            <div class="cart-item">
+              <span>${item.nombre} ($${item.precio})</span>
+              <div class="qty-controls">
+                <button onclick="cambiarCantidad('${item.nombre}', -1)">-</button>
+                <span>${item.cantidad}</span>
+                <button onclick="cambiarCantidad('${item.nombre}', 1)">+</button>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      cartTotal.textContent = total.toFixed(2);
+      cartCount.textContent = cantidadTotal;
+    }
+
+    function enviarWhatsApp() {
+      if (carrito.length === 0) {
+        alert("Por favor, agrega al menos un producto a tu lista antes de enviar.");
+        return;
+      }
+
+      let mensaje = "¡Hola ElectroTech! Quiero realizar el pedido de los siguientes productos:\n\n";
+      let total = 0;
+
+      carrito.forEach(item => {
+        const subtotal = item.precio * item.cantidad;
+        total += subtotal;
+        mensaje += `• ${item.nombre} x${item.cantidad} - $${subtotal.toFixed(2)}\n`;
+      });
+
+      mensaje += `\n*Total estimado: $${total.toFixed(2)}*`;
+
+      const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
+      window.open(url, "_blank");
+    }
+  </script>
 
 </body>
 </html>
