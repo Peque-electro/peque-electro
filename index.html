@@ -6,6 +6,25 @@
   <title>Peque Elektro - Catálogo</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Estilos Modal / Pop-up estilo e-commerce */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.8); display: flex; justify-content: center;
+      align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .modal-content {
+      background: #1e293b; color: #fff; padding: 25px; border-radius: 12px;
+      max-width: 500px; width: 90%; max-height: 85vh; overflow-y: auto;
+      position: relative; text-align: left;
+    }
+    .modal-close {
+      position: absolute; top: 15px; right: 15px; background: none;
+      border: none; color: #94a3b8; font-size: 24px; cursor: pointer;
+    }
+    .card-click { cursor: pointer; }
+  </style>
 </head>
 <body>
 
@@ -20,6 +39,18 @@
       <p style="color: #94a3b8; text-align: center; grid-column: 1/-1;">Cargando productos...</p>
     </div>
   </main>
+
+  <!-- VENTANA FLOTANTE (MODAL DE DETALLE) -->
+  <div id="product-modal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" onclick="cerrarModal()">&times;</button>
+      <img id="modal-img" src="" alt="" style="width:100%; max-height:250px; object-fit:contain; border-radius:8px; margin-bottom:15px;">
+      <h2 id="modal-title" style="margin-bottom:5px;"></h2>
+      <p id="modal-price" class="precio" style="font-size: 20px; font-weight: bold; color: #4f46e5; margin-bottom:15px;"></p>
+      <div id="modal-desc" style="color: #cbd5e1; white-space: pre-line; line-height: 1.5; margin-bottom:20px;"></div>
+      <button id="modal-add-btn" class="btn-add" style="width:100%;">Agregar al carrito</button>
+    </div>
+  </div>
 
   <section id="carrito" class="checkout-section">
     <div class="checkout-card">
@@ -56,29 +87,32 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    let productosData = [];
     let carrito = [];
-    const NUMERO_WHATSAPP = "5491134970171"; // Pon tu número de WhatsApp real aquí
+    const NUMERO_WHATSAPP = "5491100000000";
 
     async function cargarProductos() {
       const contenedor = document.getElementById('grid-productos');
       try {
         const querySnapshot = await getDocs(collection(db, "productos"));
         contenedor.innerHTML = "";
+        productosData = [];
 
         if(querySnapshot.empty) {
-          contenedor.innerHTML = `<p style="color: #94a3b8; text-align: center; grid-column: 1/-1;">No hay productos cargados. Agrégalos desde admin.html</p>`;
+          contenedor.innerHTML = `<p style="color: #94a3b8; text-align: center; grid-column: 1/-1;">No hay productos cargados.</p>`;
           return;
         }
 
         querySnapshot.forEach((doc) => {
-          const prod = doc.data();
+          const prod = { id: doc.id, ...doc.data() };
+          productosData.push(prod);
+          
           contenedor.innerHTML += `
-            <div class="card">
+            <div class="card card-click" onclick="abrirModal('${prod.id}')">
               <img src="${prod.imagen}" alt="${prod.nombre}" style="width:100%; height:180px; object-fit:cover; border-radius:8px;">
               <h3>${prod.nombre}</h3>
-              <p>${prod.descripcion}</p>
               <p class="precio">$${prod.precio}</p>
-              <button onclick="agregarAlCarrito('${prod.nombre}', ${prod.precio})" class="btn-add">Agregar al carrito</button>
+              <button onclick="event.stopPropagation(); agregarAlCarrito('${prod.nombre}', ${prod.precio})" class="btn-add">Agregar al carrito</button>
             </div>
           `;
         });
@@ -86,6 +120,27 @@
         contenedor.innerHTML = `<p style="color: red; grid-column: 1/-1;">Error al cargar productos.</p>`;
       }
     }
+
+    window.abrirModal = (id) => {
+      const prod = productosData.find(p => p.id === id);
+      if(!prod) return;
+      document.getElementById('modal-img').src = prod.imagen;
+      document.getElementById('modal-title').innerText = prod.nombre;
+      document.getElementById('modal-price').innerText = `$${prod.precio}`;
+      document.getElementById('modal-desc').innerText = prod.descripcion;
+      
+      const addBtn = document.getElementById('modal-add-btn');
+      addBtn.onclick = () => {
+        agregarAlCarrito(prod.nombre, prod.precio);
+        cerrarModal();
+      };
+
+      document.getElementById('product-modal').classList.add('active');
+    };
+
+    window.cerrarModal = () => {
+      document.getElementById('product-modal').classList.remove('active');
+    };
 
     window.agregarAlCarrito = (nombre, precio) => {
       carrito.push({ nombre, precio });

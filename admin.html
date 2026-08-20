@@ -6,14 +6,21 @@
   <title>Panel Admin - Peque Elektro</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .admin-container { max-width: 600px; margin: 120px auto 40px; padding: 25px; background: #1e293b; border-radius: 12px; }
+    .admin-container { max-width: 650px; margin: 40px auto; padding: 25px; background: #1e293b; border-radius: 12px; }
     .form-group { margin-bottom: 15px; text-align: left; }
     .form-group label { display: block; margin-bottom: 5px; color: #94a3b8; }
     .form-group input, .form-group textarea {
       width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #fff;
     }
     .btn-submit { width: 100%; padding: 12px; background: #4f46e5; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    .btn-cancel { width: 100%; padding: 10px; background: #64748b; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 8px; }
     .hidden { display: none; }
+    .prod-item { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 12px 15px; border-radius: 8px; margin-bottom: 10px; text-align: left; }
+    .prod-info { display: flex; align-items: center; gap: 12px; }
+    .prod-thumb { width: 45px; height: 45px; object-fit: cover; border-radius: 6px; }
+    .actions { display: flex; gap: 8px; }
+    .btn-edit { background: #f59e0b; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    .btn-delete { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -34,8 +41,10 @@
 
   <!-- PANEL DE PRODUCTOS -->
   <div id="admin-panel" class="admin-container hidden">
-    <h2>Cargar Nuevo Producto</h2>
+    <h2 id="form-title">Cargar Nuevo Producto</h2>
     <form id="product-form">
+      <input type="hidden" id="edit-id"> <!-- Guarda el ID cuando editamos -->
+      
       <div class="form-group">
         <label>Nombre del Producto</label>
         <input type="text" id="prod-title" required>
@@ -53,18 +62,25 @@
         <textarea id="prod-desc" rows="3" required></textarea>
       </div>
       <div class="form-group">
-        <label>Link de la Foto (URL de Imagen)</label>
-        <input type="text" id="prod-img" placeholder="https://..." required>
+        <label>Link de la Foto (URL Directa .jpg / .png)</label>
+        <input type="text" id="prod-img" placeholder="https://i.ibb.co/..." required>
       </div>
-      <button type="submit" class="btn-submit">Guardar Producto</button>
+      <button type="submit" id="btn-save-prod" class="btn-submit">Guardar Producto</button>
+      <button type="button" id="btn-cancel-edit" class="btn-cancel hidden" onclick="cancelarEdicion()">Cancelar Edición</button>
     </form>
-    <button onclick="logout()" style="margin-top: 20px; background: #ef4444;" class="btn-submit">Cerrar Sesión</button>
+
+    <hr style="margin: 35px 0; border-color: #334155;">
+
+    <h2>Productos Cargados</h2>
+    <div id="list-admin-products" style="margin-top: 15px;">Cargando productos...</div>
+
+    <button onclick="logout()" style="margin-top: 30px; background: #475569;" class="btn-submit">Cerrar Sesión</button>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
@@ -79,10 +95,13 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    let productosLista = [];
+
     onAuthStateChanged(auth, (user) => {
       if (user) {
         document.getElementById('login-section').classList.add('hidden');
         document.getElementById('admin-panel').classList.remove('hidden');
+        cargarListaAdmin();
       } else {
         document.getElementById('login-section').classList.remove('hidden');
         document.getElementById('admin-panel').classList.add('hidden');
@@ -101,19 +120,107 @@
 
     window.logout = () => signOut(auth);
 
+    async function cargarListaAdmin() {
+      const contenedor = document.getElementById('list-admin-products');
+      try {
+        const querySnapshot = await getDocs(collection(db, "productos"));
+        contenedor.innerHTML = "";
+        productosLista = [];
+
+        if (querySnapshot.empty) {
+          contenedor.innerHTML = "<p style='color:#94a3b8;'>No hay productos cargados todavía.</p>";
+          return;
+        }
+
+        querySnapshot.forEach((documento) => {
+          const prod = { id: documento.id, ...documento.data() };
+          productosLista.push(prod);
+
+          contenedor.innerHTML += `
+            <div class="prod-item">
+              <div class="prod-info">
+                <img src="${prod.imagen}" class="prod-thumb" alt="" onerror="this.src='https://via.placeholder.com/45?text=X'">
+                <div>
+                  <strong>${prod.nombre}</strong><br>
+                  <small style="color:#94a3b8;">$${prod.precio} | ${prod.categoria || 'Sin cat.'}</small>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn-edit" onclick="prepararEdicion('${prod.id}')">Modificar</button>
+                <button class="btn-delete" onclick="eliminarProducto('${prod.id}')">Eliminar</button>
+              </div>
+            </div>
+          `;
+        });
+      } catch (e) {
+        contenedor.innerHTML = "<p style='color:red;'>Error al cargar lista.</p>";
+      }
+    }
+
+    window.prepararEdicion = (id) => {
+      const prod = productosLista.find(p => p.id === id);
+      if (!prod) return;
+
+      document.getElementById('edit-id').value = prod.id;
+      document.getElementById('prod-title').value = prod.nombre;
+      document.getElementById('prod-category').value = prod.categoria || '';
+      document.getElementById('prod-price').value = prod.precio;
+      document.getElementById('prod-desc').value = prod.descripcion;
+      document.getElementById('prod-img').value = prod.imagen;
+
+      document.getElementById('form-title').innerText = "Modificar Producto";
+      document.getElementById('btn-save-prod').innerText = "Actualizar Cambios";
+      document.getElementById('btn-cancel-edit').classList.remove('hidden');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.cancelarEdicion = () => {
+      document.getElementById('edit-id').value = "";
+      document.getElementById('product-form').reset();
+      document.getElementById('form-title').innerText = "Cargar Nuevo Producto";
+      document.getElementById('btn-save-prod').innerText = "Guardar Producto";
+      document.getElementById('btn-cancel-edit').classList.add('hidden');
+    };
+
+    window.eliminarProducto = async (id) => {
+      if (confirm("¿Estás seguro de que deseas eliminar este producto?")) {
+        try {
+          await deleteDoc(doc(db, "productos", id));
+          alert("Producto eliminado correctamente.");
+          cargarListaAdmin();
+        } catch (e) {
+          alert("Error al eliminar: " + e.message);
+        }
+      }
+    };
+
     document.getElementById('product-form').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const editId = document.getElementById('edit-id').value;
+
+      const datosProducto = {
+        nombre: document.getElementById('prod-title').value,
+        categoria: document.getElementById('prod-category').value,
+        precio: Number(document.getElementById('prod-price').value),
+        descripcion: document.getElementById('prod-desc').value,
+        imagen: document.getElementById('prod-img').value,
+        fecha: new Date()
+      };
+
       try {
-        await addDoc(collection(db, "productos"), {
-          nombre: document.getElementById('prod-title').value,
-          categoria: document.getElementById('prod-category').value,
-          precio: Number(document.getElementById('prod-price').value),
-          descripcion: document.getElementById('prod-desc').value,
-          imagen: document.getElementById('prod-img').value,
-          fecha: new Date()
-        });
-        alert("¡Producto guardado exitosamente!");
-        document.getElementById('product-form').reset();
+        if (editId) {
+          // Actualizar producto existente
+          await updateDoc(doc(db, "productos", editId), datosProducto);
+          alert("¡Producto modificado con éxito!");
+          cancelarEdicion();
+        } else {
+          // Crear un producto nuevo
+          await addDoc(collection(db, "productos"), datosProducto);
+          alert("¡Producto guardado exitosamente!");
+          document.getElementById('product-form').reset();
+        }
+        cargarListaAdmin();
       } catch (e) {
         alert("Error al guardar: " + e.message);
       }
