@@ -6,12 +6,19 @@
   <title>Peque Elektro - Catálogo de Productos</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    .gallery-thumbs { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; }
+    .gallery-thumb { width: 60px; height: 60px; border-radius: 6px; object-fit: cover; cursor: pointer; border: 2px solid transparent; }
+    .gallery-thumb.active { border-color: #38bdf8; }
+    .color-pill { padding: 6px 14px; border-radius: 20px; border: 1px solid #38bdf8; background: #0b132b; color: white; cursor: pointer; font-size: 13px; }
+    .color-pill.selected { background: #38bdf8; color: #0b132b; font-weight: bold; }
+  </style>
 </head>
 <body>
 
   <!-- BANNER DEL LOGO A TODO LO ANCHO -->
   <header class="banner-header">
-    <img src="logo.jpeg" alt="Peque Elektro Logo" class="banner-img">
+    <img src="logo.jpeg" alt="Peque Elektro Logo" class="banner-img" onerror="this.onerror=null; this.src='logo.jpg';">
   </header>
 
   <main class="container">
@@ -58,6 +65,40 @@
 
   </main>
 
+  <!-- VENTANA MODAL DETALLES DEL PRODUCTO -->
+  <div id="modal-producto" class="modal-overlay hidden" onclick="cerrarModalAfuera(event)">
+    <div class="modal-content">
+      <button class="modal-close" onclick="cerrarModal()"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-body">
+        
+        <!-- GALERÍA DE HASTA 4 FOTOS -->
+        <div>
+          <img id="modal-img-main" class="modal-img" src="" alt="Producto">
+          <div id="modal-gallery" class="gallery-thumbs"></div>
+        </div>
+
+        <h2 id="modal-titulo" style="color:#38bdf8;"></h2>
+        <p id="modal-precio" style="font-size:22px; font-weight:bold; color:#22c55e;"></p>
+        
+        <!-- SELECCIÓN DE COLOR -->
+        <div id="modal-color-wrapper" style="display:none;">
+          <h4 style="color:#94a3b8; margin-bottom:8px;"><i class="fa-solid fa-palette"></i> Selecciona un Color:</h4>
+          <div id="modal-colors-container" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+        </div>
+
+        <!-- DESCRIPCIÓN -->
+        <div>
+          <h4 style="color:#94a3b8; margin-bottom:8px;"><i class="fa-solid fa-circle-info"></i> Descripción del Producto:</h4>
+          <div id="modal-descripcion" class="modal-desc"></div>
+        </div>
+
+        <button id="modal-btn-add" class="btn-add-cart" style="padding:14px; font-size:16px;">
+          <i class="fa-solid fa-cart-plus"></i> Agregar al carrito
+        </button>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <p>&copy; Peque Elektro - Todos los derechos reservados</p>
   </footer>
@@ -83,6 +124,7 @@
     let catSeleccionada = "Todas";
     let subcatSeleccionada = "Todas";
     let textoBusqueda = "";
+    let colorSeleccionadoActual = "";
 
     async function cargarProductos() {
       try {
@@ -165,33 +207,100 @@
       filtrados.forEach(prod => {
         const imagenUrl = prod.imagenes[0];
         contenedor.innerHTML += `
-          <div class="card">
+          <div class="card" onclick="verDetalleProducto('${prod.id}')">
             <div class="card-img-container">
               <img src="${imagenUrl}" alt="${prod.nombre}" onerror="this.src='https://via.placeholder.com/200?text=Sin+Imagen'">
             </div>
             <h3>${prod.nombre}</h3>
             <p class="precio">$${prod.precio.toLocaleString('es-AR')}</p>
-            <button class="btn-add-cart" onclick="agregarAlCarrito('${prod.id}')">
-              Agregar al carrito
+            <button class="btn-add-cart" onclick="event.stopPropagation(); verDetalleProducto('${prod.id}')">
+              Ver Detalles / Agregar
             </button>
           </div>
         `;
       });
     }
 
+    // VER DETALLES EN MODAL
+    window.verDetalleProducto = (id) => {
+      const prod = productosData.find(p => p.id === id);
+      if (!prod) return;
+
+      const mainImg = document.getElementById('modal-img-main');
+      mainImg.src = prod.imagenes[0];
+
+      // GALERÍA FOTOS
+      const gallery = document.getElementById('modal-gallery');
+      gallery.innerHTML = "";
+      if (prod.imagenes.length > 1) {
+        prod.imagenes.forEach((img, idx) => {
+          gallery.innerHTML += `<img src="${img}" class="gallery-thumb ${idx === 0 ? 'active' : ''}" onclick="cambiarImagenModal('${img}', this)">`;
+        });
+      }
+
+      document.getElementById('modal-titulo').innerText = prod.nombre;
+      document.getElementById('modal-precio').innerText = `$${prod.precio.toLocaleString('es-AR')}`;
+
+      // COLORES
+      const colorWrapper = document.getElementById('modal-color-wrapper');
+      const colorsContainer = document.getElementById('modal-colors-container');
+      colorWrapper.style.display = 'none';
+      colorsContainer.innerHTML = "";
+      colorSeleccionadoActual = "";
+
+      if (prod.colores && prod.colores.length > 0) {
+        colorWrapper.style.display = 'block';
+        colorSeleccionadoActual = prod.colores[0]; // Por defecto el primero
+        prod.colores.forEach((c, idx) => {
+          colorsContainer.innerHTML += `<button type="button" class="color-pill ${idx === 0 ? 'selected' : ''}" onclick="seleccionarColor('${c}', this)">${c}</button>`;
+        });
+      }
+
+      // DESCRIPCIÓN
+      const descHtml = prod.descripcion || "¡Producto disponible para entrega inmediata! 🔥🎒";
+      document.getElementById('modal-descripcion').innerHTML = descHtml;
+
+      const btnAdd = document.getElementById('modal-btn-add');
+      btnAdd.onclick = () => {
+        agregarAlCarrito(prod.id, colorSeleccionadoActual);
+        cerrarModal();
+      };
+
+      document.getElementById('modal-producto').classList.remove('hidden');
+    };
+
+    window.cambiarImagenModal = (src, elem) => {
+      document.getElementById('modal-img-main').src = src;
+      document.querySelectorAll('.gallery-thumb').forEach(e => e.classList.remove('active'));
+      elem.classList.add('active');
+    };
+
+    window.seleccionarColor = (color, elem) => {
+      colorSeleccionadoActual = color;
+      document.querySelectorAll('.color-pill').forEach(e => e.classList.remove('selected'));
+      elem.classList.add('selected');
+    };
+
+    window.cerrarModal = () => { document.getElementById('modal-producto').classList.add('hidden'); };
+    window.cerrarModalAfuera = (e) => { if (e.target.id === 'modal-producto') cerrarModal(); };
+
     // CARRITO
-    window.agregarAlCarrito = (id) => {
+    window.agregarAlCarrito = (id, colorElegido) => {
       const producto = productosData.find(p => p.id === id);
       if (!producto) return;
 
-      const itemExistente = carrito.find(item => item.id === id);
+      const cartKey = `${id}_${colorElegido || 'normal'}`;
+      const itemExistente = carrito.find(item => item.cartKey === cartKey);
+
       if (itemExistente) {
         itemExistente.cantidad++;
       } else {
         carrito.push({
+          cartKey: cartKey,
           id: producto.id,
           nombre: producto.nombre,
           precio: producto.precio,
+          colorSeleccionado: colorElegido || "",
           cantidad: 1,
           imagen: producto.imagenes[0]
         });
@@ -199,18 +308,18 @@
       renderizarCarrito();
     };
 
-    window.cambiarCantidad = (id, delta) => {
-      const item = carrito.find(i => i.id === id);
+    window.cambiarCantidad = (cartKey, delta) => {
+      const item = carrito.find(i => i.cartKey === cartKey);
       if (!item) return;
       item.cantidad += delta;
       if (item.cantidad <= 0) {
-        carrito = carrito.filter(i => i.id !== id);
+        carrito = carrito.filter(i => i.cartKey !== cartKey);
       }
       renderizarCarrito();
     };
 
-    window.eliminarItemCarrito = (id) => {
-      carrito = carrito.filter(i => i.id !== id);
+    window.eliminarItemCarrito = (cartKey) => {
+      carrito = carrito.filter(i => i.cartKey !== cartKey);
       renderizarCarrito();
     };
 
@@ -227,26 +336,27 @@
       }
 
       btnWhatsapp.disabled = false;
-
       let html = "";
       let total = 0;
 
       carrito.forEach(item => {
         const subtotal = item.precio * item.cantidad;
         total += subtotal;
+        const colorTxt = item.colorSeleccionado ? `<br><small style="color:#38bdf8">Color: ${item.colorSeleccionado}</small>` : '';
+
         html += `
           <div class="carrito-item" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); margin-bottom: 8px; border-radius: 8px;">
             <div style="flex: 1;">
-              <strong>${item.nombre}</strong><br>
+              <strong>${item.nombre}</strong>${colorTxt}<br>
               <small>$${item.precio.toLocaleString('es-AR')} c/u</small>
             </div>
-            <div style="margin: 0 15px;">
-              <button onclick="cambiarCantidad('${item.id}', -1)" style="padding: 2px 8px;">-</button>
+            <div style="margin: 0 10px;">
+              <button onclick="cambiarCantidad('${item.cartKey}', -1)" style="padding: 2px 8px;">-</button>
               <span style="margin: 0 5px;">${item.cantidad}</span>
-              <button onclick="cambiarCantidad('${item.id}', 1)" style="padding: 2px 8px;">+</button>
+              <button onclick="cambiarCantidad('${item.cartKey}', 1)" style="padding: 2px 8px;">+</button>
             </div>
-            <div style="font-weight: bold; margin-right: 15px;">$${subtotal.toLocaleString('es-AR')}</div>
-            <button onclick="eliminarItemCarrito('${item.id}')" style="background:none; border:none; color:#ef4444; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
+            <div style="font-weight: bold; margin-right: 10px;">$${subtotal.toLocaleString('es-AR')}</div>
+            <button onclick="eliminarItemCarrito('${item.cartKey}')" style="background:none; border:none; color:#ef4444; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
           </div>
         `;
       });
@@ -255,7 +365,7 @@
       totalMontoElem.innerText = `$${total.toLocaleString('es-AR', {minimumFractionDigits: 2})}`;
     }
 
-    // REGISTRO EN FIREBASE Y LUEGO REDIRECCIÓN A WHATSAPP
+    // FINALIZAR PEDIDO
     window.enviarPedidoFirebaseYWhatsapp = async () => {
       if (carrito.length === 0) return;
 
@@ -271,13 +381,13 @@
           id: i.id,
           nombre: i.nombre,
           precio: i.precio,
+          colorSeleccionado: i.colorSeleccionado || "",
           cantidad: i.cantidad,
           subtotal: subtotal
         };
       });
 
       try {
-        // Guarda el pedido en Firestore
         await addDoc(collection(db, "pedidos"), {
           items: itemsPedido,
           total: total,
@@ -285,25 +395,23 @@
           fecha: serverTimestamp()
         });
       } catch (e) {
-        console.error("Error al registrar pedido en Firestore:", e);
+        console.error("Error al registrar pedido:", e);
       }
 
-      // Prepara el mensaje de WhatsApp
       const numeroTel = "5491134970171";
       let mensaje = "Hola *Peque Elektro*, quisiera realizar el siguiente pedido:\n\n";
 
       itemsPedido.forEach((item, index) => {
-        mensaje += `*${index + 1}.* ${item.nombre}\n   - Cantidad: *${item.cantidad}*\n   - Subtotal: *$${item.subtotal.toLocaleString('es-AR')}*\n\n`;
+        const colorTxt = item.colorSeleccionado ? ` (Color: ${item.colorSeleccionado})` : '';
+        mensaje += `*${index + 1}.* ${item.nombre}${colorTxt}\n   - Cantidad: *${item.cantidad}*\n   - Subtotal: *$${item.subtotal.toLocaleString('es-AR')}*\n\n`;
       });
 
       mensaje += `*TOTAL ESTIMADO: $${total.toLocaleString('es-AR', {minimumFractionDigits: 2})}*\n\n¡Quedo a la espera para coordinar el pago y envío!`;
 
-      // Limpia el carrito
       carrito = [];
       renderizarCarrito();
       btn.innerHTML = `<i class="fa-brands fa-whatsapp"></i> Finalizar y Enviar Pedido`;
 
-      // Abre WhatsApp
       const urlWhatsApp = `https://wa.me/${numeroTel}?text=${encodeURIComponent(mensaje)}`;
       window.open(urlWhatsApp, '_blank');
     };
