@@ -37,19 +37,17 @@
     <!-- GRILLA DE PRODUCTOS TIPO FRÁVEGA -->
     <div id="grid-productos" class="grid-productos"></div>
 
-    <!-- SECCIÓN REALIZAR PEDIDO (CENTRADA ABAJO) -->
+    <!-- SECCIÓN TU PEDIDO (ESTILO IDÉNTICO A LA CAPTURA) -->
     <section class="checkout-section">
       <div class="checkout-card">
-        <h2><i class="fa-solid fa-cart-shopping"></i> ¿Cómo realizar tu pedido?</h2>
-        <p class="checkout-subtitle">Agrega los productos que desees arriba, revisa tu resumen aquí abajo y presiona el botón verde para enviar tu pedido por WhatsApp.</p>
+        <h2 class="checkout-title">Tu Pedido</h2>
         
         <div id="carrito-lista" class="carrito-lista">
-          <!-- Los productos seleccionados se generan dinámicamente aquí -->
+          <!-- Los productos seleccionados o el mensaje de lista vacía se generan aquí -->
         </div>
 
         <div class="carrito-total-container">
-          <span>Total Estimado:</span>
-          <span id="carrito-total-monto" class="total-monto">$0</span>
+          <span>Total Estimado: <strong id="carrito-total-monto">$0.00</strong></span>
         </div>
 
         <button id="btn-whatsapp-pedido" class="btn-whatsapp-giant" onclick="enviarPedidoWhatsApp()" disabled>
@@ -202,7 +200,7 @@
             <h3>${prod.nombre}</h3>
             <p class="precio">$${prod.precio.toLocaleString('es-AR')}</p>
             <button class="btn-add-cart" onclick="event.stopPropagation(); agregarAlCarrito('${prod.id}')">
-              <i class="fa-solid fa-cart-plus"></i> Agregar al carrito
+              Agregar al carrito
             </button>
           </div>
         `;
@@ -285,13 +283,13 @@
       });
 
       contenedor.innerHTML = html;
-      totalMontoElem.innerText = `$${total.toLocaleString('es-AR')}`;
+      totalMontoElem.innerText = `$${total.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
     }
 
     window.enviarPedidoWhatsApp = () => {
       if (carrito.length === 0) return;
 
-      const numeroTel = "5491134970171"; // Tu WhatsApp
+      const numeroTel = "5491134970171"; // Tu número de WhatsApp
       let mensaje = "Hola *Peque Elektro*, quisiera realizar el siguiente pedido:\n\n";
 
       let total = 0;
@@ -301,7 +299,7 @@
         mensaje += `*${index + 1}.* ${item.nombre}\n   - Cantidad: *${item.cantidad}*\n   - Subtotal: *$${subtotal.toLocaleString('es-AR')}*\n\n`;
       });
 
-      mensaje += `*TOTAL ESTIMADO: $${total.toLocaleString('es-AR')}*\n\n¡Quedo a la espera de sus datos para coordinar el pago y el envío!`;
+      mensaje += `*TOTAL ESTIMADO: $${total.toLocaleString('es-AR', {minimumFractionDigits: 2})}*\n\n¡Quedo a la espera para coordinar el pago y envío!`;
 
       const urlWhatsApp = `https://wa.me/${numeroTel}?text=${encodeURIComponent(mensaje)}`;
       window.open(urlWhatsApp, '_blank');
@@ -347,7 +345,7 @@
       document.getElementById('modal-preview').classList.remove('active');
     };
 
-    // Iniciar carga de datos
+    // Iniciar carga de productos
     cargarProductos();
   </script>
 
