@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Admin - Peque Elektro</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .admin-container { max-width: 600px; margin: 120px auto 40px; padding: 25px; background: #1e293b; border-radius: 12px; }
+    .form-group { margin-bottom: 15px; text-align: left; }
+    .form-group label { display: block; margin-bottom: 5px; color: #94a3b8; }
+    .form-group input, .form-group textarea {
+      width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #fff;
+    }
+    .btn-submit { width: 100%; padding: 12px; background: #4f46e5; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div id="login-section" class="admin-container">
+    <h2>Iniciar Sesión (Dueño)</h2>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="admin@pequeelektro.com">
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" id="login-pass">
+    </div>
+    <button class="btn-submit" onclick="login()">Ingresar</button>
+  </div>
+
+  <!-- PANEL DE PRODUCTOS -->
+  <div id="admin-panel" class="admin-container hidden">
+    <h2>Cargar Nuevo Producto</h2>
+    <form id="product-form">
+      <div class="form-group">
+        <label>Nombre del Producto</label>
+        <input type="text" id="prod-title" required>
+      </div>
+      <div class="form-group">
+        <label>Categoría</label>
+        <input type="text" id="prod-category" placeholder="Ej: Herramientas, Luces" required>
+      </div>
+      <div class="form-group">
+        <label>Precio ($)</label>
+        <input type="number" id="prod-price" required>
+      </div>
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea id="prod-desc" rows="3" required></textarea>
+      </div>
+      <div class="form-group">
+        <label>Link de la Foto (URL de Imagen)</label>
+        <input type="text" id="prod-img" placeholder="https://..." required>
+      </div>
+      <button type="submit" class="btn-submit">Guardar Producto</button>
+    </form>
+    <button onclick="logout()" style="margin-top: 20px; background: #ef4444;" class="btn-submit">Cerrar Sesión</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
+      authDomain: "peque-elektro.firebaseapp.com",
+      projectId: "peque-elektro",
+      storageBucket: "peque-elektro.firebasestorage.app",
+      messagingSenderId: "873169424486",
+      appId: "1:873169424486:web:e9f77cb2052aa06b3b9da7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('admin-panel').classList.remove('hidden');
+      } else {
+        document.getElementById('login-section').classList.remove('hidden');
+        document.getElementById('admin-panel').classList.add('hidden');
+      }
+    });
+
+    window.login = async () => {
+      const email = document.getElementById('login-email').value;
+      const pass = document.getElementById('login-pass').value;
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+      } catch (e) {
+        alert("Error al ingresar: " + e.message);
+      }
+    };
+
+    window.logout = () => signOut(auth);
+
+    document.getElementById('product-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        await addDoc(collection(db, "productos"), {
+          nombre: document.getElementById('prod-title').value,
+          categoria: document.getElementById('prod-category').value,
+          precio: Number(document.getElementById('prod-price').value),
+          descripcion: document.getElementById('prod-desc').value,
+          imagen: document.getElementById('prod-img').value,
+          fecha: new Date()
+        });
+        alert("¡Producto guardado exitosamente!");
+        document.getElementById('product-form').reset();
+      } catch (e) {
+        alert("Error al guardar: " + e.message);
+      }
+    });
+  </script>
+</body>
+</html>
