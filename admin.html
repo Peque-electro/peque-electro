@@ -3,352 +3,138 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Peque Elektro - Panel Admin</title>
+  <title>Admin - Peque Elektro</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    /* Estilos del Panel Admin integrados con la estética principal */
-    .admin-wrapper {
-      max-width: 800px;
-      margin: 0 auto;
-    }
+    /* Estilos idénticos a index.html para filtros y grilla */
+    .categories-bar, .subcategories-bar { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px; }
+    .btn-cat, .btn-subcat { background: #1e293b; color: #94a3b8; border: 1px solid #334155; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+    .btn-cat.active, .btn-cat:hover { background: #4f46e5; color: white; border-color: #4f46e5; }
+    .btn-subcat.active, .btn-subcat:hover { background: #0d9488; color: white; border-color: #0d9488; }
+    .subcategories-container { background: #0f172a; padding: 12px; border-radius: 12px; margin-bottom: 25px; }
+    
+    /* Barra de Herramientas Admin */
+    .admin-toolbar { background: #0f172a; padding: 15px; border-radius: 12px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 25px; border: 1px solid #334155; }
+    .btn-tool { background: #475569; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+    .btn-tool:hover { background: #334155; }
+    .btn-tool.primary { background: #4f46e5; }
+    .btn-tool.primary:hover { background: #4338ca; }
 
-    /* Pestañas de Navegación del Panel */
-    .admin-tabs {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
-    }
-    .tab-btn {
-      background: #1e293b;
-      color: #94a3b8;
-      border: 1px solid #334155;
-      padding: 10px 20px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .tab-btn.active, .tab-btn:hover {
-      background: #4f46e5;
-      color: #ffffff;
-      border-color: #4f46e5;
-    }
+    /* Botones de acción en las tarjetas */
+    .card-actions { display: flex; gap: 5px; margin-top: 10px; }
+    .btn-edit, .btn-delete { flex: 1; padding: 8px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; }
+    .btn-edit { background: #f59e0b; }
+    .btn-delete { background: #ef4444; }
 
-    /* Tarjetas/Contenedores */
-    .admin-card {
-      background: #1e293b;
-      border-radius: 12px;
-      padding: 30px;
-      margin-bottom: 25px;
-      border: 1px solid #334155;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      text-align: left;
-    }
-    .admin-card h2 {
-      margin-top: 0;
-      margin-bottom: 20px;
-      color: #f8fafc;
-      font-size: 1.4rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-bottom: 1px solid #334155;
-      padding-bottom: 10px;
-    }
-
-    /* Formularios */
-    .form-group {
-      margin-bottom: 18px;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      color: #cbd5e1;
-      font-size: 0.95rem;
-      font-weight: 500;
-    }
-    .form-group input, 
-    .form-group select, 
-    .form-group textarea {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #334155;
-      background: #0f172a;
-      color: #fff;
-      font-size: 0.95rem;
-      box-sizing: border-box;
-    }
-    .form-group input:focus, 
-    .form-group select:focus, 
-    .form-group textarea:focus {
-      outline: none;
-      border-color: #4f46e5;
-    }
-
-    .flex-row {
-      display: flex;
-      gap: 15px;
-    }
-    .flex-row .form-group {
-      flex: 1;
-    }
-
-    /* Botones */
-    .btn-admin-submit {
-      width: 100%;
-      padding: 12px;
-      background: #4f46e5;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 1rem;
-      transition: background 0.3s;
-    }
-    .btn-admin-submit:hover {
-      background: #4338ca;
-    }
-    .btn-admin-secondary {
-      width: 100%;
-      padding: 12px;
-      background: #0d9488;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 1rem;
-      transition: background 0.3s;
-    }
-    .btn-admin-secondary:hover {
-      background: #0f766e;
-    }
-    .btn-cancel {
-      width: 100%;
-      padding: 10px;
-      background: #64748b;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    /* Lista de Productos */
-    .prod-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #0f172a;
-      padding: 12px 16px;
-      border-radius: 8px;
-      margin-bottom: 12px;
-      border: 1px solid #334155;
-    }
-    .prod-info {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    .prod-thumb {
-      width: 50px;
-      height: 50px;
-      object-fit: cover;
-      border-radius: 6px;
-      background: #1e293b;
-    }
-    .actions {
-      display: flex;
-      gap: 8px;
-    }
-    .btn-edit {
-      background: #f59e0b;
-      color: white;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .btn-delete {
-      background: #ef4444;
-      color: white;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    @media (max-width: 600px) {
-      .flex-row {
-        flex-direction: column;
-        gap: 0;
-      }
-      .prod-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-      }
-      .actions {
-        width: 100%;
-        justify-content: flex-end;
-      }
-    }
+    /* Modales para Formularios Admin */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s; }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .modal-content { background: #1e293b; color: #fff; padding: 25px; border-radius: 12px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; position: relative; text-align: left; }
+    .modal-close { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #94a3b8; font-size: 24px; cursor: pointer; }
+    
+    /* Inputs de formularios modales */
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; color: #94a3b8; font-size: 0.9rem; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #fff; box-sizing: border-box; }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
-  <!-- CABECERA DE PEQUE ELEKTRO -->
   <header>
     <h1>Peque Elektro</h1>
-    <p>Panel Administrador de Gestión</p>
+    <p>Modo Administrador Activo</p>
   </header>
 
   <main class="container">
     
-    <!-- INICIO DE SESIÓN -->
-    <div id="login-section" class="admin-wrapper" style="max-width: 450px;">
-      <div class="admin-card">
-        <h2><i class="fa-solid fa-lock"></i> Iniciar Sesión</h2>
-        <div class="form-group">
-          <label>Correo Electrónico</label>
-          <input type="email" id="login-email" placeholder="admin@pequeelektro.com">
-        </div>
-        <div class="form-group">
-          <label>Contraseña</label>
-          <input type="password" id="login-pass" placeholder="••••••••">
-        </div>
-        <button class="btn-admin-submit" onclick="login()">Ingresar al Panel</button>
-      </div>
+    <!-- LOGIN SUPERPUESTO -->
+    <div id="login-section" style="max-width: 400px; margin: 40px auto; background: #1e293b; padding: 25px; border-radius: 12px; text-align: left;">
+      <h2 style="text-align: center; margin-bottom: 20px;">Acceso Privado</h2>
+      <div class="form-group"><input type="email" id="login-email" placeholder="Correo Electrónico"></div>
+      <div class="form-group"><input type="password" id="login-pass" placeholder="Contraseña"></div>
+      <button onclick="login()" style="width: 100%; padding: 12px; background: #4f46e5; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Ingresar</button>
     </div>
 
-    <!-- PANEL PRINCIPAL DE ADMINISTRACIÓN -->
-    <div id="admin-panel" class="admin-wrapper hidden">
+    <!-- CONTENIDO ADMIN (IDÉNTICO A INDEX) -->
+    <div id="admin-content" class="hidden">
       
-      <!-- BOTONES DE PESTAÑAS -->
-      <div class="admin-tabs">
-        <button class="tab-btn active" onclick="cambiarTab('tab-productos')">
-          <i class="fa-solid fa-box"></i> Cargar Producto
-        </button>
-        <button class="tab-btn" onclick="cambiarTab('tab-categorias')">
-          <i class="fa-solid fa-layer-group"></i> Crear Categorías
-        </button>
-        <button class="tab-btn" onclick="cambiarTab('tab-lista')">
-          <i class="fa-solid fa-list-check"></i> Inventario
-        </button>
+      <!-- BARRA DE HERRAMIENTAS -->
+      <div class="admin-toolbar">
+        <button class="btn-tool primary" onclick="abrirModal('modal-producto')"><i class="fa-solid fa-plus"></i> Cargar Producto</button>
+        <button class="btn-tool" onclick="abrirModal('modal-categoria')"><i class="fa-solid fa-folder-plus"></i> Categorías</button>
+        <button class="btn-tool" onclick="abrirModal('modal-password')"><i class="fa-solid fa-key"></i> Clave</button>
+        <button class="btn-tool" onclick="logout()" style="background: #ef4444;"><i class="fa-solid fa-power-off"></i> Salir</button>
       </div>
 
-      <!-- PESTAÑA 1: CARGAR / EDITAR PRODUCTOS -->
-      <div id="tab-productos" class="tab-content">
-        <div class="admin-card">
-          <h2 id="form-title"><i class="fa-solid fa-plus-circle"></i> Cargar Nuevo Producto</h2>
-          
-          <form id="product-form">
-            <input type="hidden" id="edit-id">
-
-            <div class="form-group">
-              <label>Nombre del Producto</label>
-              <input type="text" id="prod-title" placeholder="Ej: Morral Bandolera Antirrobo" required>
-            </div>
-
-            <div class="flex-row">
-              <div class="form-group">
-                <label>Categoría Principal</label>
-                <select id="prod-category" onchange="actualizarSubcategoriasUI()" required>
-                  <option value="">Seleccionar...</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Subcategoría</label>
-                <select id="prod-subcategory" required disabled>
-                  <option value="">Elija una Categoría primero</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Precio ($)</label>
-              <input type="number" id="prod-price" placeholder="Ej: 24444" required>
-            </div>
-
-            <div class="form-group">
-              <label>Descripción</label>
-              <textarea id="prod-desc" rows="4" placeholder="Escribe los detalles y características..." required></textarea>
-            </div>
-
-            <div class="form-group">
-              <label>Links de las Fotos (Hasta 5 URLs de ImgBB)</label>
-              <input type="text" id="prod-img-1" placeholder="Foto 1 (Principal) - https://i.ibb.co/..." style="margin-bottom:8px;" required>
-              <input type="text" id="prod-img-2" placeholder="Foto 2 (Opcional)" style="margin-bottom:8px;">
-              <input type="text" id="prod-img-3" placeholder="Foto 3 (Opcional)" style="margin-bottom:8px;">
-              <input type="text" id="prod-img-4" placeholder="Foto 4 (Opcional)" style="margin-bottom:8px;">
-              <input type="text" id="prod-img-5" placeholder="Foto 5 (Opcional)">
-            </div>
-
-            <button type="submit" id="btn-save-prod" class="btn-admin-submit">Guardar Producto</button>
-            <button type="button" id="btn-cancel-edit" class="btn-cancel hidden" onclick="cancelarEdicion()">Cancelar Edición</button>
-          </form>
-        </div>
+      <!-- FILTROS COMO EN EL CATÁLOGO -->
+      <div id="categories-container" class="categories-bar"></div>
+      <div id="subcategories-wrapper" class="subcategories-container hidden">
+        <div id="subcategories-container" class="subcategories-bar"></div>
       </div>
 
-      <!-- PESTAÑA 2: GESTIÓN DE CATEGORÍAS -->
-      <div id="tab-categorias" class="tab-content hidden">
-        <div class="admin-card">
-          <h2><i class="fa-solid fa-folder-plus"></i> Nueva Categoría y Subcategoría</h2>
-          <form id="cat-form">
-            <div class="form-group">
-              <label>Categoría Principal</label>
-              <input type="text" id="new-cat-name" placeholder="Ej: TV y Audio" required>
-            </div>
-            <div class="form-group">
-              <label>Subcategoría</label>
-              <input type="text" id="new-subcat-name" placeholder="Ej: Smart TVs" required>
-            </div>
-            <button type="submit" class="btn-admin-secondary">Guardar Categoría</button>
-          </form>
-        </div>
-      </div>
-
-      <!-- PESTAÑA 3: INVENTARIO / LISTA DE PRODUCTOS -->
-      <div id="tab-lista" class="tab-content hidden">
-        <div class="admin-card">
-          <h2><i class="fa-solid fa-boxes-stacked"></i> Productos Cargados</h2>
-          <div id="list-admin-products">Cargando productos...</div>
-        </div>
-      </div>
-
-      <!-- CERRAR SESIÓN -->
-      <div style="text-align: center; margin-top: 20px;">
-        <button onclick="logout()" class="btn-cancel" style="max-width: 200px; background: #334155;">
-          <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
-        </button>
-      </div>
+      <!-- GRILLA DE PRODUCTOS -->
+      <div id="grid-productos" class="grid-productos"></div>
 
     </div>
-
   </main>
 
-  <footer>
-    <p>&copy; Peque Elektro - Panel de Control Reservado</p>
-  </footer>
+  <!-- MODAL: CARGAR / EDITAR PRODUCTO -->
+  <div id="modal-producto" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" onclick="cerrarModal('modal-producto')">&times;</button>
+      <h2 id="form-title">Cargar Producto</h2>
+      <form id="product-form">
+        <input type="hidden" id="edit-id">
+        <div class="form-group"><label>Nombre</label><input type="text" id="prod-title" required></div>
+        <div style="display: flex; gap: 10px;">
+          <div class="form-group" style="flex:1;"><label>Categoría</label><select id="prod-category" onchange="actualizarSubcategoriasUI()" required></select></div>
+          <div class="form-group" style="flex:1;"><label>Subcategoría</label><select id="prod-subcategory" required disabled></select></div>
+        </div>
+        <div class="form-group"><label>Precio ($)</label><input type="number" id="prod-price" required></div>
+        <div class="form-group"><label>Descripción</label><textarea id="prod-desc" rows="3" required></textarea></div>
+        <div class="form-group">
+          <label>Links de Fotos (ImgBB)</label>
+          <input type="text" id="prod-img-1" placeholder="Foto 1 (Principal)" style="margin-bottom:5px;" required>
+          <input type="text" id="prod-img-2" placeholder="Foto 2" style="margin-bottom:5px;">
+          <input type="text" id="prod-img-3" placeholder="Foto 3" style="margin-bottom:5px;">
+          <input type="text" id="prod-img-4" placeholder="Foto 4" style="margin-bottom:5px;">
+          <input type="text" id="prod-img-5" placeholder="Foto 5">
+        </div>
+        <button type="submit" style="width:100%; padding:12px; background:#4f46e5; border:none; color:white; border-radius:8px; font-weight:bold;">Guardar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CREAR CATEGORÍA -->
+  <div id="modal-categoria" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" onclick="cerrarModal('modal-categoria')">&times;</button>
+      <h2>Nueva Categoría</h2>
+      <form id="cat-form">
+        <div class="form-group"><label>Categoría Principal (Ej: TV y Audio)</label><input type="text" id="new-cat-name" required></div>
+        <div class="form-group"><label>Subcategoría (Ej: Smart TVs)</label><input type="text" id="new-subcat-name" required></div>
+        <button type="submit" style="width:100%; padding:12px; background:#0d9488; border:none; color:white; border-radius:8px; font-weight:bold;">Crear</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CAMBIAR CONTRASEÑA -->
+  <div id="modal-password" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" onclick="cerrarModal('modal-password')">&times;</button>
+      <h2>Cambiar Contraseña</h2>
+      <form id="pass-form">
+        <div class="form-group"><label>Nueva Contraseña (Mín. 6 caracteres)</label><input type="password" id="new-pass" required minlength="6"></div>
+        <button type="submit" style="width:100%; padding:12px; background:#f59e0b; border:none; color:white; border-radius:8px; font-weight:bold;">Actualizar Contraseña</button>
+      </form>
+    </div>
+  </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -364,43 +150,75 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    let productosLista = [];
+    let productosData = [];
     let categoriasLista = [];
+    let catSeleccionada = "Todas";
+    let subcatSeleccionada = "Todas";
 
+    // --- AUTENTICACIÓN ---
     onAuthStateChanged(auth, (user) => {
       if (user) {
         document.getElementById('login-section').classList.add('hidden');
-        document.getElementById('admin-panel').classList.remove('hidden');
+        document.getElementById('admin-content').classList.remove('hidden');
         cargarTodo();
       } else {
         document.getElementById('login-section').classList.remove('hidden');
-        document.getElementById('admin-panel').classList.add('hidden');
+        document.getElementById('admin-content').classList.add('hidden');
       }
     });
 
     window.login = async () => {
-      const email = document.getElementById('login-email').value;
-      const pass = document.getElementById('login-pass').value;
       try {
-        await signInWithEmailAndPassword(auth, email, pass);
-      } catch (e) {
-        alert("Error de acceso: " + e.message);
-      }
+        await signInWithEmailAndPassword(auth, document.getElementById('login-email').value, document.getElementById('login-pass').value);
+      } catch (e) { alert("Error: " + e.message); }
     };
-
     window.logout = () => signOut(auth);
 
-    window.cambiarTab = (tabId) => {
-      document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      
-      document.getElementById(tabId).classList.remove('hidden');
-      event.currentTarget.classList.add('active');
+    // --- CAMBIO DE CONTRASEÑA ---
+    document.getElementById('pass-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nuevaClave = document.getElementById('new-pass').value;
+      try {
+        await updatePassword(auth.currentUser, nuevaClave);
+        alert("¡Contraseña actualizada! Por seguridad, deberás volver a iniciar sesión.");
+        cerrarModal('modal-password');
+        document.getElementById('pass-form').reset();
+        logout();
+      } catch (e) {
+        if(e.code === 'auth/requires-recent-login') {
+          alert("Por seguridad, debes cerrar sesión y volver a entrar antes de cambiar tu contraseña.");
+        } else { alert("Error: " + e.message); }
+      }
+    });
+
+    // --- MANEJO DE MODALES ---
+    window.abrirModal = (id) => { 
+      if(id === 'modal-producto' && !document.getElementById('edit-id').value) {
+        document.getElementById('product-form').reset();
+        document.getElementById('form-title').innerText = "Cargar Producto";
+        document.getElementById('prod-subcategory').disabled = true;
+      }
+      document.getElementById(id).classList.add('active'); 
+    };
+    window.cerrarModal = (id) => { 
+      document.getElementById(id).classList.remove('active'); 
+      if(id === 'modal-producto') document.getElementById('edit-id').value = ""; 
     };
 
+    // --- CARGA DE DATOS Y RENDERIZADO IDÉNTICO A INDEX ---
     async function cargarTodo() {
       await cargarCategorias();
-      await cargarListaAdmin();
+      try {
+        const snap = await getDocs(collection(db, "productos"));
+        productosData = [];
+        snap.forEach(doc => {
+          const prod = doc.data();
+          const imagenes = prod.imagenes && prod.imagenes.length > 0 ? prod.imagenes : [prod.imagen];
+          productosData.push({ id: doc.id, ...prod, imagenes });
+        });
+        generarCategoriasUI();
+        renderizarProductos();
+      } catch (e) { console.error(e); }
     }
 
     async function cargarCategorias() {
@@ -411,145 +229,99 @@
 
         const selectCat = document.getElementById('prod-category');
         selectCat.innerHTML = '<option value="">Seleccionar...</option>';
-        
         const principales = [...new Set(categoriasLista.map(c => c.nombre))];
-        principales.forEach(cat => {
-          selectCat.innerHTML += `<option value="${cat}">${cat}</option>`;
-        });
+        principales.forEach(cat => selectCat.innerHTML += `<option value="${cat}">${cat}</option>`);
       } catch (e) { console.error(e); }
     }
 
     window.actualizarSubcategoriasUI = () => {
-      const catSeleccionada = document.getElementById('prod-category').value;
+      const cat = document.getElementById('prod-category').value;
       const selectSub = document.getElementById('prod-subcategory');
-      
-      if (!catSeleccionada) {
-        selectSub.innerHTML = '<option value="">Elija una Categoría primero</option>';
-        selectSub.disabled = true;
-        return;
-      }
-
-      const subcats = categoriasLista
-        .filter(c => c.nombre === catSeleccionada)
-        .map(c => c.subcategoria);
-
+      if (!cat) { selectSub.disabled = true; return; }
       selectSub.innerHTML = '<option value="">Seleccionar Subcategoría...</option>';
-      subcats.forEach(sub => {
-        selectSub.innerHTML += `<option value="${sub}">${sub}</option>`;
-      });
+      categoriasLista.filter(c => c.nombre === cat).forEach(c => selectSub.innerHTML += `<option value="${c.subcategoria}">${c.subcategoria}</option>`);
       selectSub.disabled = false;
     };
 
-    // CREAR CATEGORÍA Y SUBCATEGORÍA
-    document.getElementById('cat-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const nombre = document.getElementById('new-cat-name').value.trim();
-      const subcategoria = document.getElementById('new-subcat-name').value.trim();
-
-      try {
-        await addDoc(collection(db, "categorias"), { nombre, subcategoria });
-        alert("¡Categoría y subcategoría creadas con éxito!");
-        document.getElementById('cat-form').reset();
-        await cargarCategorias();
-        cambiarTab('tab-productos');
-      } catch (e) { alert("Error: " + e.message); }
-    });
-
-    async function cargarListaAdmin() {
-      const contenedor = document.getElementById('list-admin-products');
-      try {
-        const querySnapshot = await getDocs(collection(db, "productos"));
-        contenedor.innerHTML = "";
-        productosLista = [];
-
-        if (querySnapshot.empty) {
-          contenedor.innerHTML = "<p style='color:#94a3b8;'>No hay productos registrados en el inventario.</p>";
-          return;
-        }
-
-        querySnapshot.forEach((documento) => {
-          const prod = documento.data();
-          const imagenes = prod.imagenes && prod.imagenes.length > 0 ? prod.imagenes : [prod.imagen];
-          const prodData = { id: documento.id, ...prod, imagenes };
-          productosLista.push(prodData);
-
-          contenedor.innerHTML += `
-            <div class="prod-item">
-              <div class="prod-info">
-                <img src="${imagenes[0] || ''}" class="prod-thumb" onerror="this.src='https://via.placeholder.com/50?text=X'">
-                <div>
-                  <strong style="color:#f8fafc;">${prod.nombre}</strong><br>
-                  <small style="color:#94a3b8;">$${prod.precio} | ${prod.categoria} ${prod.subcategoria ? '> ' + prod.subcategoria : ''}</small>
-                </div>
-              </div>
-              <div class="actions">
-                <button class="btn-edit" onclick="prepararEdicion('${documento.id}')"><i class="fa-solid fa-pen"></i> Editar</button>
-                <button class="btn-delete" onclick="eliminarProducto('${documento.id}')"><i class="fa-solid fa-trash"></i></button>
-              </div>
-            </div>
-          `;
-        });
-      } catch (e) { contenedor.innerHTML = "<p style='color:red;'>Error al cargar inventario.</p>"; }
+    function generarCategoriasUI() {
+      const container = document.getElementById('categories-container');
+      const categoriasUnicas = ["Todas", ...new Set(productosData.map(p => p.categoria).filter(Boolean))];
+      container.innerHTML = "";
+      categoriasUnicas.forEach(cat => {
+        container.innerHTML += `<button class="btn-cat ${cat === catSeleccionada ? 'active' : ''}" onclick="filtrarCat('${cat}')">${cat}</button>`;
+      });
+      generarSubcategoriasUI();
     }
 
-    window.prepararEdicion = (id) => {
-      const prod = productosLista.find(p => p.id === id);
-      if (!prod) return;
+    window.filtrarCat = (cat) => { catSeleccionada = cat; subcatSeleccionada = "Todas"; generarCategoriasUI(); renderizarProductos(); };
+    window.filtrarSub = (sub) => { subcatSeleccionada = sub; generarSubcategoriasUI(); renderizarProductos(); };
 
+    function generarSubcategoriasUI() {
+      const wrapper = document.getElementById('subcategories-wrapper');
+      const container = document.getElementById('subcategories-container');
+      if (catSeleccionada === "Todas") { wrapper.classList.add('hidden'); return; }
+      const subcats = ["Todas", ...new Set(productosData.filter(p => p.categoria === catSeleccionada).map(p => p.subcategoria).filter(Boolean))];
+      if (subcats.length <= 1) { wrapper.classList.add('hidden'); return; }
+      wrapper.classList.remove('hidden');
+      container.innerHTML = "";
+      subcats.forEach(sub => container.innerHTML += `<button class="btn-subcat ${sub === subcatSeleccionada ? 'active' : ''}" onclick="filtrarSub('${sub}')">${sub}</button>`);
+    }
+
+    function renderizarProductos() {
+      const contenedor = document.getElementById('grid-productos');
+      contenedor.innerHTML = "";
+      let filtrados = productosData;
+      if (catSeleccionada !== "Todas") filtrados = filtrados.filter(p => p.categoria === catSeleccionada);
+      if (subcatSeleccionada !== "Todas") filtrados = filtrados.filter(p => p.subcategoria === subcatSeleccionada);
+
+      if (filtrados.length === 0) { contenedor.innerHTML = `<p style="color: #94a3b8; grid-column: 1/-1;">No hay productos.</p>`; return; }
+
+      filtrados.forEach(prod => {
+        contenedor.innerHTML += `
+          <div class="card">
+            <img src="${prod.imagenes[0] || ''}" style="width:100%; height:180px; object-fit:cover; border-radius:8px;" onerror="this.src='https://via.placeholder.com/180?text=X'">
+            <h3>${prod.nombre}</h3>
+            <p class="precio">$${prod.precio}</p>
+            <div class="card-actions">
+              <button class="btn-edit" onclick="prepararEdicion('${prod.id}')"><i class="fa-solid fa-pen"></i> Editar</button>
+              <button class="btn-delete" onclick="eliminarProducto('${prod.id}')"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // --- ACCIONES ADMIN ---
+    window.prepararEdicion = (id) => {
+      const prod = productosData.find(p => p.id === id);
       document.getElementById('edit-id').value = prod.id;
       document.getElementById('prod-title').value = prod.nombre;
       document.getElementById('prod-category').value = prod.categoria || '';
-      
       actualizarSubcategoriasUI();
       document.getElementById('prod-subcategory').value = prod.subcategoria || '';
       document.getElementById('prod-price').value = prod.precio;
       document.getElementById('prod-desc').value = prod.descripcion;
-
-      for (let i = 1; i <= 5; i++) {
-        document.getElementById(`prod-img-${i}`).value = prod.imagenes[i - 1] || '';
-      }
-
-      document.getElementById('form-title').innerHTML = "<i class='fa-solid fa-pen-to-square'></i> Modificar Producto";
-      document.getElementById('btn-save-prod').innerText = "Actualizar Cambios";
-      document.getElementById('btn-cancel-edit').classList.remove('hidden');
-
-      // Cambiar a la pestaña de edición
-      document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('tab-productos').classList.remove('hidden');
-      document.querySelectorAll('.tab-btn')[0].classList.add('active');
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
-    window.cancelarEdicion = () => {
-      document.getElementById('edit-id').value = "";
-      document.getElementById('product-form').reset();
-      document.getElementById('prod-subcategory').disabled = true;
-      document.getElementById('form-title').innerHTML = "<i class='fa-solid fa-plus-circle'></i> Cargar Nuevo Producto";
-      document.getElementById('btn-save-prod').innerText = "Guardar Producto";
-      document.getElementById('btn-cancel-edit').classList.add('hidden');
+      for (let i = 1; i <= 5; i++) document.getElementById(`prod-img-${i}`).value = prod.imagenes[i - 1] || '';
+      
+      document.getElementById('form-title').innerText = "Modificar Producto";
+      abrirModal('modal-producto');
     };
 
     window.eliminarProducto = async (id) => {
-      if (confirm("¿Estás seguro de eliminar este producto del inventario?")) {
-        try {
-          await deleteDoc(doc(db, "productos", id));
-          cargarListaAdmin();
-        } catch (e) { alert("Error al eliminar: " + e.message); }
+      if (confirm("¿Eliminar este producto permanentemente?")) {
+        await deleteDoc(doc(db, "productos", id));
+        cargarTodo();
       }
     };
 
     document.getElementById('product-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const editId = document.getElementById('edit-id').value;
-
       const imagenes = [];
       for (let i = 1; i <= 5; i++) {
         const url = document.getElementById(`prod-img-${i}`).value.trim();
         if (url) imagenes.push(url);
       }
-
       const datosProducto = {
         nombre: document.getElementById('prod-title').value,
         categoria: document.getElementById('prod-category').value,
@@ -557,23 +329,25 @@
         precio: Number(document.getElementById('prod-price').value),
         descripcion: document.getElementById('prod-desc').value,
         imagenes: imagenes,
-        imagen: imagenes[0] || '',
-        fecha: new Date()
+        imagen: imagenes[0] || ''
       };
+      
+      if (editId) await updateDoc(doc(db, "productos", editId), datosProducto);
+      else await addDoc(collection(db, "productos"), { ...datosProducto, fecha: new Date() });
+      
+      cerrarModal('modal-producto');
+      cargarTodo();
+    });
 
-      try {
-        if (editId) {
-          await updateDoc(doc(db, "productos", editId), datosProducto);
-          alert("¡Producto modificado con éxito!");
-          cancelarEdicion();
-        } else {
-          await addDoc(collection(db, "productos"), datosProducto);
-          alert("¡Producto guardado exitosamente!");
-          document.getElementById('product-form').reset();
-          document.getElementById('prod-subcategory').disabled = true;
-        }
-        cargarListaAdmin();
-      } catch (e) { alert("Error al guardar: " + e.message); }
+    document.getElementById('cat-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await addDoc(collection(db, "categorias"), {
+        nombre: document.getElementById('new-cat-name').value.trim(),
+        subcategoria: document.getElementById('new-subcat-name').value.trim()
+      });
+      cerrarModal('modal-categoria');
+      document.getElementById('cat-form').reset();
+      cargarTodo();
     });
   </script>
 </body>
