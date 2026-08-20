@@ -344,3 +344,70 @@
     });
   </script>
 </body>
+<!-- SECCIÓN EN ADMIN.HTML PARA PEDIDOS RECIBIDOS -->
+<section class="admin-section">
+  <h2><i class="fa-solid fa-bell"></i> Pedidos Recibidos <span id="pedidos-badge" class="badge">0</span></h2>
+  <div id="lista-pedidos-admin" class="pedidos-grid"></div>
+</section>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  // Mismos datos de firebaseConfig
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Cargar pedidos en tiempo real con alertas
+  onSnapshot(collection(db, "pedidos"), (snapshot) => {
+    const contenedor = document.getElementById('lista-pedidos-admin');
+    const badge = document.getElementById('pedidos-badge');
+    
+    if (snapshot.empty) {
+      contenedor.innerHTML = "<p>No hay pedidos registrados.</p>";
+      badge.innerText = "0";
+      return;
+    }
+
+    badge.innerText = snapshot.docs.length;
+    contenedor.innerHTML = "";
+
+    snapshot.docs.forEach(docSnap => {
+      const p = docSnap.data();
+      const id = docSnap.id;
+
+      let itemsHtml = p.items.map(i => `
+        <li><strong>${i.cantidad}x</strong> ${i.nombre} - $${i.subtotal.toLocaleString('es-AR')}</li>
+      `).join('');
+
+      contenedor.innerHTML += `
+        <div class="pedido-card ${p.estado === 'Pendiente' ? 'pendiente' : ''}">
+          <div class="pedido-header">
+            <span>Pedido #${id.slice(-5)}</span>
+            <span class="estado-tag">${p.estado}</span>
+          </div>
+          <ul class="pedido-items-lista">
+            ${itemsHtml}
+          </ul>
+          <div class="pedido-total">
+            Total: <strong>$${p.total.toLocaleString('es-AR')}</strong>
+          </div>
+          <div class="pedido-acciones">
+            <button onclick="completarPedido('${id}')">Marcar Atendido</button>
+            <button onclick="eliminarPedido('${id}')">Eliminar</button>
+          </div>
+        </div>
+      `;
+    });
+  });
+
+  window.completarPedido = async (id) => {
+    await updateDoc(doc(db, "pedidos", id), { estado: "Atendido" });
+  };
+
+  window.eliminarPedido = async (id) => {
+    if (confirm("¿Borrar pedido?")) {
+      await deleteDoc(doc(db, "pedidos", id));
+    }
+  };
+</script>
