@@ -1,9 +1,4 @@
-.hero h1 span {
-  background: linear-gradient(90deg, #818cf8, var(--secondary-color));
-  -webkit-background-clip: text;
-  background-clip: text; /* <- Agrega esta línea */
-  -webkit-text-fill-color: transparent;
-}/* ==========================================
+/* ==========================================
    RESET & VARIABLES
    ========================================== */
 * {
