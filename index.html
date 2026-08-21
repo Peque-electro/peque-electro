@@ -133,6 +133,16 @@
               <select id="modal-select-color" style="width: 100%; padding: 10px; border-radius: 8px; background: #0f172a; color: #f8fafc; border: 1px solid #334155;"></select>
             </div>
 
+            <!-- CONTROLES DE CANTIDAD EN LA VENTANA FLOTANTE -->
+            <div style="margin-bottom: 15px;">
+              <label style="font-weight:bold; color:#38bdf8; display:block; margin-bottom:6px; font-size: 14px;">Cantidad:</label>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <button type="button" onclick="cambiarCantidadModal(-1)" style="background: #334155; color: #f8fafc; border: none; border-radius: 6px; width: 36px; height: 36px; font-size: 18px; font-weight: bold; cursor: pointer;">-</button>
+                <input type="number" id="modal-cantidad-input" value="1" min="1" readonly style="width: 50px; text-align: center; padding: 8px; border-radius: 6px; background: #0f172a; color: #f8fafc; border: 1px solid #334155; font-size: 16px; font-weight: bold;">
+                <button type="button" onclick="cambiarCantidadModal(1)" style="background: #334155; color: #f8fafc; border: none; border-radius: 6px; width: 36px; height: 36px; font-size: 18px; font-weight: bold; cursor: pointer;">+</button>
+              </div>
+            </div>
+
             <div class="modal-desc-box" style="background: #0f172a; padding: 15px; border-radius: 10px; border: 1px solid #334155; margin-bottom: 20px; max-height: 200px; overflow-y: auto;">
               <h4 style="color: #94a3b8; margin: 0 0 8px 0; font-size: 14px;">Descripción:</h4>
               <div id="modal-descripcion" style="color: #cbd5e1; font-size: 14px; line-height: 1.6; white-space: pre-line;"></div>
@@ -140,7 +150,6 @@
           </div>
 
           <div>
-            <!-- SOLO BOTÓN DE AGREGAR AL PEDIDO -->
             <button id="modal-btn-agregar" class="btn-detail" style="background: #38bdf8; color: #0f172a; border: none; padding: 14px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; width: 100%;">
               🛒 Agregar al Pedido
             </button>
@@ -224,6 +233,14 @@
       }).join('');
     }
 
+    // MODAL Y CANTIDAD EN MODAL
+    window.cambiarCantidadModal = (delta) => {
+      const input = document.getElementById('modal-cantidad-input');
+      let val = parseInt(input.value) + delta;
+      if (val < 1) val = 1;
+      input.value = val;
+    };
+
     window.verDetalle = (id) => {
       const p = productosGlobal.find(item => item.id === id);
       if (!p) return;
@@ -231,6 +248,7 @@
       document.getElementById('modal-titulo').innerText = p.nombre;
       document.getElementById('modal-precio').innerText = `$${parseFloat(p.precio || 0).toLocaleString('es-AR')}`;
       document.getElementById('modal-descripcion').innerText = p.descripcion || "Sin descripción disponible.";
+      document.getElementById('modal-cantidad-input').value = 1;
 
       const imgs = p.imagenes && p.imagenes.length > 0 ? p.imagenes : [p.imagen || 'https://via.placeholder.com/200'];
       document.getElementById('modal-img-principal').src = imgs[0];
@@ -251,7 +269,8 @@
 
       document.getElementById('modal-btn-agregar').onclick = () => {
         const color = boxColores.style.display !== 'none' ? selectColor.value : '';
-        agregarAlCarrito(p, color);
+        const cantidad = parseInt(document.getElementById('modal-cantidad-input').value) || 1;
+        agregarAlCarrito(p, color, cantidad);
         cerrarModal();
       };
 
@@ -262,23 +281,31 @@
       document.getElementById('modal-detalle').style.display = 'none';
     };
 
-    // FUNCIONES DEL CARRITO
-    function agregarAlCarrito(producto, color) {
+    // FUNCIONES DEL CARRITO CON MODIFICACIÓN DE CANTIDADES
+    function agregarAlCarrito(producto, color, cantidad = 1) {
       const nombreItem = color ? `${producto.nombre} (${color})` : producto.nombre;
       const existe = carrito.find(item => item.nombre === nombreItem);
 
       if (existe) {
-        existe.cantidad += 1;
+        existe.cantidad += cantidad;
       } else {
         carrito.push({
           id: producto.id,
           nombre: nombreItem,
           precio: parseFloat(producto.precio || 0),
-          cantidad: 1
+          cantidad: cantidad
         });
       }
       actualizarCarritoUI();
     }
+
+    window.modificarCantidadCarrito = (index, delta) => {
+      carrito[index].cantidad += delta;
+      if (carrito[index].cantidad <= 0) {
+        carrito.splice(index, 1);
+      }
+      actualizarCarritoUI();
+    };
 
     window.eliminarDelCarrito = (index) => {
       carrito.splice(index, 1);
@@ -302,11 +329,17 @@
         const subtotal = item.precio * item.cantidad;
         total += subtotal;
         html += `
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 6px; color: #f8fafc;">
-            <span style="font-size: 14px;">${item.nombre} x${item.cantidad}</span>
-            <div>
-              <span style="color: #38bdf8; font-weight: bold; margin-right: 8px;">$${subtotal.toLocaleString('es-AR')}</span>
-              <button onclick="eliminarDelCarrito(${index})" style="background: #ef4444; color: white; border: none; border-radius: 4px; padding: 2px 8px; cursor: pointer;">✕</button>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #334155; padding-bottom: 8px; color: #f8fafc; text-align: left; gap: 10px;">
+            <div style="flex: 1;">
+              <div style="font-size: 14px; font-weight: bold; color: #f8fafc;">${item.nombre}</div>
+              <div style="color: #38bdf8; font-size: 13px; font-weight: bold; margin-top: 2px;">Subtotal: $${subtotal.toLocaleString('es-AR')}</div>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <button onclick="modificarCantidadCarrito(${index}, -1)" style="background: #334155; color: white; border: none; border-radius: 4px; width: 26px; height: 26px; cursor: pointer; font-weight: bold;">-</button>
+              <span style="font-size: 14px; font-weight: bold; min-width: 20px; text-align: center;">${item.cantidad}</span>
+              <button onclick="modificarCantidadCarrito(${index}, 1)" style="background: #334155; color: white; border: none; border-radius: 4px; width: 26px; height: 26px; cursor: pointer; font-weight: bold;">+</button>
+              <button onclick="eliminarDelCarrito(${index})" style="background: #ef4444; color: white; border: none; border-radius: 4px; width: 26px; height: 26px; cursor: pointer; margin-left: 4px;">✕</button>
             </div>
           </div>
         `;
@@ -349,7 +382,7 @@
       }
 
       // 2. Abrir enlace a WhatsApp
-      const telefonoAdmin = '5491134970171'; // <-- Tu número real aquí
+      const telefonoAdmin = '5491134970171';
       const urlWsp = `https://api.whatsapp.com/send?phone=${telefonoAdmin}&text=${encodeURIComponent(mensaje)}`;
 
       window.open(urlWsp, '_blank');
