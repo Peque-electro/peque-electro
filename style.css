@@ -10,8 +10,8 @@ body {
 /* BANNER FULL ANCHO CON ALTURA CONTROLADA */
 .banner-header {
   width: 100%;
-  height: 380px; /* Controla el alto visible del banner */
-  overflow: hidden; 
+  height: 280px; /* Controla el alto visible del banner */
+  overflow: hidden; /* Corta la imagen si supera el alto fijado */
   background-color: #ffffff;
   display: flex;
   align-items: flex-start; /* Alinea la imagen a la parte superior */
@@ -19,8 +19,8 @@ body {
 
 .banner-img {
   width: 100%;
-  height: 80%;
-  object-fit: cover; /* Estira a todo el ancho  */
+  height: 100%;
+  object-fit: cover; /* Estira a todo el ancho y recorta lo que sobra de abajo */
   object-position: top center; /* Asegura que la parte de arriba y el texto no se corten */
 }
 
