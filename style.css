@@ -7,20 +7,21 @@ body {
 }
 
 
-/* BANNER PANORÁMICO DE ANCHO COMPLETO */
+/* AJUSTE PARA BANNER COMPLETO SIN RECORTES */
 .banner-header {
   width: 100%;
-  background-color: #ffffff;
-  border-bottom: 4px solid #38bdf8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0f172a; /* Fondo oscuro por si quedan bordes */
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 .banner-img {
-  width: 100% !important;
-  height: auto !important;
-  max-height: 400px; /* Limita la altura en pantallas muy grandes */
-  object-fit: cover;
+  width: 100%;
+  max-width: 1200px; /* Ancho máximo para evitar que se deforme en monitores muy grandes */
+  height: auto; /* Mantiene la proporción original para que NUNCA se corte */
+  object-fit: contain; /* Garantiza que la imagen se muestre completa */
   display: block;
 }
 
