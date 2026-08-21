@@ -117,8 +117,11 @@
       
       <div class="modal-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 10px;">
         <div class="modal-images">
-          <div style="background: #0f172a; border-radius: 12px; padding: 10px; border: 1px solid #334155; text-align: center;">
-            <img id="modal-img-principal" src="" alt="Producto" style="max-width: 100%; max-height: 300px; object-fit: contain; border-radius: 8px;">
+          <div style="background: #0f172a; border-radius: 12px; padding: 10px; border: 1px solid #334155; text-align: center; position: relative;">
+            <img id="modal-img-principal" src="" alt="Producto" style="max-width: 100%; max-height: 300px; object-fit: contain; border-radius: 8px; cursor: zoom-in;" onclick="abrirZoomImagen(this.src)">
+            <span style="position: absolute; bottom: 15px; right: 15px; background: rgba(15, 23, 42, 0.8); color: #38bdf8; padding: 5px 10px; border-radius: 6px; font-size: 12px; pointer-events: none; border: 1px solid #334155;">
+              <i class="fa-solid fa-magnifying-glass-plus"></i> Clic para ampliar
+            </span>
           </div>
           <div id="modal-gallery" class="gallery-thumbs" style="display: flex; gap: 10px; margin-top: 12px; overflow-x: auto;"></div>
         </div>
@@ -157,6 +160,12 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- VISOR FULLSCREEN PARA VER FOTO GRANDE (LIGHTBOX) -->
+  <div id="lightbox-zoom" onclick="cerrarZoomImagen()" style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 2000; justify-content: center; align-items: center; padding: 20px; cursor: zoom-out;">
+    <button onclick="cerrarZoomImagen()" style="position: absolute; top: 20px; right: 25px; background: #334155; color: white; border: none; font-size: 28px; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2001;">&times;</button>
+    <img id="lightbox-img" src="" alt="Vista ampliada" style="max-width: 95vw; max-height: 95vh; object-fit: contain; border-radius: 10px; box-shadow: 0 0 30px rgba(0,0,0,0.8);">
   </div>
 
   <script type="module">
@@ -232,6 +241,16 @@
         `;
       }).join('');
     }
+
+    // AMPLIFICADOR DE IMAGEN (LIGHTBOX)
+    window.abrirZoomImagen = (src) => {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox-zoom').style.display = 'flex';
+    };
+
+    window.cerrarZoomImagen = () => {
+      document.getElementById('lightbox-zoom').style.display = 'none';
+    };
 
     // MODAL Y CANTIDAD EN MODAL
     window.cambiarCantidadModal = (delta) => {
@@ -368,7 +387,6 @@
 
       mensaje += `\n*Total Estimado:* $${total.toLocaleString('es-AR')}`;
 
-      // 1. Guardar en la base de datos central de Firebase
       try {
         await addDoc(collection(db, "pedidos"), {
           orden: orderNum,
@@ -381,7 +399,6 @@
         console.error("Error al registrar el pedido en la base de datos:", err);
       }
 
-      // 2. Abrir enlace a WhatsApp
       const telefonoAdmin = '5491134970171';
       const urlWsp = `https://api.whatsapp.com/send?phone=${telefonoAdmin}&text=${encodeURIComponent(mensaje)}`;
 
