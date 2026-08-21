@@ -7,21 +7,22 @@ body {
 }
 
 
-/* BANNER FULL ANCHO CON ALTURA CONTROLADA */
+/* AJUSTE PARA BANNER COMPLETO SIN RECORTES */
 .banner-header {
   width: 100%;
-  height: 280px; /* Controla el alto visible del banner */
-  overflow: hidden; /* Corta la imagen si supera el alto fijado */
-  background-color: #ffffff;
   display: flex;
-  align-items: flex-start; /* Alinea la imagen a la parte superior */
+  justify-content: center;
+  align-items: center;
+  background-color: #0f172a; /* Fondo oscuro por si quedan bordes */
+  overflow: hidden;
 }
 
 .banner-img {
   width: 100%;
-  height: 100%;
-  object-fit: cover; /* Estira a todo el ancho y recorta lo que sobra de abajo */
-  object-position: top center; /* Asegura que la parte de arriba y el texto no se corten */
+  max-width: 1200px; /* Ancho máximo para evitar que se deforme en monitores muy grandes */
+  height: auto; /* Mantiene la proporción original para que NUNCA se corte */
+  object-fit: contain; /* Garantiza que la imagen se muestre completa */
+  display: block;
 }
 
 /* Ajuste móvil para pantallas pequeñas */
