@@ -7,34 +7,27 @@ body {
 }
 
 
-/* BANNER A FULL ANCHO DE LA PÁGINA */
-body {
-  margin: 0;
-  padding: 0;
-}
-
+/* BANNER FULL ANCHO CON ALTURA CONTROLADA */
 .banner-header {
-  width: 100vw; /* Ocupa el 100% del ancho de la pantalla */
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  background: #ffffff; /* Fondo blanco para integrarse perfectamente con el diseño */
-  overflow: hidden;
+  width: 100%;
+  height: 300px; /* Controla el alto visible del banner */
+  overflow: hidden; /* Corta la imagen si supera el alto fijado */
+  background-color: #ffffff;
+  display: flex;
+  align-items: flex-start; /* Alinea la imagen a la parte superior */
 }
 
 .banner-img {
   width: 100%;
-  height: auto;
-  display: block;
-  object-fit: fill; /* Fuerza a extender la imagen sin recortar los bordes */
+  height: 100%;
+  object-fit: cover; /* Estira a todo el ancho y recorta lo que sobra de abajo */
+  object-position: top center; /* Asegura que la parte de arriba y el texto no se corten */
 }
 
 /* Ajuste móvil para pantallas pequeñas */
 @media (max-width: 768px) {
   .banner-img {
-    max-height: 200px;
+    max-height: 300px;
   }
 }
 
