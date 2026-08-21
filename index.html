@@ -69,7 +69,7 @@
         Total Estimado: <span id="cart-total" style="color: #38bdf8;">$0.00</span>
       </div>
 
-      <button id="btn-send-order" onclick="enviarPedido()" style="background: #22c55e; color: white; border: none; padding: 14px 20px; border-radius: 10px; font-weight: bold; font-size: 16px; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: background 0.2s;">
+      <button id="btn-send-order" style="background: #22c55e; color: white; border: none; padding: 14px 20px; border-radius: 10px; font-weight: bold; font-size: 16px; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;">
         <i class="fa-brands fa-whatsapp" style="font-size: 20px;"></i> Finalizar y Enviar Pedido
       </button>
     </div>
@@ -80,12 +80,10 @@
     <div class="reviews-container">
       <h2><i class="fa-solid fa-comments"></i> Lo que dicen nuestros clientes</h2>
       
-      <!-- Grid donde se cargan las opiniones de Firebase -->
       <div id="grid-reviews" class="reviews-grid">
         <p style="text-align:center; color: #94a3b8; grid-column: 1/-1;">Cargando opiniones...</p>
       </div>
 
-      <!-- Formulario para publicar reseña -->
       <div class="add-review-box">
         <h3><i class="fa-solid fa-pen-to-square"></i> ¡Déjanos tu opinión!</h3>
         <form id="form-resena">
@@ -111,7 +109,7 @@
     <p>&copy; 2026 Peque Elektro - Todos los derechos reservados.</p>
   </footer>
 
-  <!-- MODAL DE DETALLES DEL PRODUCTO PROFESIONAL -->
+  <!-- MODAL DE DETALLES DEL PRODUCTO -->
   <div id="modal-detalle" class="modal-overlay" style="display:none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; padding: 20px;">
     <div class="modal-content" style="background: #1e293b; border: 1px solid #334155; border-radius: 20px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.6); padding: 30px;">
       
@@ -137,16 +135,14 @@
 
             <div class="modal-desc-box" style="background: #0f172a; padding: 15px; border-radius: 10px; border: 1px solid #334155; margin-bottom: 20px; max-height: 200px; overflow-y: auto;">
               <h4 style="color: #94a3b8; margin: 0 0 8px 0; font-size: 14px;">Descripción:</h4>
-              <div id="modal-descripcion" style="color: #cbd5e1; font-size: 14px; line-height: 1.6; whitespace: pre-line;"></div>
+              <div id="modal-descripcion" style="color: #cbd5e1; font-size: 14px; line-height: 1.6; white-space: pre-line;"></div>
             </div>
           </div>
 
-          <div style="display: flex; flex-direction: column; gap: 10px;">
-            <button id="modal-btn-agregar" class="btn-detail" style="background: #38bdf8; color: #0f172a; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 15px;">
+          <div>
+            <!-- SOLO BOTÓN DE AGREGAR AL PEDIDO -->
+            <button id="modal-btn-agregar" class="btn-detail" style="background: #38bdf8; color: #0f172a; border: none; padding: 14px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; width: 100%;">
               🛒 Agregar al Pedido
-            </button>
-            <button id="modal-btn-wsp" class="btn-wsp" style="background: #22c55e; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px;">
-              <i class="fa-brands fa-whatsapp"></i> Consultar por WhatsApp
             </button>
           </div>
         </div>
@@ -253,18 +249,10 @@
         boxColores.style.display = 'none';
       }
 
-      // Acción de botón agregar al carrito
       document.getElementById('modal-btn-agregar').onclick = () => {
         const color = boxColores.style.display !== 'none' ? selectColor.value : '';
         agregarAlCarrito(p, color);
         cerrarModal();
-      };
-
-      // Acción WhatsApp directo
-      document.getElementById('modal-btn-wsp').onclick = () => {
-        const color = boxColores.style.display !== 'none' ? selectColor.value : '';
-        const msg = `Hola Peque Elektro! Quisiera consultar sobre el producto: *${p.nombre}* ($${p.precio}) ${color ? 'en color ' + color : ''}`;
-        window.open(`https://wa.me/5491112345678?text=${encodeURIComponent(msg)}`, '_blank');
       };
 
       document.getElementById('modal-detalle').style.display = 'flex';
@@ -328,7 +316,8 @@
       cartTotalContainer.innerText = `$${total.toLocaleString('es-AR')}`;
     }
 
-    window.enviarPedido = () => {
+    // ENVÍO DE PEDIDOS GUARDANDO EN FIREBASE FIRESTORE
+    document.getElementById('btn-send-order').onclick = async () => {
       if (carrito.length === 0) {
         alert('Tu carrito está vacío. Agrega productos antes de enviar el pedido.');
         return;
@@ -346,18 +335,21 @@
 
       mensaje += `\n*Total Estimado:* $${total.toLocaleString('es-AR')}`;
 
-      // Guardar en la base local para la vista Admin
-      const pedidosGuardados = JSON.parse(localStorage.getItem('pedidos_peque_elektro')) || [];
-      pedidosGuardados.push({
-        orden: orderNum,
-        fecha: new Date().toLocaleString(),
-        items: carrito,
-        total: total
-      });
-      localStorage.setItem('pedidos_peque_elektro', JSON.stringify(pedidosGuardados));
+      // 1. Guardar en la base de datos central de Firebase
+      try {
+        await addDoc(collection(db, "pedidos"), {
+          orden: orderNum,
+          fecha: new Date().toLocaleString('es-AR'),
+          items: carrito,
+          total: total,
+          timestamp: new Date()
+        });
+      } catch (err) {
+        console.error("Error al registrar el pedido en la base de datos:", err);
+      }
 
-      // Reemplaza con tu número de teléfono de atención
-      const telefonoAdmin = '5491134970171';
+      // 2. Abrir enlace a WhatsApp
+      const telefonoAdmin = '5491112345678'; // <-- Tu número real aquí
       const urlWsp = `https://api.whatsapp.com/send?phone=${telefonoAdmin}&text=${encodeURIComponent(mensaje)}`;
 
       window.open(urlWsp, '_blank');
