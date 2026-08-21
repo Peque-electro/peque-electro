@@ -11,7 +11,7 @@ body {
 .banner-header {
   width: 100%;
   height: 300px; /* Controla el alto visible del banner */
-  overflow: hidden; /* Corta la imagen si supera el alto fijado */
+  overflow: hidden; 
   background-color: #ffffff;
   display: flex;
   align-items: flex-start; /* Alinea la imagen a la parte superior */
@@ -20,7 +20,7 @@ body {
 .banner-img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Estira a todo el ancho y recorta lo que sobra de abajo */
+  object-fit: cover; /* Estira a todo el ancho  */
   object-position: top center; /* Asegura que la parte de arriba y el texto no se corten */
 }
 
