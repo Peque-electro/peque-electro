@@ -7,22 +7,28 @@ body {
 }
 
 
-/* AJUSTE PARA BANNER COMPLETO SIN RECORTES */
+/* BANNER A FULL ANCHO DE LA PÁGINA */
+body {
+  margin: 0;
+  padding: 0;
+}
+
 .banner-header {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #0f172a; /* Fondo oscuro por si quedan bordes */
+  width: 100vw; /* Ocupa el 100% del ancho de la pantalla */
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  background: #ffffff; /* Fondo blanco para integrarse perfectamente con el diseño */
   overflow: hidden;
 }
 
 .banner-img {
   width: 100%;
-  max-width: 1200px; /* Ancho máximo para evitar que se deforme en monitores muy grandes */
-  height: auto; /* Mantiene la proporción original para que NUNCA se corte */
-  object-fit: contain; /* Garantiza que la imagen se muestre completa */
+  height: auto;
   display: block;
+  object-fit: fill; /* Fuerza a extender la imagen sin recortar los bordes */
 }
 
 /* Ajuste móvil para pantallas pequeñas */
