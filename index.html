@@ -13,49 +13,51 @@
   <header class="banner-header">
     <img src="logo.jpg" alt="Peque Elektro" class="banner-img">
   </header>
-
-  <!-- NUEVO ESLOGAN DE PRESENTACIÓN -->
-  <section class="hero-slogan">
-    <div class="slogan-container">
-      <h2>Peque Elektro: Tu solución integral.</h2>
-      <p class="slogan-intro">Simplificamos tu búsqueda ofreciéndote variedad y calidad en un solo lugar:</p>
+  
+  <!-- SECCIÓN PRESENTACIÓN / ESLOGAN DINÁMICO -->
+  <section class="slogan-section" style="background: #0f172a; padding: 40px 20px; text-align: center; color: white;">
+    <div class="slogan-container" style="max-width: 800px; margin: 0 auto;">
+      <h2 id="view-slogan-titulo" style="color: #38bdf8; font-size: 28px; margin-bottom: 15px;">Peque Elektro: Tu solución integral.</h2>
+      <p id="view-slogan-intro" class="slogan-intro" style="color: #cbd5e1; font-size: 16px; margin-bottom: 20px;">Simplificamos tu búsqueda ofreciéndote variedad y calidad en un solo lugar:</p>
       
-      <ul class="slogan-list">
-        <li><span>🫖</span> <strong>Hogar y Bazar:</strong> Pavas eléctricas, termos y esenciales para tu cocina.</li>
-        <li><span>⌚</span> <strong>Tecnología y Accesorios:</strong> Smartwatches y mochilas para seguir tu ritmo.</li>
-        <li><span>🛠️</span> <strong>Herramientas:</strong> Todo lo necesario para tus proyectos y reparaciones.</li>
+      <ul class="slogan-list" style="list-style: none; padding: 0; margin: 0 0 25px 0; text-align: left; display: inline-block;">
+        <li id="view-slogan-item1" style="margin-bottom: 10px; font-size: 15px;"><i class="fa-solid fa-mug-hot" style="color: #ec4899; margin-right: 8px;"></i> <strong>Hogar y Bazar:</strong> Pavas eléctricas, termos y esenciales para tu cocina.</li>
+        <li id="view-slogan-item2" style="margin-bottom: 10px; font-size: 15px;"><i class="fa-solid fa-clock" style="color: #a855f7; margin-right: 8px;"></i> <strong>Tecnología y Accesorios:</strong> Smartwatches y mochilas para seguir tu ritmo.</li>
+        <li id="view-slogan-item3" style="margin-bottom: 10px; font-size: 15px;"><i class="fa-solid fa-wrench" style="color: #38bdf8; margin-right: 8px;"></i> <strong>Herramientas:</strong> Todo lo necesario para tus proyectos y reparaciones.</li>
       </ul>
-      
-      <p class="slogan-badge">🚀 Calidad garantizada para potenciar tu día a día.</p>
+
+      <div>
+        <span id="view-slogan-badge" class="slogan-badge" style="background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8; color: #38bdf8; padding: 10px 20px; border-radius: 20px; font-weight: bold; display: inline-block;">🚀 Calidad garantizada para potenciar tu día a día.</span>
+      </div>
     </div>
   </section>
 
-<!-- INFORMACIÓN DE ENVÍOS Y ENTREGAS -->
-<div class="shipping-banner">
-  <div class="shipping-item">
-    <i class="fas fa-map-marker-alt"></i>
-    <div>
-      <strong>Puntos de encuentro sin costo:</strong>
-      <p id="info-puntos">Cargando...</p>
+  <!-- INFORMACIÓN DE ENVÍOS Y ENTREGAS -->
+  <div class="shipping-banner">
+    <div class="shipping-item">
+      <i class="fas fa-map-marker-alt"></i>
+      <div>
+        <strong>Puntos de encuentro sin costo:</strong>
+        <p id="info-puntos">Cargando...</p>
+      </div>
     </div>
-  </div>
 
-  <div class="shipping-item">
-    <i class="fas fa-truck"></i>
-    <div>
-      <strong>Envíos por Correo:</strong>
-      <p id="info-correo">Cargando...</p>
+    <div class="shipping-item">
+      <i class="fas fa-truck"></i>
+      <div>
+        <strong>Envíos por Correo:</strong>
+        <p id="info-correo">Cargando...</p>
+      </div>
     </div>
-  </div>
 
-  <div class="shipping-item">
-    <i class="fas fa-check-circle"></i>
-    <div>
-      <strong>Condición de entrega:</strong>
-      <p id="info-condicion">Cargando...</p>
+    <div class="shipping-item">
+      <i class="fas fa-check-circle"></i>
+      <div>
+        <strong>Condición de entrega:</strong>
+        <p id="info-condicion">Cargando...</p>
+      </div>
     </div>
   </div>
-</div>
 
   <!-- CONTENEDOR PRINCIPAL DE PRODUCTOS -->
   <main class="main-container">
@@ -139,7 +141,7 @@
     <p>&copy; 2026 Peque Elektro - Todos los derechos reservados.</p>
   </footer>
 
-  <!-- MODAL DE DETALLES DEL PRODUCTO (FULL SCREEN 100% ANCHO X 100% ALTO DESLIZABLE) -->
+  <!-- MODAL DE DETALLES DEL PRODUCTO -->
   <div id="modal-detalle" class="modal-overlay">
     <div class="modal-content-fullscreen">
       <div class="fullscreen-container">
@@ -219,9 +221,27 @@
     let categoriaSeleccionada = "Todas";
     let carrito = [];
 
-    // VARIABLES DE PAGINACIÓN (5 COLUMNAS X 6 FILAS = 30 PRODUCTOS POR PÁGINA)
+    // VARIABLES DE PAGINACIÓN
     let paginaActual = 1;
     const productosPorPagina = 30;
+
+    // CARGAR ESLOGAN DINÁMICO DESDE FIREBASE
+    async function cargarSloganPrincipal() {
+      try {
+        const snap = await getDoc(doc(db, "configuracion", "slogan"));
+        if (snap.exists()) {
+          const d = snap.data();
+          if (d.titulo) document.getElementById("view-slogan-titulo").innerText = d.titulo;
+          if (d.intro) document.getElementById("view-slogan-intro").innerText = d.intro;
+          if (d.item1) document.getElementById("view-slogan-item1").innerHTML = `<i class="fa-solid fa-mug-hot" style="color:#ec4899; margin-right:8px;"></i> ${d.item1}`;
+          if (d.item2) document.getElementById("view-slogan-item2").innerHTML = `<i class="fa-solid fa-clock" style="color:#a855f7; margin-right:8px;"></i> ${d.item2}`;
+          if (d.item3) document.getElementById("view-slogan-item3").innerHTML = `<i class="fa-solid fa-wrench" style="color:#38bdf8; margin-right:8px;"></i> ${d.item3}`;
+          if (d.badge) document.getElementById("view-slogan-badge").innerText = d.badge;
+        }
+      } catch (err) {
+        console.error("Error al cargar eslogan:", err);
+      }
+    }
 
     // CARGAR INFORMACIÓN DE ENVÍOS DESDE FIREBASE
     async function cargarInfoEnvios() {
@@ -270,7 +290,7 @@
       renderizarProductos();
     });
 
-    // RENDERIZADO CON LÓGICA DE PAGINACIÓN DE 30 ITEMS POR PÁGINA
+    // RENDERIZADO CON LÓGICA DE PAGINACIÓN
     function renderizarProductos() {
       const grid = document.getElementById('grid-productos');
       const busqueda = document.getElementById('input-busqueda').value.toLowerCase();
@@ -354,7 +374,7 @@
       input.value = val;
     };
 
-    // DETALLE DE PRODUCTO DESLIZABLE FULL SCREEN (DESDE IZQUIERDA)
+    // DETALLE DE PRODUCTO
     window.verDetalle = (id) => {
       const p = productosGlobal.find(item => item.id === id);
       if (!p) return;
@@ -560,6 +580,7 @@
     });
 
     // EJECUTAR FUNCIONES AL CARGAR LA PÁGINA
+    cargarSloganPrincipal();
     cargarInfoEnvios();
     cargarProductos();
     cargarResenas();
