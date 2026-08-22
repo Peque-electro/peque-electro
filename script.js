@@ -38,3 +38,24 @@ async function cargarInfoEnviosTienda() {
 
 // Ejecutar al cargar la tienda
 cargarInfoEnviosTienda();
+// Leer Eslogan y Presentación Dinámica desde Firebase
+async function cargarSloganDinamico() {
+  try {
+    const snap = await getDoc(doc(db, "configuracion", "slogan"));
+    if (snap.exists()) {
+      const d = snap.data();
+      if (d.titulo) document.querySelector(".slogan-container h2").innerText = d.titulo;
+      if (d.intro) document.querySelector(".slogan-intro").innerText = d.intro;
+      
+      const items = document.querySelectorAll(".slogan-list li");
+      if (d.item1 && items[0]) items[0].innerHTML = `<i class="fa-solid fa-mug-hot"></i> ${d.item1}`;
+      if (d.item2 && items[1]) items[1].innerHTML = `<i class="fa-solid fa-clock"></i> ${d.item2}`;
+      if (d.item3 && items[2]) items[2].innerHTML = `<i class="fa-solid fa-wrench"></i> ${d.item3}`;
+      
+      if (d.badge) document.querySelector(".slogan-badge").innerText = d.badge;
+    }
+  } catch (err) {
+    console.error("Error al cargar eslogan:", err);
+  }
+}
+cargarSloganDinamico();
