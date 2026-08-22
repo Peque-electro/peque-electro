@@ -71,12 +71,15 @@
       </div>
     </div>
 
-    <!-- SECCIÓN CATÁLOGO -->
+    <!-- SECCIÓN CATÁLOGO CON CONTROLES DE PAGINACIÓN -->
     <section>
       <h2 class="section-title">Nuestros Productos</h2>
       <div id="grid-productos" class="products-grid">
         <p style="text-align:center; color: #94a3b8; grid-column: 1/-1;">Cargando catálogo...</p>
       </div>
+
+      <!-- CONTENEDOR DE PAGINACIÓN DEBAJO DE LA GRILLA -->
+      <div id="paginacion-contenedor" class="pagination-container"></div>
     </section>
 
   </main>
@@ -136,53 +139,54 @@
     <p>&copy; 2026 Peque Elektro - Todos los derechos reservados.</p>
   </footer>
 
-  <!-- MODAL DE DETALLES DEL PRODUCTO -->
-  <div id="modal-detalle" class="modal-overlay" style="display:none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; padding: 20px;">
-    <div class="modal-content" style="background: #1e293b; border: 1px solid #334155; border-radius: 20px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.6); padding: 30px;">
-      
-      <button class="modal-close" onclick="cerrarModal()" style="position: absolute; top: 15px; right: 20px; background: #334155; color: #f8fafc; border: none; font-size: 24px; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center;">&times;</button>
-      
-      <div class="modal-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 10px;">
-        <div class="modal-images">
-          <div style="background: #0f172a; border-radius: 12px; padding: 10px; border: 1px solid #334155; text-align: center; position: relative;">
-            <img id="modal-img-principal" src="" alt="Producto" style="max-width: 100%; max-height: 300px; object-fit: contain; border-radius: 8px; cursor: zoom-in;" onclick="abrirZoomImagen(this.src)">
-            <span style="position: absolute; bottom: 15px; right: 15px; background: rgba(15, 23, 42, 0.85); color: #38bdf8; padding: 5px 10px; border-radius: 6px; font-size: 12px; pointer-events: none; border: 1px solid #334155;">
-              <i class="fa-solid fa-magnifying-glass-plus"></i> Clic para ampliar
-            </span>
-          </div>
-          <div id="modal-gallery" class="gallery-thumbs" style="display: flex; gap: 10px; margin-top: 12px; overflow-x: auto;"></div>
-        </div>
+  <!-- MODAL DE DETALLES DEL PRODUCTO (FULL SCREEN 100% ANCHO X 100% ALTO DESLIZABLE) -->
+  <div id="modal-detalle" class="modal-overlay">
+    <div class="modal-content-fullscreen">
+      <div class="fullscreen-container">
+        <button class="modal-close" onclick="cerrarModal()" style="position: absolute; top: 20px; right: 25px; background: #334155; color: #f8fafc; border: none; font-size: 24px; border-radius: 50%; width: 42px; height: 42px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">&times;</button>
         
-        <div class="modal-info" style="display: flex; flex-direction: column; justify-content: space-between;">
-          <div>
-            <h2 id="modal-titulo" style="color: #f8fafc; font-size: 24px; margin-top: 0; margin-bottom: 10px;"></h2>
-            <p id="modal-precio" class="modal-price" style="color: #38bdf8; font-size: 26px; font-weight: 800; margin-bottom: 15px;"></p>
-            
-            <div id="modal-box-colores" style="display:none; margin-bottom: 15px;">
-              <label style="font-weight:bold; color:#38bdf8; display:block; margin-bottom:6px; font-size: 14px;">Selecciona Color:</label>
-              <select id="modal-select-color" style="width: 100%; padding: 10px; border-radius: 8px; background: #0f172a; color: #f8fafc; border: 1px solid #334155;"></select>
+        <div class="modal-grid-large">
+          <div class="modal-images">
+            <div style="background: #1e293b; border-radius: 16px; padding: 20px; border: 1px solid #334155; text-align: center; position: relative;">
+              <img id="modal-img-principal" src="" alt="Producto" style="width: 100%; max-height: 480px; object-fit: contain; border-radius: 12px; cursor: zoom-in;" onclick="abrirZoomImagen(this.src)">
+              <span style="position: absolute; bottom: 15px; right: 15px; background: rgba(15, 23, 42, 0.85); color: #38bdf8; padding: 6px 12px; border-radius: 6px; font-size: 13px; pointer-events: none; border: 1px solid #334155;">
+                <i class="fa-solid fa-magnifying-glass-plus"></i> Clic para ampliar
+              </span>
             </div>
+            <div id="modal-gallery" class="gallery-thumbs" style="display: flex; gap: 12px; margin-top: 15px; overflow-x: auto;"></div>
+          </div>
+          
+          <div class="modal-info" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <h2 id="modal-titulo" style="color: #f8fafc; font-size: 28px; margin-top: 0; margin-bottom: 12px;"></h2>
+              <p id="modal-precio" class="modal-price" style="color: #38bdf8; font-size: 32px; font-weight: 800; margin-bottom: 20px;"></p>
+              
+              <div id="modal-box-colores" style="display:none; margin-bottom: 20px;">
+                <label style="font-weight:bold; color:#38bdf8; display:block; margin-bottom:8px; font-size: 15px;">Selecciona Color:</label>
+                <select id="modal-select-color" style="width: 100%; padding: 12px; border-radius: 10px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; font-size: 15px;"></select>
+              </div>
 
-            <!-- CONTROLES DE CANTIDAD EN LA VENTANA FLOTANTE -->
-            <div style="margin-bottom: 15px;">
-              <label style="font-weight:bold; color:#38bdf8; display:block; margin-bottom:6px; font-size: 14px;">Cantidad:</label>
-              <div style="display: flex; align-items: center; gap: 10px;">
-                <button type="button" onclick="cambiarCantidadModal(-1)" style="background: #334155; color: #f8fafc; border: none; border-radius: 6px; width: 36px; height: 36px; font-size: 18px; font-weight: bold; cursor: pointer;">-</button>
-                <input type="number" id="modal-cantidad-input" value="1" min="1" readonly style="width: 50px; text-align: center; padding: 8px; border-radius: 6px; background: #0f172a; color: #f8fafc; border: 1px solid #334155; font-size: 16px; font-weight: bold;">
-                <button type="button" onclick="cambiarCantidadModal(1)" style="background: #334155; color: #f8fafc; border: none; border-radius: 6px; width: 36px; height: 36px; font-size: 18px; font-weight: bold; cursor: pointer;">+</button>
+              <!-- CONTROLES DE CANTIDAD -->
+              <div style="margin-bottom: 20px;">
+                <label style="font-weight:bold; color:#38bdf8; display:block; margin-bottom:8px; font-size: 15px;">Cantidad:</label>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <button type="button" onclick="cambiarCantidadModal(-1)" style="background: #334155; color: #f8fafc; border: none; border-radius: 8px; width: 42px; height: 42px; font-size: 20px; font-weight: bold; cursor: pointer;">-</button>
+                  <input type="number" id="modal-cantidad-input" value="1" min="1" readonly style="width: 60px; text-align: center; padding: 10px; border-radius: 8px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; font-size: 18px; font-weight: bold;">
+                  <button type="button" onclick="cambiarCantidadModal(1)" style="background: #334155; color: #f8fafc; border: none; border-radius: 8px; width: 42px; height: 42px; font-size: 20px; font-weight: bold; cursor: pointer;">+</button>
+                </div>
+              </div>
+
+              <div class="modal-desc-box" style="background: #1e293b; padding: 20px; border-radius: 12px; border: 1px solid #334155; margin-bottom: 25px;">
+                <h4 style="color: #94a3b8; margin: 0 0 10px 0; font-size: 15px;">Descripción detallada:</h4>
+                <div id="modal-descripcion" style="color: #cbd5e1; font-size: 15px; line-height: 1.7; white-space: pre-line;"></div>
               </div>
             </div>
 
-            <div class="modal-desc-box" style="background: #0f172a; padding: 15px; border-radius: 10px; border: 1px solid #334155; margin-bottom: 20px; max-height: 200px; overflow-y: auto;">
-              <h4 style="color: #94a3b8; margin: 0 0 8px 0; font-size: 14px;">Descripción:</h4>
-              <div id="modal-descripcion" style="color: #cbd5e1; font-size: 14px; line-height: 1.6; white-space: pre-line;"></div>
+            <div>
+              <button id="modal-btn-agregar" class="btn-detail" style="background: #38bdf8; color: #0f172a; border: none; padding: 16px; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 18px; width: 100%;">
+                🛒 Agregar al Pedido
+              </button>
             </div>
-          </div>
-
-          <div>
-            <button id="modal-btn-agregar" class="btn-detail" style="background: #38bdf8; color: #0f172a; border: none; padding: 14px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; width: 100%;">
-              🛒 Agregar al Pedido
-            </button>
           </div>
         </div>
       </div>
@@ -214,6 +218,10 @@
     let productosGlobal = [];
     let categoriaSeleccionada = "Todas";
     let carrito = [];
+
+    // VARIABLES DE PAGINACIÓN (5 COLUMNAS X 6 FILAS = 30 PRODUCTOS POR PÁGINA)
+    let paginaActual = 1;
+    const productosPorPagina = 30;
 
     // CARGAR INFORMACIÓN DE ENVÍOS DESDE FIREBASE
     async function cargarInfoEnvios() {
@@ -252,12 +260,17 @@
 
     window.filtrarCategoria = (cat) => {
       categoriaSeleccionada = cat;
+      paginaActual = 1;
       renderizarCategorias();
       renderizarProductos();
     };
 
-    document.getElementById('input-busqueda').addEventListener('input', renderizarProductos);
+    document.getElementById('input-busqueda').addEventListener('input', () => {
+      paginaActual = 1;
+      renderizarProductos();
+    });
 
+    // RENDERIZADO CON LÓGICA DE PAGINACIÓN DE 30 ITEMS POR PÁGINA
     function renderizarProductos() {
       const grid = document.getElementById('grid-productos');
       const busqueda = document.getElementById('input-busqueda').value.toLowerCase();
@@ -270,10 +283,18 @@
 
       if (filtrados.length === 0) {
         grid.innerHTML = `<p style="text-align:center; color: #94a3b8; grid-column: 1/-1;">No se encontraron productos.</p>`;
+        document.getElementById('paginacion-contenedor').innerHTML = '';
         return;
       }
 
-      grid.innerHTML = filtrados.map(p => {
+      const totalPaginas = Math.ceil(filtrados.length / productosPorPagina);
+      if (paginaActual > totalPaginas) paginaActual = 1;
+
+      const inicio = (paginaActual - 1) * productosPorPagina;
+      const fin = inicio + productosPorPagina;
+      const productosPagina = filtrados.slice(inicio, fin);
+
+      grid.innerHTML = productosPagina.map(p => {
         const img = (p.imagenes && p.imagenes[0]) || p.imagen || 'https://via.placeholder.com/200';
         return `
           <div class="product-card" onclick="verDetalle('${p.id}')" style="cursor: pointer;">
@@ -284,7 +305,35 @@
           </div>
         `;
       }).join('');
+
+      renderizarControlesPaginacion(totalPaginas);
     }
+
+    // CONTROLES DE PAGINACIÓN
+    function renderizarControlesPaginacion(totalPaginas) {
+      const pagContainer = document.getElementById('paginacion-contenedor');
+      if (totalPaginas <= 1) {
+        pagContainer.innerHTML = '';
+        return;
+      }
+
+      pagContainer.innerHTML = `
+        <button class="btn-page" ${paginaActual === 1 ? 'disabled' : ''} onclick="cambiarPagina(-1)">
+          <i class="fa-solid fa-chevron-left"></i> Anterior
+        </button>
+        <span class="page-info">Página ${paginaActual} de ${totalPaginas}</span>
+        <button class="btn-page" ${paginaActual === totalPaginas ? 'disabled' : ''} onclick="cambiarPagina(1)">
+          Siguiente <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      `;
+    }
+
+    window.cambiarPagina = (direccion) => {
+      paginaActual += direccion;
+      renderizarProductos();
+      const grid = document.getElementById('grid-productos');
+      grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
 
     // VISOR DE IMAGEN A PANTALLA COMPLETA
     window.abrirZoomImagen = (src) => {
@@ -305,6 +354,7 @@
       input.value = val;
     };
 
+    // DETALLE DE PRODUCTO DESLIZABLE FULL SCREEN (DESDE IZQUIERDA)
     window.verDetalle = (id) => {
       const p = productosGlobal.find(item => item.id === id);
       if (!p) return;
@@ -319,7 +369,7 @@
 
       const gallery = document.getElementById('modal-gallery');
       gallery.innerHTML = imgs.map(img => `
-        <img src="${img}" onclick="document.getElementById('modal-img-principal').src='${img}'" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 1px solid #334155;">
+        <img src="${img}" onclick="document.getElementById('modal-img-principal').src='${img}'" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 1px solid #334155;">
       `).join('');
 
       const selectColor = document.getElementById('modal-select-color');
@@ -338,11 +388,17 @@
         cerrarModal();
       };
 
-      document.getElementById('modal-detalle').style.display = 'flex';
+      const modal = document.getElementById('modal-detalle');
+      modal.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => modal.classList.add('active'), 10);
     };
 
     window.cerrarModal = () => {
-      document.getElementById('modal-detalle').style.display = 'none';
+      const modal = document.getElementById('modal-detalle');
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+      setTimeout(() => { modal.style.display = 'none'; }, 350);
     };
 
     // FUNCIONES DEL CARRITO

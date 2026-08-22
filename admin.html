@@ -3,172 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Peque Elektro - Panel Admin Pro</title>
+  <title>Peque Elektro - Panel Administrador</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    body { background-color: #0f172a; color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; }
-    .admin-container { max-width: 1100px; margin: 0 auto; }
-    h1, h2, h3 { color: #38bdf8; }
-    .section-box { background: #1e293b; padding: 22px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid #334155; }
-    
-    .grid-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 15px; }
-    .full-width { grid-column: 1 / -1; }
-    
-    label { font-size: 13px; color: #94a3b8; display: block; margin-bottom: 5px; font-weight: bold; }
-    input, select, textarea, button { padding: 10px 12px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: white; font-size: 14px; width: 100%; box-sizing: border-box; }
-    textarea { min-height: 90px; resize: vertical; }
-    
-    button { background: #0284c7; color: white; border: none; cursor: pointer; font-weight: bold; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
-    button:hover { background: #0369a1; }
-    .btn-danger { background: #ef4444; } .btn-danger:hover { background: #dc2626; }
-    .btn-success { background: #22c55e; } .btn-success:hover { background: #16a34a; }
-    .btn-warning { background: #f59e0b; color: #0f172a; } .btn-warning:hover { background: #d97706; }
-    
-    /* PEDIDOS */
-    .pedido-card { background: #0f172a; border: 1px solid #334155; padding: 18px; border-radius: 10px; margin-bottom: 20px; }
-    .pedido-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 12px; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
-    .order-id { font-weight: bold; color: #38bdf8; font-size: 17px; }
-    .order-date { font-size: 13px; color: #94a3b8; }
-    
-    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: #1e293b; border-radius: 6px; margin-bottom: 6px; font-size: 14px; }
-    .status-select { width: auto; font-weight: bold; font-size: 13px; padding: 6px 10px; }
-    
-    /* PRODUCTOS */
-    .prod-admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
-    .prod-card-admin { background: #0f172a; border: 1px solid #334155; padding: 15px; border-radius: 10px; text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
-    .prod-card-admin img { width: 100%; height: 150px; object-fit: cover; border-radius: 6px; margin-bottom: 10px; }
-    
-    /* BARRA CABECERA */
-    .auth-bar { display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 12px 20px; border-radius: 10px; margin-bottom: 25px; }
-  </style>
 </head>
 <body>
 
-  <div class="admin-container">
-    
-    <!-- BARRA SUPERIOR -->
-    <div class="auth-bar">
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <i class="fa-solid fa-user-shield" style="font-size: 24px; color: #38bdf8;"></i>
-        <span id="user-email-display" style="font-weight: bold; font-size: 15px;">Panel Admin - Peque Elektro</span>
-      </div>
-      <div style="display: flex; gap: 10px;">
-        <button type="button" class="btn-warning" style="width: auto;" onclick="recuperarPassword()"><i class="fa-solid fa-key"></i> Cambiar Clave</button>
-        <a href="index.html" style="color: #38bdf8; text-decoration: none; display: flex; align-items: center; gap: 5px; font-weight: bold;"><i class="fa-solid fa-store"></i> Ver Tienda</a>
-      </div>
-    </div>
+  <header class="banner-header">
+    <img src="logo.jpg" alt="Peque Elektro" class="banner-img">
+  </header>
 
-    <!-- SECCIÓN CONFIGURACIÓN DE INFORMACIÓN DE ENVÍOS -->
-    <section class="section-box">
-      <h2><i class="fa-solid fa-truck"></i> Modificar Información de Envíos</h2>
+  <main class="main-container">
+    <h1 style="color: #38bdf8; text-align: center; margin-bottom: 30px;">
+      <i class="fa-solid fa-user-gear"></i> Panel Administrador
+    </h1>
+
+    <!-- SECCIÓN 1: CONFIGURACIÓN DE ENVÍOS -->
+    <section class="add-review-box" style="margin-bottom: 40px;">
+      <h3><i class="fa-solid fa-truck-fast"></i> Configuración de Envíos y Entregas</h3>
       <form id="form-envios">
-        <div class="grid-form">
-          <div class="full-width">
-            <label>Puntos de encuentro (Gratis):</label>
-            <input type="text" id="cfg-puntos" placeholder="Ej: San Justo Centro | Ramos Mejía | Estación Morón | La Tablada" required>
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+          <div>
+            <label style="color: #38bdf8; font-weight: bold; font-size: 14px;">Puntos de Encuentro sin costo:</label>
+            <input type="text" id="envio-puntos" placeholder="Ej: San Justo, Ramos Mejía..." required style="width: 100%; margin-top: 5px;">
           </div>
-          <div class="full-width">
-            <label>Envíos por Correo:</label>
-            <input type="text" id="cfg-correo" placeholder="Ej: Al resto del país (costo a cargo del cliente)." required>
+          <div>
+            <label style="color: #38bdf8; font-weight: bold; font-size: 14px;">Envíos por Correo:</label>
+            <input type="text" id="envio-correo" placeholder="Ej: Correo Argentino a todo el país..." required style="width: 100%; margin-top: 5px;">
           </div>
-          <div class="full-width">
-            <label>Condición de Entrega:</label>
-            <input type="text" id="cfg-condicion" placeholder="Ej: Los despachos y entregas se realizan previo abono del producto." required>
+          <div>
+            <label style="color: #38bdf8; font-weight: bold; font-size: 14px;">Condición de entrega:</label>
+            <input type="text" id="envio-condicion" placeholder="Ej: Pagos contra entrega o transferencia previa..." required style="width: 100%; margin-top: 5px;">
           </div>
+          <button type="submit" class="btn-submit-review" style="background: #22c55e;"><i class="fa-solid fa-floppy-disk"></i> Guardar Configuración de Envíos</button>
         </div>
-        <button type="submit" class="btn-success" style="width: auto;"><i class="fa-solid fa-floppy-disk"></i> Guardar Políticas de Envío</button>
       </form>
     </section>
 
-    <!-- SECCIÓN PEDIDOS -->
-    <section class="section-box">
-      <h2><i class="fa-solid fa-receipt"></i> Pedidos Recibidos</h2>
-      <div id="lista-pedidos">
-        <p style="color: #94a3b8;">Cargando pedidos...</p>
-      </div>
-    </section>
-
-    <!-- SECCIÓN CREAR / EDITAR PRODUCTO -->
-    <section class="section-box">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <h2 id="form-title" style="margin: 0;"><i class="fa-solid fa-plus-circle"></i> Agregar Nuevo Producto</h2>
-        <button type="button" class="btn-success" style="width: auto;" onclick="resetForm()"><i class="fa-solid fa-plus"></i> Nuevo Producto Limpio</button>
-      </div>
-
+    <!-- SECCIÓN 2: CARGAR / EDITAR PRODUCTO -->
+    <section class="add-review-box" style="margin-bottom: 40px;">
+      <h3 id="form-titulo"><i class="fa-solid fa-plus-circle"></i> Agregar Nuevo Producto</h3>
       <form id="form-producto">
         <input type="hidden" id="prod-id">
         
-        <div class="grid-form">
-          <div>
-            <label>Nombre del Producto *</label>
-            <input type="text" id="prod-nombre" placeholder="Ej: Pava Eléctrica YELMO" required>
-          </div>
-          <div>
-            <label>Precio ($) *</label>
-            <input type="number" id="prod-precio" placeholder="24444.00" step="0.01" required>
-          </div>
-          <div>
-            <label>Categoría *</label>
-            <input type="text" id="prod-categoria" placeholder="Ej: Bazar, Herramientas" required>
-          </div>
-          <div>
-            <label>Subcategoría (Opcional)</label>
-            <input type="text" id="prod-subcategoria" placeholder="Ej: Cocina, Audio">
-          </div>
-          <div class="full-width">
-            <label>Colores Disponibles (Separados por coma)</label>
-            <input type="text" id="prod-colores" placeholder="Ej: Negro, Azul, Gris, Rojo">
-          </div>
+        <div class="review-inputs">
+          <input type="text" id="prod-nombre" placeholder="Nombre del producto *" required>
+          <input type="number" step="0.01" id="prod-precio" placeholder="Precio ($) *" required>
+          <input type="text" id="prod-categoria" placeholder="Categoría (Ej: Hogar, Tecnología) *" required>
         </div>
 
-        <div class="grid-form">
-          <div>
-            <label>Imagen 1 (Principal) *</label>
-            <input type="text" id="prod-img1" placeholder="URL Imagen Principal" required>
-          </div>
-          <div>
-            <label>Imagen 2 (Opcional)</label>
-            <input type="text" id="prod-img2" placeholder="URL Imagen 2">
-          </div>
-          <div>
-            <label>Imagen 3 (Opcional)</label>
-            <input type="text" id="prod-img3" placeholder="URL Imagen 3">
-          </div>
-          <div>
-            <label>Imagen 4 (Opcional)</label>
-            <input type="text" id="prod-img4" placeholder="URL Imagen 4">
-          </div>
+        <div style="margin-bottom: 15px;">
+          <label style="color: #38bdf8; font-size: 14px; font-weight: bold;">URLs de Imágenes (separadas por coma):</label>
+          <input type="text" id="prod-imagenes" placeholder="https://img1.jpg, https://img2.jpg" style="width: 100%; margin-top: 5px;" required>
         </div>
 
-        <div class="grid-form">
-          <div class="full-width">
-            <label>Descripción Detallada</label>
-            <textarea id="prod-descripcion" placeholder="Escribe las características aquí..."></textarea>
-          </div>
+        <div style="margin-bottom: 15px;">
+          <label style="color: #38bdf8; font-size: 14px; font-weight: bold;">Colores Disponibles (separados por coma, opcional):</label>
+          <input type="text" id="prod-colores" placeholder="Rojo, Negro, Azul" style="width: 100%; margin-top: 5px;">
         </div>
 
-        <div style="display: flex; gap: 10px; margin-top: 10px;">
-          <button type="submit" id="btn-guardar"><i class="fa-solid fa-save"></i> Guardar Producto</button>
-          <button type="button" id="btn-cancelar" class="btn-danger" style="display:none; width: auto;" onclick="resetForm()"><i class="fa-solid fa-xmark"></i> Cancelar Edición</button>
+        <textarea id="prod-descripcion" placeholder="Descripción detallada del producto..."></textarea>
+
+        <div style="display: flex; gap: 10px;">
+          <button type="submit" class="btn-submit-review"><i class="fa-solid fa-save"></i> Guardar Producto</button>
+          <button type="button" id="btn-cancelar-edit" class="btn-submit-review" style="background: #64748b; display: none;">Cancelar Edición</button>
         </div>
       </form>
     </section>
 
-    <!-- SECCIÓN LISTA DE PRODUCTOS -->
-    <section class="section-box">
-      <h2><i class="fa-solid fa-boxes-stacked"></i> Catálogo de Productos Existentes</h2>
-      <div id="grid-productos-admin" class="prod-admin-grid">
-        <p style="color: #94a3b8;">Cargando productos...</p>
+    <!-- SECCIÓN 3: LISTADO DE PRODUCTOS EXISTENTES -->
+    <section>
+      <h2 class="section-title">Productos en Catálogo</h2>
+      <div id="grid-admin-productos" class="products-grid">
+        <p style="text-align:center; color: #94a3b8; grid-column: 1/-1;">Cargando productos...</p>
       </div>
     </section>
 
-  </div>
+    <!-- SECCIÓN 4: PEDIDOS REGISTRADOS -->
+    <section style="margin-top: 50px;">
+      <h2 class="section-title"><i class="fa-solid fa-receipt"></i> Registro de Pedidos</h2>
+      <div id="lista-pedidos" style="display: flex; flex-direction: column; gap: 15px;">
+        <p style="text-align:center; color: #94a3b8;">Cargando pedidos...</p>
+      </div>
+    </section>
+
+  </main>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, addDoc, doc, setDoc, getDoc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc, getDoc, setDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
@@ -181,23 +104,21 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const auth = getAuth(app);
 
     let productos = [];
 
-    // --- CONFIGURACIÓN DE ENVÍOS (FIREBASE) ---
+    // 1. CARGAR CONFIGURACIÓN DE ENVÍOS
     async function cargarConfigEnvios() {
       try {
-        const docRef = doc(db, "configuracion", "envios");
-        const docSnap = await getDoc(docRef);
+        const docSnap = await getDoc(doc(db, "configuracion", "envios"));
         if (docSnap.exists()) {
           const data = docSnap.data();
-          document.getElementById("cfg-puntos").value = data.puntos || "";
-          document.getElementById("cfg-correo").value = data.correo || "";
-          document.getElementById("cfg-condicion").value = data.condicion || "";
+          document.getElementById("envio-puntos").value = data.puntos || "";
+          document.getElementById("envio-correo").value = data.correo || "";
+          document.getElementById("envio-condicion").value = data.condicion || "";
         }
       } catch (err) {
-        console.error("Error cargando configuración de envíos:", err);
+        console.error("Error al cargar envíos:", err);
       }
     }
 
@@ -205,248 +126,148 @@
       e.preventDefault();
       try {
         await setDoc(doc(db, "configuracion", "envios"), {
-          puntos: document.getElementById("cfg-puntos").value.trim(),
-          correo: document.getElementById("cfg-correo").value.trim(),
-          condicion: document.getElementById("cfg-condicion").value.trim()
+          puntos: document.getElementById("envio-puntos").value.trim(),
+          correo: document.getElementById("envio-correo").value.trim(),
+          condicion: document.getElementById("envio-condicion").value.trim()
         });
-        alert("✅ Políticas de envío guardadas con éxito.");
-      } catch (error) {
-        console.error("Error guardando envíos:", error);
-        alert("⚠️ Error al guardar los cambios.");
+        alert("✅ Configuración de envíos actualizada correctamente.");
+      } catch (err) {
+        alert("⚠️ Error al guardar configuración: " + err.message);
       }
     });
 
-    // --- RECUPERACIÓN DE CONTRASEÑA ---
-    window.recuperarPassword = async () => {
-      const email = prompt("Ingresa tu correo de administrador para cambiar clave:");
-      if (!email) return;
+    // 2. CARGAR Y GESTIONAR PRODUCTOS
+    async function cargarProductos() {
+      const grid = document.getElementById("grid-admin-productos");
+      const snap = await getDocs(collection(db, "productos"));
+      productos = [];
+      snap.forEach(d => productos.push({ id: d.id, ...d.data() }));
+
+      if (productos.length === 0) {
+        grid.innerHTML = '<p style="text-align:center; color:#94a3b8; grid-column:1/-1;">No hay productos cargados.</p>';
+        return;
+      }
+
+      grid.innerHTML = productos.map(p => {
+        const img = (p.imagenes && p.imagenes[0]) || p.imagen || 'https://via.placeholder.com/200';
+        return `
+          <div class="product-card">
+            <img src="${img}" alt="${p.nombre}">
+            <h3>${p.nombre}</h3>
+            <p class="price">$${parseFloat(p.precio || 0).toLocaleString('es-AR')}</p>
+            <div style="display: flex; gap: 8px; margin-top: 10px;">
+              <button onclick="editarProducto('${p.id}')" style="background:#0284c7; color:white; border:none; padding:8px; border-radius:6px; flex:1; cursor:pointer;">Editar</button>
+              <button onclick="eliminarProducto('${p.id}')" style="background:#ef4444; color:white; border:none; padding:8px; border-radius:6px; flex:1; cursor:pointer;">Eliminar</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.getElementById("form-producto").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = document.getElementById("prod-id").value;
+      const nombre = document.getElementById("prod-nombre").value.trim();
+      const precio = parseFloat(document.getElementById("prod-precio").value);
+      const categoria = document.getElementById("prod-categoria").value.trim();
+      const descripcion = document.getElementById("prod-descripcion").value.trim();
+      const imagenesRaw = document.getElementById("prod-imagenes").value.split(",").map(i => i.trim()).filter(Boolean);
+      const coloresRaw = document.getElementById("prod-colores").value.split(",").map(c => c.trim()).filter(Boolean);
+
+      const data = { nombre, precio, categoria, descripcion, imagenes: imagenesRaw, colores: coloresRaw };
 
       try {
-        await sendPasswordResetEmail(auth, email.trim());
-        alert("✅ Te hemos enviado un enlace a " + email);
-      } catch (error) {
-        alert("⚠️ Error: " + error.message);
+        if (id) {
+          await updateDoc(doc(db, "productos", id), data);
+          alert("✅ Producto actualizado con éxito.");
+        } else {
+          await addDoc(collection(db, "productos"), data);
+          alert("✅ Producto agregado con éxito.");
+        }
+        resetForm();
+        cargarProductos();
+      } catch (err) {
+        alert("⚠️ Error al guardar producto: " + err.message);
+      }
+    });
+
+    window.editarProducto = (id) => {
+      const p = productos.find(item => item.id === id);
+      if (!p) return;
+
+      document.getElementById("prod-id").value = p.id;
+      document.getElementById("prod-nombre").value = p.nombre;
+      document.getElementById("prod-precio").value = p.precio;
+      document.getElementById("prod-categoria").value = p.categoria;
+      document.getElementById("prod-descripcion").value = p.descripcion || "";
+      document.getElementById("prod-imagenes").value = (p.imagenes || [p.imagen]).join(", ");
+      document.getElementById("prod-colores").value = (p.colores || []).join(", ");
+
+      document.getElementById("form-titulo").innerHTML = '<i class="fa-solid fa-pen"></i> Editar Producto';
+      document.getElementById("btn-cancelar-edit").style.display = "block";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.eliminarProducto = async (id) => {
+      if (confirm("¿Estás seguro de que deseas eliminar este producto?")) {
+        try {
+          await deleteDoc(doc(db, "productos", id));
+          alert("🗑️ Producto eliminado.");
+          cargarProductos();
+        } catch (err) {
+          alert("Error al eliminar: " + err.message);
+        }
       }
     };
 
-    // --- GESTIÓN DE PEDIDOS REALTIME ---
-    function cargarPedidosRealtime() {
-      const contenedor = document.getElementById('lista-pedidos');
-      
-      onSnapshot(collection(db, "pedidos"), (snap) => {
+    document.getElementById("btn-cancelar-edit").onclick = resetForm;
+
+    function resetForm() {
+      document.getElementById("form-producto").reset();
+      document.getElementById("prod-id").value = "";
+      document.getElementById("form-titulo").innerHTML = '<i class="fa-solid fa-plus-circle"></i> Agregar Nuevo Producto';
+      document.getElementById("btn-cancelar-edit").style.display = "none";
+    }
+
+    // 3. CARGAR PEDIDOS REGISTRADOS
+    async function cargarPedidos() {
+      const contenedor = document.getElementById("lista-pedidos");
+      try {
+        const q = query(collection(db, "pedidos"), orderBy("timestamp", "desc"));
+        const snap = await getDocs(q);
+
         if (snap.empty) {
-          contenedor.innerHTML = `<p style="color: #94a3b8;">No hay pedidos registrados aún.</p>`;
+          contenedor.innerHTML = '<p style="text-align:center; color:#94a3b8;">No hay pedidos registrados.</p>';
           return;
         }
 
         let html = "";
-        snap.forEach(documento => {
-          const p = documento.data();
-          const id = documento.id;
-          const numOrden = `#ORD-${id.substring(0, 5).toUpperCase()}`;
-          const fechaStr = p.fecha ? new Date(p.fecha.seconds * 1000).toLocaleString('es-AR') : 'Reciente';
-          const estadoActual = p.estado || 'Pendiente';
-
-          let itemsHtml = "";
-          let totalCalculado = 0;
-
-          if (p.items && p.items.length > 0) {
-            p.items.forEach((it, idx) => {
-              const sub = it.subtotal || (it.precio * it.cantidad) || 0;
-              totalCalculado += sub;
-              const colorTxt = it.colorSeleccionado ? ` | Color: <strong style="color:#38bdf8">${it.colorSeleccionado}</strong>` : '';
-              
-              itemsHtml += `
-                <div class="item-row">
-                  <div>
-                    <strong>${it.cantidad}x</strong> ${it.nombre} ${colorTxt} - <span style="color:#38bdf8">$${sub.toLocaleString('es-AR')}</span>
-                  </div>
-                  <button class="btn-danger" style="width:auto; padding:4px 8px; font-size:12px;" onclick="eliminarProductoDePedido('${id}', ${idx})" title="Quitar item">
-                    <i class="fa-solid fa-minus-circle"></i> Quitar
-                  </button>
-                </div>
-              `;
-            });
-          } else {
-            itemsHtml = `<p style="color:#ef4444; font-size:13px;">Sin productos en este pedido.</p>`;
-          }
-
+        snap.forEach(d => {
+          const ped = d.data();
+          let itemsList = (ped.items || []).map(i => `<li>${i.nombre} x${i.cantidad} - $${(i.precio * i.cantidad).toLocaleString('es-AR')}</li>`).join('');
+          
           html += `
-            <div class="pedido-card">
-              <div class="pedido-header">
-                <div>
-                  <span class="order-id">${numOrden}</span>
-                  <span class="order-date"> | ${fechaStr}</span>
-                </div>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                  <select class="status-select" onchange="cambiarEstadoPedido('${id}', this.value)" style="background: #1e293b; color: white; border-color: #38bdf8;">
-                    <option value="Pendiente" ${estadoActual === 'Pendiente' ? 'selected' : ''}>🟡 Pendiente</option>
-                    <option value="En Preparación" ${estadoActual === 'En Preparación' ? 'selected' : ''}>📦 En Preparación</option>
-                    <option value="En Envío" ${estadoActual === 'En Envío' ? 'selected' : ''}>🚚 En Envío</option>
-                    <option value="Completado" ${estadoActual === 'Completado' ? 'selected' : ''}>✅ Completado</option>
-                  </select>
-                  <button class="btn-danger" style="width:auto; padding: 6px 12px;" onclick="eliminarPedido('${id}')"><i class="fa-solid fa-trash"></i></button>
-                </div>
+            <div style="background: #1e293b; border: 1px solid #334155; padding: 15px; border-radius: 10px;">
+              <div style="display: flex; justify-content: space-between; color: #38bdf8; font-weight: bold; margin-bottom: 8px;">
+                <span>${ped.orden || 'Pedido'}</span>
+                <span style="color: #cbd5e1; font-size: 13px;">${ped.fecha}</span>
               </div>
-              <div style="margin-bottom: 10px;">${itemsHtml}</div>
-              <div style="font-weight: bold; text-align: right; color: #38bdf8; font-size: 16px;">
-                Total Pedido: $${(p.total !== undefined ? p.total : totalCalculado).toLocaleString('es-AR')}
+              <ul style="margin: 0; padding-left: 20px; color: #f8fafc; font-size: 14px;">${itemsList}</ul>
+              <div style="text-align: right; color: #22c55e; font-weight: bold; font-size: 16px; margin-top: 10px;">
+                Total: $${parseFloat(ped.total || 0).toLocaleString('es-AR')}
               </div>
             </div>
           `;
         });
-
         contenedor.innerHTML = html;
-      });
+      } catch (err) {
+        console.error("Error al cargar pedidos:", err);
+      }
     }
 
-    window.eliminarProductoDePedido = async (pedidoId, itemIndex) => {
-      if (!confirm("¿Deseas quitar este producto del pedido?")) return;
-
-      const docRef = doc(db, "pedidos", pedidoId);
-      const snap = await getDocs(collection(db, "pedidos"));
-      let pedidoObj = null;
-
-      snap.forEach(d => { if (d.id === pedidoId) pedidoObj = d.data(); });
-      if (!pedidoObj || !pedidoObj.items) return;
-
-      pedidoObj.items.splice(itemIndex, 1);
-      let nuevoTotal = 0;
-      pedidoObj.items.forEach(it => { nuevoTotal += (it.subtotal || (it.precio * it.cantidad) || 0); });
-
-      await updateDoc(docRef, { items: pedidoObj.items, total: nuevoTotal });
-    };
-
-    window.cambiarEstadoPedido = async (id, nuevoEstado) => {
-      await updateDoc(doc(db, "pedidos", id), { estado: nuevoEstado });
-    };
-
-    window.eliminarPedido = async (id) => {
-      if (confirm("¿Estás seguro de eliminar este pedido completamente?")) {
-        await deleteDoc(doc(db, "pedidos", id));
-      }
-    };
-
-    // --- CARGAR PRODUCTOS Y FORMULARIO ---
-    async function cargarProductos() {
-      const contenedor = document.getElementById('grid-productos-admin');
-      const snap = await getDocs(collection(db, "productos"));
-      productos = [];
-      contenedor.innerHTML = "";
-
-      if (snap.empty) {
-        contenedor.innerHTML = `<p style="color: #94a3b8;">No hay productos registrados.</p>`;
-        return;
-      }
-
-      snap.forEach(documento => {
-        const prod = documento.data();
-        const id = documento.id;
-        productos.push({ id, ...prod });
-
-        const imgUrl = (prod.imagenes && prod.imagenes[0]) || prod.imagen || 'https://via.placeholder.com/150';
-
-        contenedor.innerHTML += `
-          <div class="prod-card-admin">
-            <div>
-              <img src="${imgUrl}" alt="${prod.nombre}" onerror="this.src='https://via.placeholder.com/150'">
-              <h4 style="margin: 8px 0 4px 0; font-size: 15px;">${prod.nombre}</h4>
-              <p style="color: #38bdf8; font-weight: bold; margin: 0 0 8px 0;">$${prod.precio.toLocaleString('es-AR')}</p>
-            </div>
-            <div style="display: flex; gap: 6px; justify-content: center; margin-top: 10px;">
-              <button class="btn-success" style="padding: 6px 12px; font-size: 12px;" onclick="prepararEdicion('${id}')"><i class="fa-solid fa-pen"></i> Editar</button>
-              <button class="btn-danger" style="padding: 6px 12px; font-size: 12px;" onclick="eliminarProducto('${id}')"><i class="fa-solid fa-trash"></i> Borrar</button>
-            </div>
-          </div>
-        `;
-      });
-    }
-
-    document.getElementById('form-producto').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const id = document.getElementById('prod-id').value;
-      const nombre = document.getElementById('prod-nombre').value;
-      const precio = parseFloat(document.getElementById('prod-precio').value);
-      const categoria = document.getElementById('prod-categoria').value;
-      const subcategoria = document.getElementById('prod-subcategoria').value;
-      
-      const img1 = document.getElementById('prod-img1').value.trim();
-      const img2 = document.getElementById('prod-img2').value.trim();
-      const img3 = document.getElementById('prod-img3').value.trim();
-      const img4 = document.getElementById('prod-img4').value.trim();
-
-      const imagenes = [img1, img2, img3, img4].filter(url => url !== "");
-      const coloresStr = document.getElementById('prod-colores').value.trim();
-      const colores = coloresStr ? coloresStr.split(',').map(c => c.trim()).filter(c => c !== "") : [];
-      const descripcion = document.getElementById('prod-descripcion').value;
-
-      const data = {
-        nombre,
-        precio,
-        categoria,
-        subcategoria: subcategoria || "",
-        imagenes: imagenes.length > 0 ? imagenes : [img1],
-        colores: colores,
-        descripcion: descripcion || ""
-      };
-
-      if (id) {
-        await updateDoc(doc(db, "productos", id), data);
-        alert("✅ Producto actualizado correctamente.");
-      } else {
-        await addDoc(collection(db, "productos"), data);
-        alert("✅ Producto creado exitosamente.");
-      }
-
-      resetForm();
-      cargarProductos();
-    });
-
-    window.prepararEdicion = (id) => {
-      const p = productos.find(item => item.id === id);
-      if (!p) return;
-
-      document.getElementById('prod-id').value = p.id;
-      document.getElementById('prod-nombre').value = p.nombre;
-      document.getElementById('prod-precio').value = p.precio;
-      document.getElementById('prod-categoria').value = p.categoria || "";
-      document.getElementById('prod-subcategoria').value = p.subcategoria || "";
-      
-      const imgs = p.imagenes || [p.imagen || ""];
-      document.getElementById('prod-img1').value = imgs[0] || "";
-      document.getElementById('prod-img2').value = imgs[1] || "";
-      document.getElementById('prod-img3').value = imgs[2] || "";
-      document.getElementById('prod-img4').value = imgs[3] || "";
-
-      document.getElementById('prod-colores').value = p.colores ? p.colores.join(', ') : "";
-      document.getElementById('prod-descripcion').value = p.descripcion || "";
-
-      document.getElementById('form-title').innerHTML = `<i class="fa-solid fa-pen"></i> Editar Producto`;
-      document.getElementById('btn-guardar').innerHTML = `<i class="fa-solid fa-arrows-rotate"></i> Actualizar Producto`;
-      document.getElementById('btn-cancelar').style.display = 'inline-flex';
-      
-      window.scrollTo({ top: document.getElementById('form-producto').offsetTop - 20, behavior: 'smooth' });
-    };
-
-    window.resetForm = () => {
-      document.getElementById('form-producto').reset();
-      document.getElementById('prod-id').value = "";
-      document.getElementById('form-title').innerHTML = `<i class="fa-solid fa-plus-circle"></i> Agregar Nuevo Producto`;
-      document.getElementById('btn-guardar').innerHTML = `<i class="fa-solid fa-save"></i> Guardar Producto`;
-      document.getElementById('btn-cancelar').style.display = 'none';
-    };
-
-    window.eliminarProducto = async (id) => {
-      if (confirm("¿Seguro que deseas eliminar este producto?")) {
-        await deleteDoc(doc(db, "productos", id));
-        cargarProductos();
-      }
-    };
-
-    // Inicializaciones
     cargarConfigEnvios();
-    cargarPedidosRealtime();
     cargarProductos();
+    cargarPedidos();
   </script>
 </body>
 </html>

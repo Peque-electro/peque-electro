@@ -4,23 +4,18 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
-
 
 /* BANNER A FULL ANCHO DE LA PÁGINA */
-body {
-  margin: 0;
-  padding: 0;
-}
-
 .banner-header {
-  width: 100vw; /* Ocupa el 100% del ancho de la pantalla */
+  width: 100vw;
   position: relative;
   left: 50%;
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-  background: #ffffff; /* Fondo blanco para integrarse perfectamente con el diseño */
+  background: #ffffff;
   overflow: hidden;
 }
 
@@ -28,10 +23,9 @@ body {
   width: 100%;
   height: auto;
   display: block;
-  object-fit: fill; /* Fuerza a extender la imagen sin recortar los bordes */
+  object-fit: fill;
 }
 
-/* Ajuste móvil para pantallas pequeñas */
 @media (max-width: 768px) {
   .banner-img {
     max-height: 300px;
@@ -91,6 +85,43 @@ body {
   border-radius: 8px;
   display: inline-block;
   border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+/* BANNER DE ENVÍOS */
+.shipping-banner {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 15px;
+  max-width: 1100px;
+  margin: 25px auto 0 auto;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  text-align: left;
+}
+
+.shipping-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.shipping-item i {
+  font-size: 1.5rem;
+  color: #00aaff;
+}
+
+.shipping-item strong {
+  display: block;
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+.shipping-item p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.85rem;
 }
 
 /* CONTENEDOR PRINCIPAL */
@@ -163,7 +194,7 @@ body {
 /* GRID DE PRODUCTOS */
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
 }
 
@@ -176,6 +207,12 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: #38bdf8;
 }
 
 .product-card img {
@@ -208,10 +245,97 @@ body {
   font-weight: bold;
   cursor: pointer;
   width: 100%;
+  transition: background 0.2s;
 }
 
 .btn-detail:hover {
   background: #0369a1;
+}
+
+/* PAGINACIÓN DE PRODUCTOS */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn-page {
+  background: #1e293b;
+  color: #38bdf8;
+  border: 1px solid #334155;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-page:hover:not(:disabled) {
+  background: #0284c7;
+  color: white;
+  border-color: #38bdf8;
+}
+
+.btn-page:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-info {
+  color: #cbd5e1;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* MODAL FULLSCREEN DESLIZABLE DESDE LA IZQUIERDA */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 2000;
+}
+
+.modal-content-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #0f172a;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.modal-overlay.active .modal-content-fullscreen {
+  transform: translateX(0);
+}
+
+.fullscreen-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  position: relative;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.modal-grid-large {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 30px;
+}
+
+@media (max-width: 850px) {
+  .modal-grid-large {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
 }
 
 /* SECCIÓN RESEÑAS DISEÑO MEJORADO */
@@ -338,95 +462,6 @@ body {
   background: #0369a1;
 }
 
-/* MODAL DETALLES */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.8);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  padding: 15px;
-  box-sizing: border-box;
-}
-
-.modal-content {
-  background: #1e293b;
-  border-radius: 12px;
-  padding: 25px;
-  max-width: 750px;
-  width: 100%;
-  position: relative;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-.modal-close {
-  position: absolute;
-  top: 10px; right: 15px;
-  background: none; border: none;
-  color: white; font-size: 28px; cursor: pointer;
-}
-
-.modal-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.modal-images img {
-  width: 100%;
-  max-height: 250px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.gallery-thumbs {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-  overflow-x: auto;
-}
-
-.gallery-thumbs img {
-  width: 50px; height: 50px;
-  object-fit: cover;
-  border-radius: 6px;
-  cursor: pointer;
-  border: 1px solid #334155;
-}
-
-.modal-price {
-  font-size: 22px;
-  font-weight: bold;
-  color: #38bdf8;
-  margin: 10px 0;
-}
-
-.modal-desc-box {
-  background: #0f172a;
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-}
-
-.btn-wsp {
-  background: #22c55e;
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 8px;
-  font-weight: bold;
-  width: 100%;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.btn-wsp:hover {
-  background: #16a34a;
-}
-
 footer {
   text-align: center;
   padding: 20px;
@@ -434,39 +469,4 @@ footer {
   font-size: 14px;
   border-top: 1px solid #334155;
   background: #0f172a;
-}
-
-.shipping-banner {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 15px;
-  margin-top: 25px;
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  text-align: left;
-}
-
-.shipping-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.shipping-item i {
-  font-size: 1.5rem;
-  color: #00aaff;
-}
-
-.shipping-item strong {
-  display: block;
-  color: #ffffff;
-  font-size: 0.9rem;
-}
-
-.shipping-item p {
-  margin: 0;
-  color: #94a3b8;
-  font-size: 0.85rem;
 }
