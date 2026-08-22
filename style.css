@@ -1,6 +1,6 @@
 body {
-  background-color: #0f172a;
-  color: #f8fafc;
+  background-color: #000000e8;
+  color: #000000;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
@@ -15,7 +15,7 @@ body {
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-  background: #ffffff;
+  background: #601212;
   overflow: hidden;
 }
 
@@ -46,14 +46,14 @@ body {
 }
 
 .slogan-container h2 {
-  color: #38bdf8;
+  color: #e67e06;
   font-size: 26px;
   margin-top: 0;
   margin-bottom: 10px;
 }
 
 .slogan-intro {
-  color: #cbd5e1;
+  color: #d4f2d7;
   font-size: 16px;
   margin-bottom: 20px;
 }
@@ -68,7 +68,7 @@ body {
 
 .slogan-list li {
   font-size: 15px;
-  color: #f8fafc;
+  color: #55ea9f;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
@@ -76,11 +76,11 @@ body {
 }
 
 .slogan-badge {
-  color: #38bdf8;
+  color: #ffffff;
   font-weight: bold;
   font-size: 15px;
   margin: 0;
-  background: rgba(56, 189, 248, 0.1);
+  background: rgba(248, 56, 56, 0.505);
   padding: 10px 15px;
   border-radius: 8px;
   display: inline-block;
@@ -120,7 +120,7 @@ body {
 
 .shipping-item p {
   margin: 0;
-  color: #94a3b8;
+  color: #79f7ad;
   font-size: 0.85rem;
 }
 
@@ -199,7 +199,7 @@ body {
 }
 
 .product-card {
-  background: #1e293b;
+  background: #3c784a;
   border: 1px solid #334155;
   border-radius: 12px;
   padding: 15px;
@@ -294,7 +294,7 @@ body {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(3, 114, 47, 0.75);
   z-index: 2000;
 }
 
@@ -304,7 +304,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #0f172a;
+  background: #0f2a253c;
   overflow-y: auto;
   transform: translateX(-100%);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
@@ -340,7 +340,7 @@ body {
 
 /* SECCIÓN RESEÑAS DISEÑO MEJORADO */
 .reviews-section {
-  background-color: #0b1120;
+  background-color: #264f076e;
   padding: 50px 20px;
   border-top: 1px solid #334155;
   margin-top: 50px;
