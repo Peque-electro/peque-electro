@@ -188,7 +188,7 @@ body {
 .btn-cat.active, .btn-cat:hover {
   background: #0284c7;
   color: white;
-  border-color: #38bdf8;
+  border-color: #c20202;
 }
 
 /* GRID DE PRODUCTOS */
@@ -232,7 +232,7 @@ body {
 .product-card .price {
   font-size: 18px;
   font-weight: bold;
-  color: #38bdf8;
+  color: #f84538;
   margin: 0 0 12px 0;
 }
 
