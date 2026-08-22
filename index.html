@@ -197,7 +197,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, addDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, addDoc, query, orderBy, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
@@ -214,6 +214,23 @@
     let productosGlobal = [];
     let categoriaSeleccionada = "Todas";
     let carrito = [];
+
+    // CARGAR INFORMACIÓN DE ENVÍOS DESDE FIREBASE
+    async function cargarInfoEnvios() {
+      try {
+        const docRef = doc(db, "configuracion", "envios");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (data.puntos) document.getElementById("info-puntos").textContent = data.puntos;
+          if (data.correo) document.getElementById("info-correo").textContent = data.correo;
+          if (data.condicion) document.getElementById("info-condicion").textContent = data.condicion;
+        }
+      } catch (error) {
+        console.error("Error al cargar la información de envíos:", error);
+      }
+    }
 
     // CARGAR PRODUCTOS
     async function cargarProductos() {
@@ -269,7 +286,7 @@
       }).join('');
     }
 
-    // VISOR DE IMAGEN A PANTALLA COMPLETA (GIGANTE)
+    // VISOR DE IMAGEN A PANTALLA COMPLETA
     window.abrirZoomImagen = (src) => {
       const img = document.getElementById('lightbox-img');
       img.src = src;
@@ -328,7 +345,7 @@
       document.getElementById('modal-detalle').style.display = 'none';
     };
 
-    // FUNCIONES DEL CARRITO CON MODIFICACIÓN DE CANTIDADES
+    // FUNCIONES DEL CARRITO
     function agregarAlCarrito(producto, color, cantidad = 1) {
       const nombreItem = color ? `${producto.nombre} (${color})` : producto.nombre;
       const existe = carrito.find(item => item.nombre === nombreItem);
@@ -396,7 +413,7 @@
       cartTotalContainer.innerText = `$${total.toLocaleString('es-AR')}`;
     }
 
-    // ENVÍO DE PEDIDOS GUARDANDO EN FIREBASE FIRESTORE
+    // ENVÍO DE PEDIDOS GUARDANDO EN FIREBASE
     document.getElementById('btn-send-order').onclick = async () => {
       if (carrito.length === 0) {
         alert('Tu carrito está vacío. Agrega productos antes de enviar el pedido.');
@@ -486,6 +503,8 @@
       }
     });
 
+    // EJECUTAR FUNCIONES AL CARGAR LA PÁGINA
+    cargarInfoEnvios();
     cargarProductos();
     cargarResenas();
   </script>
