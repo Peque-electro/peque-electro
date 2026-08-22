@@ -435,3 +435,38 @@ footer {
   border-top: 1px solid #334155;
   background: #0f172a;
 }
+
+.shipping-banner {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 15px;
+  margin-top: 25px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  text-align: left;
+}
+
+.shipping-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.shipping-item i {
+  font-size: 1.5rem;
+  color: #00aaff;
+}
+
+.shipping-item strong {
+  display: block;
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+.shipping-item p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
