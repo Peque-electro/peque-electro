@@ -1,6 +1,6 @@
 body {
-  background-color: #000000e8;
-  color: #000000;
+  background-color: #79c3c3e8;
+  color: #eae1e1;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
@@ -34,7 +34,7 @@ body {
 
 /* NUEVO ESLOGAN DE PRESENTACIÓN */
 .hero-slogan {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  background: linear-gradient(135deg, #1e8d38 0%, #0f172a 100%);
   border-bottom: 1px solid #334155;
   padding: 35px 20px;
 }
@@ -132,7 +132,7 @@ body {
 }
 
 .section-title {
-  color: #38bdf8;
+  color: #55f838;
   border-left: 4px solid #38bdf8;
   padding-left: 10px;
   margin-bottom: 20px;
@@ -199,7 +199,7 @@ body {
 }
 
 .product-card {
-  background: #3c784a;
+  background: #25def78c;
   border: 1px solid #334155;
   border-radius: 12px;
   padding: 15px;
@@ -212,7 +212,7 @@ body {
 
 .product-card:hover {
   transform: translateY(-4px);
-  border-color: #38bdf8;
+  border-color: #44010f;
 }
 
 .product-card img {
