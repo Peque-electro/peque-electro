@@ -18,51 +18,96 @@
       <i class="fa-solid fa-user-gear"></i> Panel Administrador
     </h1>
 
-    <!-- SECCIÓN 1: CONFIGURACIÓN DE ENVÍOS -->
-    <section class="add-review-box" style="margin-bottom: 40px;">
-      <h3><i class="fa-solid fa-truck-fast"></i> Configuración de Envíos y Entregas</h3>
-      <form id="form-envios">
-        <div style="display: flex; flex-direction: column; gap: 15px;">
+    <!-- 1. EDICIÓN DEL ESLOGAN Y PRESENTACIÓN (SEGUNDA FOTO) -->
+    <section class="add-review-box" style="margin-bottom: 30px;">
+      <h3><i class="fa-solid fa-bullhorn"></i> Editar Texto de Presentación (Eslogan)</h3>
+      <form id="form-slogan">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
           <div>
-            <label style="color: #38bdf8; font-weight: bold; font-size: 14px;">Puntos de Encuentro sin costo:</label>
-            <input type="text" id="envio-puntos" placeholder="Ej: San Justo, Ramos Mejía..." required style="width: 100%; margin-top: 5px;">
+            <label style="color: #38bdf8; font-size: 13px; font-weight: bold;">Título Principal:</label>
+            <input type="text" id="slogan-titulo" placeholder="Ej: Peque Elektro: Tu solución integral." required style="width: 100%;">
           </div>
           <div>
-            <label style="color: #38bdf8; font-weight: bold; font-size: 14px;">Envíos por Correo:</label>
-            <input type="text" id="envio-correo" placeholder="Ej: Correo Argentino a todo el país..." required style="width: 100%; margin-top: 5px;">
+            <label style="color: #38bdf8; font-size: 13px; font-weight: bold;">Bajada / Introducción:</label>
+            <input type="text" id="slogan-intro" placeholder="Ej: Simplificamos tu búsqueda ofreciéndote variedad..." required style="width: 100%;">
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px;">
+            <div>
+              <label style="color: #cbd5e1; font-size: 12px;">Item 1 (Hogar/Bazar):</label>
+              <input type="text" id="slogan-item1" style="width: 100%;">
+            </div>
+            <div>
+              <label style="color: #cbd5e1; font-size: 12px;">Item 2 (Tecnología):</label>
+              <input type="text" id="slogan-item2" style="width: 100%;">
+            </div>
+            <div>
+              <label style="color: #cbd5e1; font-size: 12px;">Item 3 (Herramientas):</label>
+              <input type="text" id="slogan-item3" style="width: 100%;">
+            </div>
           </div>
           <div>
-            <label style="color: #38bdf8; font-weight: bold; font-size: 14px;">Condición de entrega:</label>
-            <input type="text" id="envio-condicion" placeholder="Ej: Pagos contra entrega o transferencia previa..." required style="width: 100%; margin-top: 5px;">
+            <label style="color: #38bdf8; font-size: 13px; font-weight: bold;">Texto del Badge / Botón Inferior:</label>
+            <input type="text" id="slogan-badge" style="width: 100%;">
           </div>
-          <button type="submit" class="btn-submit-review" style="background: #22c55e;"><i class="fa-solid fa-floppy-disk"></i> Guardar Configuración de Envíos</button>
+          <button type="submit" class="btn-submit-review" style="background: #0284c7;"><i class="fa-solid fa-floppy-disk"></i> Guardar Presentación</button>
         </div>
       </form>
     </section>
 
-    <!-- SECCIÓN 2: CARGAR / EDITAR PRODUCTO -->
+    <!-- 2. CONFIGURACIÓN DE ENVÍOS -->
+    <section class="add-review-box" style="margin-bottom: 30px;">
+      <h3><i class="fa-solid fa-truck-fast"></i> Configuración de Envíos y Entregas</h3>
+      <form id="form-envios">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div>
+            <label style="color: #38bdf8; font-weight: bold; font-size: 13px;">Puntos de Encuentro sin costo:</label>
+            <input type="text" id="envio-puntos" required style="width: 100%;">
+          </div>
+          <div>
+            <label style="color: #38bdf8; font-weight: bold; font-size: 13px;">Envíos por Correo:</label>
+            <input type="text" id="envio-correo" required style="width: 100%;">
+          </div>
+          <div>
+            <label style="color: #38bdf8; font-weight: bold; font-size: 13px;">Condición de entrega:</label>
+            <input type="text" id="envio-condicion" required style="width: 100%;">
+          </div>
+          <button type="submit" class="btn-submit-review" style="background: #22c55e;"><i class="fa-solid fa-floppy-disk"></i> Guardar Envíos</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 3. FORMULARIO DE PRODUCTOS COMPLETO -->
     <section class="add-review-box" style="margin-bottom: 40px;">
-      <h3 id="form-titulo"><i class="fa-solid fa-plus-circle"></i> Agregar Nuevo Producto</h3>
+      <h3 id="form-titulo"><i class="fa-solid fa-plus-circle"></i> Cargar / Editar Producto</h3>
       <form id="form-producto">
         <input type="hidden" id="prod-id">
         
         <div class="review-inputs">
           <input type="text" id="prod-nombre" placeholder="Nombre del producto *" required>
           <input type="number" step="0.01" id="prod-precio" placeholder="Precio ($) *" required>
-          <input type="text" id="prod-categoria" placeholder="Categoría (Ej: Hogar, Tecnología) *" required>
+          <input type="text" id="prod-categoria" placeholder="Categoría Principal *" required>
+          <input type="text" id="prod-subcategoria" placeholder="Subcategoría (Opcional)">
         </div>
 
         <div style="margin-bottom: 15px;">
-          <label style="color: #38bdf8; font-size: 14px; font-weight: bold;">URLs de Imágenes (separadas por coma):</label>
-          <input type="text" id="prod-imagenes" placeholder="https://img1.jpg, https://img2.jpg" style="width: 100%; margin-top: 5px;" required>
+          <label style="color: #38bdf8; font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;">URLs de Imágenes (Hasta 4 imágenes):</label>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px;">
+            <input type="text" id="prod-img1" placeholder="Imagen Principal (URL) *" required>
+            <input type="text" id="prod-img2" placeholder="Imagen 2 (Opcional)">
+            <input type="text" id="prod-img3" placeholder="Imagen 3 (Opcional)">
+            <input type="text" id="prod-img4" placeholder="Imagen 4 (Opcional)">
+          </div>
         </div>
 
         <div style="margin-bottom: 15px;">
-          <label style="color: #38bdf8; font-size: 14px; font-weight: bold;">Colores Disponibles (separados por coma, opcional):</label>
-          <input type="text" id="prod-colores" placeholder="Rojo, Negro, Azul" style="width: 100%; margin-top: 5px;">
+          <label style="color: #38bdf8; font-size: 13px; font-weight: bold;">Colores Disponibles (Separados por coma):</label>
+          <input type="text" id="prod-colores" placeholder="Ej: Azul, Rosa, Negro" style="width: 100%; margin-top: 4px;">
         </div>
 
-        <textarea id="prod-descripcion" placeholder="Descripción detallada del producto..."></textarea>
+        <div style="margin-bottom: 15px;">
+          <label style="color: #38bdf8; font-size: 13px; font-weight: bold;">Descripción Completa y Ficha Técnica:</label>
+          <textarea id="prod-descripcion" placeholder="Escribe aquí las especificaciones técnicas..." style="height: 180px; width: 100%; margin-top: 4px; font-family: monospace;"></textarea>
+        </div>
 
         <div style="display: flex; gap: 10px;">
           <button type="submit" class="btn-submit-review"><i class="fa-solid fa-save"></i> Guardar Producto</button>
@@ -71,19 +116,19 @@
       </form>
     </section>
 
-    <!-- SECCIÓN 3: LISTADO DE PRODUCTOS EXISTENTES -->
-    <section>
-      <h2 class="section-title">Productos en Catálogo</h2>
-      <div id="grid-admin-productos" class="products-grid">
-        <p style="text-align:center; color: #94a3b8; grid-column: 1/-1;">Cargando productos...</p>
+    <!-- 4. REGISTRO Y GESTIÓN DE PEDIDOS/ÓRDENES -->
+    <section style="margin-bottom: 50px;">
+      <h2 class="section-title"><i class="fa-solid fa-boxes-packing"></i> Gestión de Órdenes de Trabajo</h2>
+      <div id="lista-pedidos" style="display: flex; flex-direction: column; gap: 20px;">
+        <p style="text-align:center; color: #94a3b8;">Cargando órdenes...</p>
       </div>
     </section>
 
-    <!-- SECCIÓN 4: PEDIDOS REGISTRADOS -->
-    <section style="margin-top: 50px;">
-      <h2 class="section-title"><i class="fa-solid fa-receipt"></i> Registro de Pedidos</h2>
-      <div id="lista-pedidos" style="display: flex; flex-direction: column; gap: 15px;">
-        <p style="text-align:center; color: #94a3b8;">Cargando pedidos...</p>
+    <!-- 5. CATÁLOGO ADMIN -->
+    <section>
+      <h2 class="section-title"><i class="fa-solid fa-list"></i> Productos en Catálogo</h2>
+      <div id="grid-admin-productos" class="products-grid">
+        <p style="text-align:center; color: #94a3b8; grid-column: 1/-1;">Cargando productos...</p>
       </div>
     </section>
 
@@ -106,20 +151,50 @@
     const db = getFirestore(app);
 
     let productos = [];
+    let pedidosGlobales = [];
 
-    // 1. CARGAR CONFIGURACIÓN DE ENVÍOS
+    // 1. CARGAR Y GUARDAR ESLOGAN
+    async function cargarSlogan() {
+      try {
+        const snap = await getDoc(doc(db, "configuracion", "slogan"));
+        if (snap.exists()) {
+          const d = snap.data();
+          document.getElementById("slogan-titulo").value = d.titulo || "";
+          document.getElementById("slogan-intro").value = d.intro || "";
+          document.getElementById("slogan-item1").value = d.item1 || "";
+          document.getElementById("slogan-item2").value = d.item2 || "";
+          document.getElementById("slogan-item3").value = d.item3 || "";
+          document.getElementById("slogan-badge").value = d.badge || "";
+        }
+      } catch(e) { console.error(e); }
+    }
+
+    document.getElementById("form-slogan").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        await setDoc(doc(db, "configuracion", "slogan"), {
+          titulo: document.getElementById("slogan-titulo").value.trim(),
+          intro: document.getElementById("slogan-intro").value.trim(),
+          item1: document.getElementById("slogan-item1").value.trim(),
+          item2: document.getElementById("slogan-item2").value.trim(),
+          item3: document.getElementById("slogan-item3").value.trim(),
+          badge: document.getElementById("slogan-badge").value.trim()
+        });
+        alert("✅ Presentación actualizada.");
+      } catch(err) { alert("Error: " + err.message); }
+    });
+
+    // 2. CARGAR Y GUARDAR ENVÍOS
     async function cargarConfigEnvios() {
       try {
-        const docSnap = await getDoc(doc(db, "configuracion", "envios"));
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          document.getElementById("envio-puntos").value = data.puntos || "";
-          document.getElementById("envio-correo").value = data.correo || "";
-          document.getElementById("envio-condicion").value = data.condicion || "";
+        const snap = await getDoc(doc(db, "configuracion", "envios"));
+        if (snap.exists()) {
+          const d = snap.data();
+          document.getElementById("envio-puntos").value = d.puntos || "";
+          document.getElementById("envio-correo").value = d.correo || "";
+          document.getElementById("envio-condicion").value = d.condicion || "";
         }
-      } catch (err) {
-        console.error("Error al cargar envíos:", err);
-      }
+      } catch (err) { console.error(err); }
     }
 
     document.getElementById("form-envios").addEventListener("submit", async (e) => {
@@ -130,13 +205,11 @@
           correo: document.getElementById("envio-correo").value.trim(),
           condicion: document.getElementById("envio-condicion").value.trim()
         });
-        alert("✅ Configuración de envíos actualizada correctamente.");
-      } catch (err) {
-        alert("⚠️ Error al guardar configuración: " + err.message);
-      }
+        alert("✅ Envíos guardados.");
+      } catch (err) { alert("Error: " + err.message); }
     });
 
-    // 2. CARGAR Y GESTIONAR PRODUCTOS
+    // 3. PRODUCTOS Y FORMULARIO CON 4 FOTOS
     async function cargarProductos() {
       const grid = document.getElementById("grid-admin-productos");
       const snap = await getDocs(collection(db, "productos"));
@@ -144,7 +217,7 @@
       snap.forEach(d => productos.push({ id: d.id, ...d.data() }));
 
       if (productos.length === 0) {
-        grid.innerHTML = '<p style="text-align:center; color:#94a3b8; grid-column:1/-1;">No hay productos cargados.</p>';
+        grid.innerHTML = '<p style="text-align:center; color:#94a3b8; grid-column:1/-1;">Sin productos.</p>';
         return;
       }
 
@@ -170,25 +243,30 @@
       const nombre = document.getElementById("prod-nombre").value.trim();
       const precio = parseFloat(document.getElementById("prod-precio").value);
       const categoria = document.getElementById("prod-categoria").value.trim();
+      const subcategoria = document.getElementById("prod-subcategoria").value.trim();
       const descripcion = document.getElementById("prod-descripcion").value.trim();
-      const imagenesRaw = document.getElementById("prod-imagenes").value.split(",").map(i => i.trim()).filter(Boolean);
-      const coloresRaw = document.getElementById("prod-colores").value.split(",").map(c => c.trim()).filter(Boolean);
+      const colores = document.getElementById("prod-colores").value.split(",").map(c => c.trim()).filter(Boolean);
 
-      const data = { nombre, precio, categoria, descripcion, imagenes: imagenesRaw, colores: coloresRaw };
+      const imgs = [
+        document.getElementById("prod-img1").value.trim(),
+        document.getElementById("prod-img2").value.trim(),
+        document.getElementById("prod-img3").value.trim(),
+        document.getElementById("prod-img4").value.trim()
+      ].filter(Boolean);
+
+      const data = { nombre, precio, categoria, subcategoria, descripcion, imagenes: imgs, colores };
 
       try {
         if (id) {
           await updateDoc(doc(db, "productos", id), data);
-          alert("✅ Producto actualizado con éxito.");
+          alert("✅ Producto actualizado.");
         } else {
           await addDoc(collection(db, "productos"), data);
-          alert("✅ Producto agregado con éxito.");
+          alert("✅ Producto agregado.");
         }
         resetForm();
         cargarProductos();
-      } catch (err) {
-        alert("⚠️ Error al guardar producto: " + err.message);
-      }
+      } catch (err) { alert("Error: " + err.message); }
     });
 
     window.editarProducto = (id) => {
@@ -198,25 +276,26 @@
       document.getElementById("prod-id").value = p.id;
       document.getElementById("prod-nombre").value = p.nombre;
       document.getElementById("prod-precio").value = p.precio;
-      document.getElementById("prod-categoria").value = p.categoria;
+      document.getElementById("prod-categoria").value = p.categoria || "";
+      document.getElementById("prod-subcategoria").value = p.subcategoria || "";
       document.getElementById("prod-descripcion").value = p.descripcion || "";
-      document.getElementById("prod-imagenes").value = (p.imagenes || [p.imagen]).join(", ");
       document.getElementById("prod-colores").value = (p.colores || []).join(", ");
+
+      const imgs = p.imagenes || [p.imagen];
+      document.getElementById("prod-img1").value = imgs[0] || "";
+      document.getElementById("prod-img2").value = imgs[1] || "";
+      document.getElementById("prod-img3").value = imgs[2] || "";
+      document.getElementById("prod-img4").value = imgs[3] || "";
 
       document.getElementById("form-titulo").innerHTML = '<i class="fa-solid fa-pen"></i> Editar Producto';
       document.getElementById("btn-cancelar-edit").style.display = "block";
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 400, behavior: 'smooth' });
     };
 
     window.eliminarProducto = async (id) => {
-      if (confirm("¿Estás seguro de que deseas eliminar este producto?")) {
-        try {
-          await deleteDoc(doc(db, "productos", id));
-          alert("🗑️ Producto eliminado.");
-          cargarProductos();
-        } catch (err) {
-          alert("Error al eliminar: " + err.message);
-        }
+      if (confirm("¿Eliminar este producto?")) {
+        await deleteDoc(doc(db, "productos", id));
+        cargarProductos();
       }
     };
 
@@ -225,11 +304,11 @@
     function resetForm() {
       document.getElementById("form-producto").reset();
       document.getElementById("prod-id").value = "";
-      document.getElementById("form-titulo").innerHTML = '<i class="fa-solid fa-plus-circle"></i> Agregar Nuevo Producto';
+      document.getElementById("form-titulo").innerHTML = '<i class="fa-solid fa-plus-circle"></i> Cargar / Editar Producto';
       document.getElementById("btn-cancelar-edit").style.display = "none";
     }
 
-    // 3. CARGAR PEDIDOS REGISTRADOS
+    // 4. GESTIÓN DE PEDIDOS / ÓRDENES DE TRABAJO (PROCESO Y EDICIÓN)
     async function cargarPedidos() {
       const contenedor = document.getElementById("lista-pedidos");
       try {
@@ -237,34 +316,111 @@
         const snap = await getDocs(q);
 
         if (snap.empty) {
-          contenedor.innerHTML = '<p style="text-align:center; color:#94a3b8;">No hay pedidos registrados.</p>';
+          contenedor.innerHTML = '<p style="text-align:center; color:#94a3b8;">No hay órdenes registradas.</p>';
           return;
         }
 
+        pedidosGlobales = [];
         let html = "";
+        
         snap.forEach(d => {
-          const ped = d.data();
-          let itemsList = (ped.items || []).map(i => `<li>${i.nombre} x${i.cantidad} - $${(i.precio * i.cantidad).toLocaleString('es-AR')}</li>`).join('');
+          const ped = { id: d.id, ...d.data() };
+          pedidosGlobales.push(ped);
+
+          const estadoActual = ped.estado || "Pendiente";
           
+          let itemsList = (ped.items || []).map((item, idx) => `
+            <li style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px; background:#0f172a; padding:6px 10px; border-radius:6px;">
+              <span><strong>${item.nombre}</strong> x${item.cantidad} - $${(item.precio * item.cantidad).toLocaleString('es-AR')}</span>
+              <button onclick="eliminarItemOrden('${ped.id}', ${idx})" style="background:#ef4444; color:white; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-size:12px;">Quitar</button>
+            </li>
+          `).join('');
+
           html += `
-            <div style="background: #1e293b; border: 1px solid #334155; padding: 15px; border-radius: 10px;">
-              <div style="display: flex; justify-content: space-between; color: #38bdf8; font-weight: bold; margin-bottom: 8px;">
-                <span>${ped.orden || 'Pedido'}</span>
-                <span style="color: #cbd5e1; font-size: 13px;">${ped.fecha}</span>
+            <div style="background: #1e293b; border: 1px solid #334155; padding: 18px; border-radius: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 10px; margin-bottom: 12px; flex-wrap: wrap; gap:10px;">
+                <span style="color: #38bdf8; font-weight: bold; font-size: 16px;">${ped.orden || 'Orden de trabajo'}</span>
+                <span style="color: #cbd5e1; font-size: 13px;">${ped.fecha || ''}</span>
+                
+                <!-- ESTADO -->
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <label style="font-size:12px; color:#cbd5e1;">Estado:</label>
+                  <select onchange="cambiarEstadoOrden('${ped.id}', this.value)" style="background:#0f172a; color:#38bdf8; border:1px solid #334155; padding:5px 10px; border-radius:6px; font-weight:bold;">
+                    <option value="Pendiente" ${estadoActual === 'Pendiente' ? 'selected' : ''}>⏳ Pendiente</option>
+                    <option value="En Proceso" ${estadoActual === 'En Proceso' ? 'selected' : ''}>⚙️ En Proceso</option>
+                    <option value="Enviado" ${estadoActual === 'Enviado' ? 'selected' : ''}>🚚 Enviado</option>
+                    <option value="Terminado" ${estadoActual === 'Terminado' ? 'selected' : ''}>✅ Terminado</option>
+                  </select>
+                </div>
               </div>
-              <ul style="margin: 0; padding-left: 20px; color: #f8fafc; font-size: 14px;">${itemsList}</ul>
-              <div style="text-align: right; color: #22c55e; font-weight: bold; font-size: 16px; margin-top: 10px;">
-                Total: $${parseFloat(ped.total || 0).toLocaleString('es-AR')}
+
+              <ul style="list-style:none; padding:0; margin:0 0 15px 0;">${itemsList}</ul>
+
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <button onclick="agregarItemOrden('${ped.id}')" style="background:#0284c7; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:13px;">+ Agregar producto faltante</button>
+                <div style="color: #22c55e; font-weight: bold; font-size: 18px;">
+                  Total: $${parseFloat(ped.total || 0).toLocaleString('es-AR')}
+                </div>
+                <button onclick="eliminarOrden('${ped.id}')" style="background:#b91c1c; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:13px;">Eliminar Orden</button>
               </div>
             </div>
           `;
         });
+
         contenedor.innerHTML = html;
-      } catch (err) {
-        console.error("Error al cargar pedidos:", err);
-      }
+      } catch (err) { console.error(err); }
     }
 
+    // CAMBIAR ESTADO DE LA ORDEN
+    window.cambiarEstadoOrden = async (id, nuevoEstado) => {
+      try {
+        await updateDoc(doc(db, "pedidos", id), { estado: nuevoEstado });
+        alert(`Estado actualizado a: ${nuevoEstado}`);
+      } catch(err) { alert("Error al actualizar estado: " + err.message); }
+    };
+
+    // QUITAR UN ITEM DE LA ORDEN Y RECALCULAR TOTAL
+    window.eliminarItemOrden = async (pedId, itemIdx) => {
+      const ped = pedidosGlobales.find(p => p.id === pedId);
+      if (!ped) return;
+
+      ped.items.splice(itemIdx, 1);
+      const nuevoTotal = ped.items.reduce((acc, i) => acc + (i.precio * i.cantidad), 0);
+
+      try {
+        await updateDoc(doc(db, "pedidos", pedId), { items: ped.items, total: nuevoTotal });
+        cargarPedidos();
+      } catch(err) { alert("Error al modificar orden: " + err.message); }
+    };
+
+    // AGREGAR UN PRODUCTO A LA ORDEN DESDE EL CATÁLOGO
+    window.agregarItemOrden = async (pedId) => {
+      const ped = pedidosGlobales.find(p => p.id === pedId);
+      if (!ped) return;
+
+      const nombreProd = prompt("Ingresa el nombre del producto a agregar:");
+      if (!nombreProd) return;
+      const precioProd = parseFloat(prompt("Ingresa el precio del producto:"));
+      if (isNaN(precioProd)) return;
+
+      ped.items.push({ nombre: nombreProd, precio: precioProd, cantidad: 1 });
+      const nuevoTotal = ped.items.reduce((acc, i) => acc + (i.precio * i.cantidad), 0);
+
+      try {
+        await updateDoc(doc(db, "pedidos", pedId), { items: ped.items, total: nuevoTotal });
+        cargarPedidos();
+      } catch(err) { alert("Error al agregar producto: " + err.message); }
+    };
+
+    // ELIMINAR ORDEN COMPLETA
+    window.eliminarOrden = async (id) => {
+      if (confirm("¿Estás seguro de eliminar toda esta orden?")) {
+        await deleteDoc(doc(db, "pedidos", id));
+        cargarPedidos();
+      }
+    };
+
+    cargarSlogan();
     cargarConfigEnvios();
     cargarProductos();
     cargarPedidos();
