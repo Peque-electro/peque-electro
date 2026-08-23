@@ -3,17 +3,140 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Peque Elektro</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Peque Elektro - Tu Solución Integral</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
   <style>
-    /* MODAL DESLIZANTE EXACTO Y FLUIDO DE IZQUIERDA A DERECHA */
-    #modal-producto {
+    /* Estilos Generales y Reset */
+    body { margin: 0; font-family: Arial, sans-serif; background-color: #0f172a; color: white; }
+    * { box-sizing: border-box; }
+
+    /* Barra Superior Fija */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #1e293b;
+      border-bottom: 2px solid #0284c7;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+    .banner-mini {
+      height: 70px;
+      object-fit: contain;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .cart-indicator {
+      font-size: 18px;
+      color: #38bdf8;
+      font-weight: bold;
+    }
+    
+    /* Botones Globales */
+    .btn-rojo { background: #ef4444; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+    .btn-rojo:hover { background: #dc2626; }
+    .btn-azul { background: #0284c7; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+    .btn-azul:hover { background: #0369a1; }
+    .btn-verde { background: #22c55e; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
+    .btn-verde:hover { background: #16a34a; }
+
+    /* Layout Estilo Mercado Libre */
+    .shop-container {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    
+    /* Barra Lateral Izquierda */
+    .sidebar-left {
+      width: 300px;
+      flex-shrink: 0;
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+      border: 1px solid #334155;
+    }
+
+    /* Categorías */
+    .category-group { margin-bottom: 15px; }
+    .category-title {
+      font-weight: bold;
+      color: #38bdf8;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 6px;
+      background: #0f172a;
+      display: flex;
+      justify-content: space-between;
+    }
+    .subcategory-list { list-style: none; padding-left: 15px; margin-top: 5px; display: none; }
+    .subcategory-list.active { display: block; }
+    .subcategory-list li { color: #94a3b8; padding: 6px 0; cursor: pointer; font-size: 14px; }
+    .subcategory-list li:hover { color: white; }
+
+    /* Resumen de Pedido Lateral */
+    .resumen-pedido { margin-top: 30px; padding-top: 20px; border-top: 1px solid #334155; }
+    .lista-carrito { list-style: none; padding: 0; max-height: 250px; overflow-y: auto; font-size: 14px; }
+    .lista-carrito li { display: flex; justify-content: space-between; margin-bottom: 8px; color: #cbd5e1; border-bottom: 1px solid #334155; padding-bottom: 5px; }
+
+    /* Grilla de Productos */
+    .main-content { flex-grow: 1; }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+    }
+    .product-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .product-card img { width: 100%; height: 180px; object-fit: contain; border-radius: 8px; background: white; margin-bottom: 10px; }
+    .product-card h3 { font-size: 14px; margin: 5px 0; color: #e2e8f0; height: 40px; overflow: hidden; }
+    .product-card .price { font-size: 18px; color: #22c55e; font-weight: bold; margin-bottom: 10px; }
+    
+    .product-actions { display: flex; gap: 5px; }
+    .product-actions button { flex: 1; padding: 8px; font-size: 13px; }
+
+    /* Toast Flotante */
+    #toast-cart {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #22c55e;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      display: none;
+      z-index: 9999;
+      font-weight: bold;
+    }
+
+    /* MODAL DESLIZANTE DE IZQUIERDA A DERECHA */
+    #modal-detalle {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       background: rgba(15, 23, 42, 0.95);
-      z-index: 99999;
+      z-index: 10000;
       display: none;
       overflow-y: auto;
       animation: deslizarModal 0.3s ease-out forwards;
@@ -53,9 +176,9 @@
 
     .modal-imagen-principal {
       width: 100%;
-      max-height: 400px;
+      max-height: 350px;
       object-fit: contain;
-      background: #0f172a;
+      background: white;
       border-radius: 10px;
       border: 1px solid #334155;
       margin-bottom: 15px;
@@ -68,8 +191,9 @@
       padding-bottom: 5px;
     }
     .modal-miniatura {
-      width: 70px; height: 70px;
+      width: 65px; height: 65px;
       object-fit: cover;
+      background: white;
       border-radius: 8px;
       cursor: pointer;
       border: 2px solid transparent;
@@ -82,8 +206,8 @@
       align-items: center;
       gap: 15px;
       flex-wrap: wrap;
-      margin-top: 25px;
-      padding-top: 20px;
+      margin-top: 20px;
+      padding-top: 15px;
       border-top: 1px solid #334155;
     }
     .cantidad-control {
@@ -101,6 +225,7 @@
       padding: 10px 15px;
       cursor: pointer;
       font-weight: bold;
+      font-size: 16px;
     }
     .cantidad-control button:hover { background: #475569; }
     .cantidad-control span {
@@ -124,71 +249,119 @@
       justify-content: center;
     }
     .btn-add-carrito-modal:hover { background: #16a34a; }
+
+    /* Diseño Adaptativo (Responsive) */
+    @media (max-width: 1400px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 1100px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 850px) {
+      .shop-container { flex-direction: column; }
+      .sidebar-left { width: 100%; position: static; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .banner-mini { height: 50px; }
+    }
+    @media (max-width: 500px) { .products-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
-  <header class="banner-header">
-    <img src="logo.jpg" alt="Peque Elektro" class="banner-img">
+  <!-- BARRA FIJA SUPERIOR -->
+  <header class="top-bar">
+    <img src="logo.jpg" alt="Peque Elektro" class="banner-mini">
+    <div class="header-actions">
+      <div class="cart-indicator">
+        <i class="fa-solid fa-cart-shopping"></i> <span id="cart-count-top">0</span>
+      </div>
+      <button class="btn-rojo" onclick="finalizarPedidoWhatsapp()">
+        <i class="fa-brands fa-whatsapp"></i> Finalizar y Enviar
+      </button>
+    </div>
   </header>
 
-  <main class="main-container" style="padding: 20px; max-width: 1200px; margin: 0 auto;">
+  <!-- MENSAJE FLOTANTE AL AGREGAR AL CARRITO -->
+  <div id="toast-cart"><i class="fa-solid fa-circle-check"></i> Producto agregado al pedido</div>
+
+  <div class="shop-container">
     
-    <!-- SLOGAN / PRESENTACIÓN -->
-    <section id="seccion-slogan" style="background: #1e293b; border: 1px solid #334155; padding: 25px; border-radius: 12px; margin-bottom: 30px; text-align: center; color: white;">
-      <h1 id="slogan-titulo" style="color: #38bdf8; margin-bottom: 10px;">Cargando...</h1>
-      <p id="slogan-intro" style="color: #94a3b8; margin-bottom: 15px;"></p>
-      <div id="slogan-items" style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; font-size: 14px; color: #cbd5e1;"></div>
-      <span id="slogan-badge" style="background: #0284c7; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: bold; display: inline-block;"></span>
-    </section>
-
-    <!-- CATÁLOGO -->
-    <section>
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;">
-        <h2 style="color: #38bdf8; margin: 0;"><i class="fa-solid fa-store"></i> Catálogo de Productos</h2>
-        <input type="text" id="buscador-index" placeholder="Buscar producto..." style="padding: 10px 15px; border-radius: 20px; border: 1px solid #334155; background: #1e293b; color: white; min-width: 250px;">
+    <!-- BARRA LATERAL IZQUIERDA -->
+    <aside class="sidebar-left">
+      <h3 style="color: white; margin-top: 0;"><i class="fa-solid fa-list"></i> Categorías</h3>
+      <div id="categories-tree">
+        <!-- Generado dinámicamente -->
       </div>
-      <div id="grid-productos-index" class="products-grid">
-        <p style="text-align:center; color:#94a3b8; grid-column: 1/-1;">Cargando catálogo...</p>
+
+      <!-- RESUMEN DE TU PEDIDO -->
+      <div class="resumen-pedido">
+        <h3 style="color: #38bdf8; margin-top: 0;"><i class="fa-solid fa-basket-shopping"></i> Tu Pedido</h3>
+        <ul id="lista-carrito-lateral" class="lista-carrito">
+          <li style="color: #94a3b8;">El carrito está vacío.</li>
+        </ul>
+        <div style="font-size: 18px; font-weight: bold; margin-top: 10px; color: white;">
+          Total: $<span id="total-carrito">0.00</span>
+        </div>
+        <button class="btn-verde" onclick="finalizarPedidoWhatsapp()">
+          <i class="fa-brands fa-whatsapp"></i> Enviar Pedido
+        </button>
       </div>
-    </section>
+    </aside>
 
-  </main>
+    <!-- ÁREA PRINCIPAL DE PRODUCTOS -->
+    <main class="main-content">
+      <input type="text" id="buscar-input" placeholder="Buscar productos..." style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: white; margin-bottom: 20px; font-size: 16px;">
 
-  <!-- VENTANA FLOTANTE / MODAL -->
-  <div id="modal-producto">
+      <div id="grid-productos" class="products-grid">
+        <!-- Productos generados dinámicamente -->
+      </div>
+
+      <!-- SECCIÓN DE COMENTARIOS (ANTI-BOT) -->
+      <section style="margin-top: 40px; background: #1e293b; padding: 25px; border-radius: 12px; border: 1px solid #334155;">
+        <h3 style="color: #38bdf8; margin-top: 0;"><i class="fa-solid fa-comments"></i> Consultas y Opiniones</h3>
+        
+        <form id="form-resena" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
+          <input type="text" id="resena-nombre" placeholder="Tu nombre" required style="padding: 12px; border-radius: 6px; background: #0f172a; color: white; border: 1px solid #334155;">
+          <textarea id="resena-texto" placeholder="Escribe tu consulta..." required style="padding: 12px; border-radius: 6px; background: #0f172a; color: white; border: 1px solid #334155; height: 80px;"></textarea>
+          
+          <!-- ANTI-BOT -->
+          <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 6px; display: flex; align-items: center; gap: 10px;">
+            <input type="checkbox" id="chk-captcha" style="width: 22px; height: 22px; cursor: pointer;">
+            <label for="chk-captcha" style="color: white; cursor: pointer; font-weight: bold;">No soy un robot 🤖</label>
+          </div>
+
+          <button type="submit" class="btn-azul">Publicar Comentario</button>
+        </form>
+        <div id="lista-resenas"></div>
+      </section>
+    </main>
+
+  </div>
+
+  <!-- MODAL DE DETALLES MEJORADO (DESLIZANTE + MINIATURAS + CANTIDAD) -->
+  <div id="modal-detalle">
     <div class="modal-content-wrapper">
-      <button class="btn-cerrar-modal" id="btn-cerrar-modal"><i class="fa-solid fa-xmark"></i></button>
+      <button class="btn-cerrar-modal" onclick="cerrarModal()"><i class="fa-solid fa-xmark"></i></button>
       
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
         <div>
-          <img id="modal-img-principal" class="modal-imagen-principal" src="" alt="Imagen principal">
+          <img id="modal-img" class="modal-imagen-principal" src="" alt="Imagen principal">
           <div id="modal-miniaturas-container" class="modal-miniaturas"></div>
         </div>
 
         <div>
-          <span id="modal-cat" style="color: #38bdf8; font-size: 13px; font-weight: bold; text-transform: uppercase;"></span>
-          <h2 id="modal-titulo" style="margin: 8px 0 15px 0; font-size: 24px;"></h2>
-          <div id="modal-precio" style="color: #22c55e; font-size: 26px; font-weight: bold; margin-bottom: 20px;"></div>
+          <h2 id="modal-titulo" style="color: #38bdf8; margin-top: 0; font-size: 24px;"></h2>
+          <div id="modal-precio" style="color: #22c55e; font-size: 26px; font-weight: bold; margin-bottom: 15px;"></div>
           
           <div style="margin-bottom: 20px;">
             <strong style="color: #38bdf8; display: block; margin-bottom: 5px;">Descripción y Ficha Técnica:</strong>
-            <p id="modal-descripcion" style="color: #cbd5e1; font-size: 14px; white-space: pre-wrap; line-height: 1.6; max-height: 200px; overflow-y: auto; background: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #334155;"></p>
+            <div id="modal-descripcion" style="color: #cbd5e1; font-size: 14px; line-height: 1.6; max-height: 180px; overflow-y: auto; background: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #334155;"></div>
           </div>
 
-          <div id="modal-colores-seccion" style="margin-bottom: 20px; display: none;">
-            <strong style="color: #38bdf8; display: block; margin-bottom: 6px;">Colores disponibles:</strong>
-            <div id="modal-colores" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
-          </div>
-
-          <!-- BOTONES DE CANTIDAD Y CARRITO -->
+          <!-- CONTROLES DE CANTIDAD Y BOTÓN DE COMPRA -->
           <div class="modal-acciones">
             <div class="cantidad-control">
-              <button id="btn-restar">-</button>
-              <span id="modal-cantidad">1</span>
-              <button id="btn-sumar">+</button>
+              <button onclick="cambiarCantidadModal(-1)">-</button>
+              <span id="modal-cantidad-txt">1</span>
+              <button onclick="cambiarCantidadModal(1)">+</button>
             </div>
-            <button id="btn-agregar-carrito" class="btn-add-carrito-modal">
+            <button class="btn-add-carrito-modal" onclick="agregarDesdeModal()">
               <i class="fa-solid fa-cart-plus"></i> Agregar al Carrito
             </button>
           </div>
@@ -199,7 +372,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
@@ -213,155 +386,246 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    let listaProductosGlobal = [];
-    let productoActualModal = null;
-    let cantidadSeleccionada = 1;
+    let productos = [];
+    let carrito = [];
+    let productoActualModalId = null;
+    let cantidadModalActual = 1;
+    const numeroWhatsapp = "5491134970171";
 
-    document.addEventListener("DOMContentLoaded", () => {
-      cargarSloganIndex();
-      cargarCatalogoIndex();
-    });
-
-    async function cargarSloganIndex() {
-      try {
-        const snap = await getDoc(doc(db, "configuracion", "slogan"));
-        if (snap.exists()) {
-          const d = snap.data();
-          document.getElementById("slogan-titulo").innerText = d.titulo || "";
-          document.getElementById("slogan-intro").innerText = d.intro || "";
-          
-          let itemsHtml = "";
-          if(d.item1) itemsHtml += `<span><i class="fa-solid fa-check" style="color:#38bdf8;"></i> ${d.item1}</span>`;
-          if(d.item2) itemsHtml += `<span><i class="fa-solid fa-check" style="color:#38bdf8;"></i> ${d.item2}</span>`;
-          if(d.item3) itemsHtml += `<span><i class="fa-solid fa-check" style="color:#38bdf8;"></i> ${d.item3}</span>`;
-          document.getElementById("slogan-items").innerHTML = itemsHtml;
-          document.getElementById("slogan-badge").innerText = d.badge || "";
-        }
-      } catch (err) { console.error(err); }
+    async function init() {
+      const snap = await getDocs(collection(db, "productos"));
+      snap.forEach(d => productos.push({ id: d.id, ...d.data() }));
+      renderProductos(productos);
+      renderCategorias();
+      cargarResenas();
     }
 
-    async function cargarCatalogoIndex() {
-      const grid = document.getElementById("grid-productos-index");
-      try {
-        const snap = await getDocs(collection(db, "productos"));
-        listaProductosGlobal = [];
-        snap.forEach(d => listaProductosGlobal.push({ id: d.id, ...d.data() }));
-        renderizarGrid(listaProductosGlobal);
-      } catch (err) {
-        grid.innerHTML = '<p style="text-align:center; color:#ef4444; grid-column:1/-1;">Error al cargar.</p>';
-      }
-    }
-
-    function renderizarGrid(productos) {
-      const grid = document.getElementById("grid-productos-index");
-      if (productos.length === 0) {
-        grid.innerHTML = '<p style="text-align:center; color:#94a3b8; grid-column:1/-1;">No hay productos.</p>';
-        return;
-      }
-
-      grid.innerHTML = productos.map(p => {
-        // CORREGIDO: Muestra todas las imágenes del array guardado sin perder ninguna
-        const imagenesArray = p.imagenes || (p.imagen ? [p.imagen] : ['https://via.placeholder.com/200']);
-        const imgPrincipal = imagenesArray[0];
-
+    function renderProductos(lista) {
+      const grid = document.getElementById("grid-productos");
+      grid.innerHTML = lista.map(p => {
+        const img = (p.imagenes && p.imagenes[0]) || p.imagen || 'https://via.placeholder.com/200';
         return `
-          <div class="product-card" onclick="window.abrirModalProducto('${p.id}')">
-            <img src="${imgPrincipal}" alt="${p.nombre}">
-            <div>
-              <span style="font-size: 11px; color: #38bdf8; text-transform: uppercase;">${p.categoria || ''}</span>
-              <h3 style="font-size: 16px; margin: 5px 0; color: white;">${p.nombre}</h3>
+          <div class="product-card">
+            <img src="${img}" alt="${p.nombre}">
+            <h3>${p.nombre}</h3>
+            <p class="price">$${parseFloat(p.precio || 0).toLocaleString('es-AR')}</p>
+            <div class="product-actions">
+              <button class="btn-azul" onclick="verDetalles('${p.id}')">Ver Detalle</button>
+              <button class="btn-rojo" onclick="agregarAlCarrito('${p.id}', 1)">Agregar</button>
             </div>
-            <p style="color: #22c55e; font-weight: bold; font-size: 18px; margin-top: 10px;">$${parseFloat(p.precio || 0).toLocaleString('es-AR')}</p>
           </div>
         `;
       }).join('');
     }
 
-    document.getElementById("buscador-index").addEventListener("input", (e) => {
-      const termino = e.target.value.toLowerCase().trim();
-      const filtrados = listaProductosGlobal.filter(p => 
-        p.nombre.toLowerCase().includes(termino) || 
-        (p.categoria && p.categoria.toLowerCase().includes(termino))
-      );
-      renderizarGrid(filtrados);
-    });
+    function renderCategorias() {
+      const container = document.getElementById("categories-tree");
+      const tree = {};
 
-    window.abrirModalProducto = (id) => {
-      const prod = listaProductosGlobal.find(p => p.id === id);
+      productos.forEach(p => {
+        const cat = p.categoria || "Otros";
+        const sub = p.subcategoria || "";
+        if (!tree[cat]) tree[cat] = new Set();
+        if (sub) tree[cat].add(sub);
+      });
+
+      let html = `<div class="category-group"><div class="category-title" onclick="filtrarCat('')">Todas las Categorías</div></div>`;
+
+      for (const [cat, subs] of Object.entries(tree)) {
+        html += `
+          <div class="category-group">
+            <div class="category-title" onclick="toggleSubcats('${cat}')">
+              ${cat} <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <ul id="sub-${cat}" class="subcategory-list">
+              <li onclick="filtrarCat('${cat}')">Ver todo en ${cat}</li>
+              ${Array.from(subs).map(s => `<li onclick="filtrarSubcat('${cat}', '${s}')">${s}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }
+      container.innerHTML = html;
+    }
+
+    window.toggleSubcats = (cat) => {
+      const el = document.getElementById(`sub-${cat}`);
+      if (el) el.classList.toggle("active");
+    };
+
+    window.filtrarCat = (cat) => {
+      if (!cat) return renderProductos(productos);
+      renderProductos(productos.filter(p => p.categoria === cat));
+    };
+
+    window.filtrarSubcat = (cat, sub) => {
+      renderProductos(productos.filter(p => p.categoria === cat && p.subcategoria === sub));
+    };
+
+    window.agregarAlCarrito = (id, cantidad = 1) => {
+      const prod = productos.find(p => p.id === id);
       if (!prod) return;
-      productoActualModal = prod;
-      cantidadSeleccionada = 1;
-      document.getElementById("modal-cantidad").innerText = cantidadSeleccionada;
+      const index = carrito.findIndex(item => item.id === id);
+      if (index > -1) {
+        carrito[index].cantidad += cantidad;
+      } else {
+        carrito.push({ ...prod, cantidad: cantidad });
+      }
+      actualizarCarritoUI();
+      mostrarToast();
+    };
 
-      document.getElementById("modal-cat").innerText = prod.categoria || "";
-      document.getElementById("modal-titulo").innerText = prod.nombre;
-      document.getElementById("modal-precio").innerText = `$${parseFloat(prod.precio || 0).toLocaleString('es-AR')}`;
-      document.getElementById("modal-descripcion").innerText = prod.descripcion || "Sin descripción.";
+    function actualizarCarritoUI() {
+      const lista = document.getElementById("lista-carrito-lateral");
+      const totalEl = document.getElementById("total-carrito");
+      const countTop = document.getElementById("cart-count-top");
 
-      const imagenes = prod.imagenes || (prod.imagen ? [prod.imagen] : ['https://via.placeholder.com/300']);
-      const imgPrinEl = document.getElementById("modal-img-principal");
+      let total = 0;
+      let count = 0;
+
+      if (carrito.length === 0) {
+        lista.innerHTML = '<li style="color: #94a3b8;">El carrito está vacío.</li>';
+      } else {
+        lista.innerHTML = carrito.map(i => {
+          const subtotal = parseFloat(i.precio) * i.cantidad;
+          total += subtotal;
+          count += i.cantidad;
+          return `<li><span>${i.nombre} (x${i.cantidad})</span> <span>$${subtotal.toLocaleString('es-AR')}</span></li>`;
+        }).join('');
+      }
+
+      totalEl.textContent = total.toLocaleString('es-AR');
+      countTop.textContent = count;
+    }
+
+    function mostrarToast() {
+      const toast = document.getElementById("toast-cart");
+      toast.style.display = "block";
+      setTimeout(() => { toast.style.display = "none"; }, 2500);
+    }
+
+    window.finalizarPedidoWhatsapp = async () => {
+      if (carrito.length === 0) return alert("Tu carrito está vacío.");
+
+      const total = carrito.reduce((acc, i) => acc + (parseFloat(i.precio) * i.cantidad), 0);
+      try {
+        await addDoc(collection(db, "pedidos"), {
+          orden: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
+          fecha: new Date().toLocaleDateString(),
+          timestamp: Date.now(),
+          estado: "Pendiente",
+          items: carrito,
+          total: total
+        });
+      } catch (err) { console.error(err); }
+
+      let mensaje = "Hola Peque Elektro, quiero realizar el siguiente pedido:%0A%0A";
+      carrito.forEach(i => {
+        mensaje += `• ${i.nombre} x${i.cantidad} - $${(parseFloat(i.precio) * i.cantidad).toLocaleString('es-AR')}%0A`;
+      });
+      mensaje += `%0A*Total Estimado: $${total.toLocaleString('es-AR')}*`;
+
+      window.open(`https://wa.me/${numeroWhatsapp}?text=${mensaje}`, '_blank');
+    };
+
+    window.verDetalles = (id) => {
+      const p = productos.find(item => item.id === id);
+      if (!p) return;
+      
+      productoActualModalId = id;
+      cantidadModalActual = 1;
+      document.getElementById("modal-cantidad-txt").textContent = cantidadModalActual;
+
+      document.getElementById("modal-titulo").textContent = p.nombre;
+      document.getElementById("modal-precio").textContent = `$${parseFloat(p.precio).toLocaleString('es-AR')}`;
+      document.getElementById("modal-descripcion").textContent = p.descripcion || "Sin especificaciones detalladas.";
+
+      // Manejo de imágenes múltiples y miniaturas
+      const imagenes = (p.imagenes && p.imagenes.length > 0) ? p.imagenes : [p.imagen || 'https://via.placeholder.com/300'];
+      const imgPrincipalEl = document.getElementById("modal-img");
       const miniaturasContainer = document.getElementById("modal-miniaturas-container");
 
-      imgPrinEl.src = imagenes[0];
-      
+      imgPrincipalEl.src = imagenes[0];
+
       if (imagenes.length > 1) {
         miniaturasContainer.style.display = "flex";
-        miniaturasContainer.innerHTML = imagenes.map((img, idx) => `
-          <img src="${img}" class="modal-miniatura ${idx === 0 ? 'activa' : ''}" onclick="window.cambiarImagenModal('${img}', this)">
+        miniaturasContainer.innerHTML = imagenes.map((imgUrl, idx) => `
+          <img src="${imgUrl}" class="modal-miniatura ${idx === 0 ? 'activa' : ''}" onclick="cambiarImagenModal('${imgUrl}', this)">
         `).join('');
       } else {
         miniaturasContainer.style.display = "none";
         miniaturasContainer.innerHTML = "";
       }
 
-      const seccionColores = document.getElementById("modal-colores-seccion");
-      const contenedorColores = document.getElementById("modal-colores");
-      if (prod.colores && prod.colores.length > 0) {
-        seccionColores.style.display = "block";
-        contenedorColores.innerHTML = prod.colores.map(c => `
-          <span style="background: #0f172a; border: 1px solid #334155; padding: 5px 12px; border-radius: 6px; font-size: 13px;">${c}</span>
-        `).join('');
-      } else {
-        seccionColores.style.display = "none";
-      }
-
-      document.getElementById("modal-producto").style.display = "block";
-      document.body.style.overflow = "hidden";
+      document.getElementById("modal-detalle").style.display = "block";
     };
 
     window.cambiarImagenModal = (urlImg, elementoMiniatura) => {
-      document.getElementById("modal-img-principal").src = urlImg;
+      document.getElementById("modal-img").src = urlImg;
       document.querySelectorAll(".modal-miniatura").forEach(m => m.classList.remove("activa"));
       elementoMiniatura.classList.add("activa");
     };
 
-    document.getElementById("btn-sumar").addEventListener("click", () => {
-      cantidadSeleccionada++;
-      document.getElementById("modal-cantidad").innerText = cantidadSeleccionada;
-    });
+    window.cambiarCantidadModal = (delta) => {
+      cantidadModalActual += delta;
+      if (cantidadModalActual < 1) cantidadModalActual = 1;
+      document.getElementById("modal-cantidad-txt").textContent = cantidadModalActual;
+    };
 
-    document.getElementById("btn-restar").addEventListener("click", () => {
-      if (cantidadSeleccionada > 1) {
-        cantidadSeleccionada--;
-        document.getElementById("modal-cantidad").innerText = cantidadSeleccionada;
+    window.agregarDesdeModal = () => {
+      if (!productoActualModalId) return;
+      agregarAlCarrito(productoActualModalId, cantidadModalActual);
+      cerrarModal();
+    };
+
+    window.cerrarModal = () => {
+      document.getElementById("modal-detalle").style.display = "none";
+    };
+
+    document.getElementById("form-resena").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const captcha = document.getElementById("chk-captcha").checked;
+      
+      if (!captcha) {
+        return alert("⚠️ Por favor, confirma que no eres un robot.");
       }
+
+      const nombre = document.getElementById("resena-nombre").value.trim();
+      const texto = document.getElementById("resena-texto").value.trim();
+
+      await addDoc(collection(db, "resenas"), {
+        nombre,
+        texto,
+        fecha: new Date().toLocaleDateString()
+      });
+
+      document.getElementById("form-resena").reset();
+      cargarResenas();
     });
 
-    document.getElementById("btn-cerrar-modal").addEventListener("click", cerrarModal);
-    document.getElementById("modal-producto").addEventListener("click", (e) => {
-      if (e.target.id === "modal-producto") cerrarModal();
-    });
-
-    function cerrarModal() {
-      document.getElementById("modal-producto").style.display = "none";
-      document.body.style.overflow = "auto";
+    async function cargarResenas() {
+      const snap = await getDocs(collection(db, "resenas"));
+      const list = document.getElementById("lista-resenas");
+      let html = "";
+      snap.forEach(d => {
+        const r = d.data();
+        html += `
+          <div style="background: #0f172a; padding: 15px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid #38bdf8;">
+            <strong style="color: #38bdf8;">${r.nombre}</strong> <small style="color: #64748b;">(${r.fecha})</small>
+            <p style="color: #cbd5e1; margin: 8px 0 0 0;">${r.texto}</p>
+          </div>
+        `;
+      });
+      list.innerHTML = html || '<p style="color: #64748b;">No hay opiniones aún. ¡Sé el primero!</p>';
     }
 
-    document.getElementById("btn-agregar-carrito").addEventListener("click", () => {
-      if (!productoActualModal) return;
-      alert(`✅ ¡Agregado al carrito!\n\nProducto: ${productoActualModal.nombre}\nCantidad: ${cantidadSeleccionada}`);
-      cerrarModal();
+    // Buscador
+    document.getElementById("buscar-input").addEventListener("input", (e) => {
+      const txt = e.target.value.toLowerCase();
+      const filtrados = productos.filter(p => p.nombre.toLowerCase().includes(txt));
+      renderProductos(filtrados);
     });
+
+    init();
   </script>
 </body>
 </html>
