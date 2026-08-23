@@ -6,6 +6,48 @@
   <title>Peque Elektro - Panel Administrador</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Estilos mejorados para un acabado profesional */
+    .admin-header-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 25px;
+      background: #1e293b;
+      padding: 15px 20px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+    }
+    .btn-reset-pass {
+      background: #eab308;
+      color: #0f172a;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-reset-pass:hover {
+      background: #facc15;
+      transform: translateY(-1px);
+    }
+    .badge-estado {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .estado-Pendiente { background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid #eab308; }
+    .estado-Proceso { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #0284c7; }
+    .estado-Enviado { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid #9333ea; }
+    .estado-Terminado { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
+  </style>
 </head>
 <body>
 
@@ -13,12 +55,91 @@
     <img src="logo.jpg" alt="Peque Elektro" class="banner-img">
   </header>
 
-  <main class="main-container">
-    <h1 style="color: #38bdf8; text-align: center; margin-bottom: 30px;">
-      <i class="fa-solid fa-user-gear"></i> Panel Administrador
-    </h1>
+  <main class="main-container" style="padding: 20px; max-width: 1200px; margin: 0 auto;">
+    
+    <!-- BARRA SUPERIOR CON SEGURIDAD -->
+    <div class="admin-header-actions">
+      <h1 style="color: #38bdf8; margin: 0; font-size: 24px;">
+        <i class="fa-solid fa-user-gear"></i> Panel Administrador
+      </h1>
+      <button id="btn-cambiar-pass" class="btn-reset-pass">
+        <i class="fa-solid fa-key"></i> Cambiar / Olvidé Contraseña
+      </button>
+    </div>
 
-    <!-- 1. EDICIÓN DEL ESLOGAN Y PRESENTACIÓN -->
+    <!-- 1. REGISTRO Y GESTIÓN DE PEDIDOS/ÓRDENES (REUBICADO AL INICIO) -->
+    <section style="margin-bottom: 40px; background: #0f172a; padding: 20px; border-radius: 12px; border: 2px solid #0284c7;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+        <h2 class="section-title" style="margin: 0; color: #38bdf8;">
+          <i class="fa-solid fa-boxes-packing"></i> Gestión de Órdenes de Trabajo
+        </h2>
+        <button onclick="window.cargarPedidos()" style="background: #0284c7; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px;">
+          <i class="fa-solid fa-rotate"></i> Actualizar Listado
+        </button>
+      </div>
+
+      <div id="lista-pedidos" style="display: flex; flex-direction: column; gap: 20px;">
+        <p style="text-align:center; color: #94a3b8;">Cargando órdenes de trabajo...</p>
+      </div>
+    </section>
+
+    <!-- 2. FORMULARIO DE PRODUCTOS COMPLETO -->
+    <section class="add-review-box" style="margin-bottom: 40px;">
+      <h3 id="form-titulo"><i class="fa-solid fa-plus-circle"></i> Cargar / Editar Producto</h3>
+      <form id="form-producto">
+        <input type="hidden" id="prod-id">
+        
+        <div class="review-inputs" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 15px;">
+          <input type="text" id="prod-nombre" placeholder="Nombre del producto *" required>
+          <input type="number" step="0.01" id="prod-precio" placeholder="Precio ($) *" required>
+          <input type="text" id="prod-categoria" placeholder="Categoría Principal *" required>
+          <input type="text" id="prod-subcategoria" placeholder="Subcategoría (Opcional)">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label style="color: #38bdf8; font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;">URLs de Imágenes (Hasta 4 imágenes):</label>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px;">
+            <input type="text" id="prod-img1" placeholder="Imagen Principal (URL) *" required>
+            <input type="text" id="prod-img2" placeholder="Imagen 2 (Opcional)">
+            <input type="text" id="prod-img3" placeholder="Imagen 3 (Opcional)">
+            <input type="text" id="prod-img4" placeholder="Imagen 4 (Opcional)">
+          </div>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label style="color: #38bdf8; font-size: 13px; font-weight: bold;">Colores Disponibles (Separados por coma):</label>
+          <input type="text" id="prod-colores" placeholder="Ej: Azul, Rosa, Negro" style="width: 100%; margin-top: 4px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label style="color: #38bdf8; font-size: 13px; font-weight: bold;">Descripción Completa y Ficha Técnica:</label>
+          <textarea id="prod-descripcion" placeholder="Escribe o pega aquí las especificaciones técnicas..." style="height: 180px; width: 100%; margin-top: 4px; font-family: inherit; white-space: pre-wrap; line-height: 1.5; padding: 10px; border-radius: 8px; background: #0f172a; color: white; border: 1px solid #334155;"></textarea>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <button type="submit" class="btn-submit-review"><i class="fa-solid fa-save"></i> Guardar Producto</button>
+          <button type="button" id="btn-cancelar-edit" class="btn-submit-review" style="background: #64748b; display: none;">Cancelar Edición</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 3. CATÁLOGO ADMIN CON BUSCADOR -->
+    <section style="margin-bottom: 40px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;">
+        <h2 class="section-title" style="margin-bottom: 0;"><i class="fa-solid fa-list"></i> Productos en Catálogo</h2>
+        
+        <div style="position: relative; min-width: 280px;">
+          <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
+          <input type="text" id="buscar-admin" placeholder="Buscar producto por nombre..." style="padding: 10px 10px 10px 38px; border-radius: 20px; border: 1px solid #334155; background: #1e293b; color: white; width: 100%; box-sizing: border-box;">
+        </div>
+      </div>
+
+      <div id="grid-admin-productos" class="products-grid">
+        <p style="text-align:center; color: #94a3b8; grid-column: 1/-1;">Cargando productos...</p>
+      </div>
+    </section>
+
+    <!-- 4. EDICIÓN DEL ESLOGAN Y PRESENTACIÓN -->
     <section class="add-review-box" style="margin-bottom: 30px;">
       <h3><i class="fa-solid fa-bullhorn"></i> Editar Texto de Presentación (Eslogan)</h3>
       <form id="form-slogan">
@@ -54,7 +175,7 @@
       </form>
     </section>
 
-    <!-- 2. CONFIGURACIÓN DE ENVÍOS -->
+    <!-- 5. CONFIGURACIÓN DE ENVÍOS -->
     <section class="add-review-box" style="margin-bottom: 30px;">
       <h3><i class="fa-solid fa-truck-fast"></i> Configuración de Envíos y Entregas</h3>
       <form id="form-envios">
@@ -76,76 +197,13 @@
       </form>
     </section>
 
-    <!-- 3. FORMULARIO DE PRODUCTOS COMPLETO -->
-    <section class="add-review-box" style="margin-bottom: 40px;">
-      <h3 id="form-titulo"><i class="fa-solid fa-plus-circle"></i> Cargar / Editar Producto</h3>
-      <form id="form-producto">
-        <input type="hidden" id="prod-id">
-        
-        <div class="review-inputs">
-          <input type="text" id="prod-nombre" placeholder="Nombre del producto *" required>
-          <input type="number" step="0.01" id="prod-precio" placeholder="Precio ($) *" required>
-          <input type="text" id="prod-categoria" placeholder="Categoría Principal *" required>
-          <input type="text" id="prod-subcategoria" placeholder="Subcategoría (Opcional)">
-        </div>
-
-        <div style="margin-bottom: 15px;">
-          <label style="color: #38bdf8; font-size: 13px; font-weight: bold; display: block; margin-bottom: 6px;">URLs de Imágenes (Hasta 4 imágenes):</label>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px;">
-            <input type="text" id="prod-img1" placeholder="Imagen Principal (URL) *" required>
-            <input type="text" id="prod-img2" placeholder="Imagen 2 (Opcional)">
-            <input type="text" id="prod-img3" placeholder="Imagen 3 (Opcional)">
-            <input type="text" id="prod-img4" placeholder="Imagen 4 (Opcional)">
-          </div>
-        </div>
-
-        <div style="margin-bottom: 15px;">
-          <label style="color: #38bdf8; font-size: 13px; font-weight: bold;">Colores Disponibles (Separados por coma):</label>
-          <input type="text" id="prod-colores" placeholder="Ej: Azul, Rosa, Negro" style="width: 100%; margin-top: 4px;">
-        </div>
-
-        <div style="margin-bottom: 15px;">
-          <label style="color: #38bdf8; font-size: 13px; font-weight: bold;">Descripción Completa y Ficha Técnica:</label>
-          <textarea id="prod-descripcion" placeholder="Escribe aquí las especificaciones técnicas..." style="height: 180px; width: 100%; margin-top: 4px; font-family: monospace;"></textarea>
-        </div>
-
-        <div style="display: flex; gap: 10px;">
-          <button type="submit" class="btn-submit-review"><i class="fa-solid fa-save"></i> Guardar Producto</button>
-          <button type="button" id="btn-cancelar-edit" class="btn-submit-review" style="background: #64748b; display: none;">Cancelar Edición</button>
-        </div>
-      </form>
-    </section>
-
-    <!-- 4. REGISTRO Y GESTIÓN DE PEDIDOS/ÓRDENES -->
-    <section style="margin-bottom: 50px;">
-      <h2 class="section-title"><i class="fa-solid fa-boxes-packing"></i> Gestión de Órdenes de Trabajo</h2>
-      <div id="lista-pedidos" style="display: flex; flex-direction: column; gap: 20px;">
-        <p style="text-align:center; color: #94a3b8;">Cargando órdenes...</p>
-      </div>
-    </section>
-
-    <!-- 5. CATÁLOGO ADMIN CON BUSCADOR -->
-    <section>
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;">
-        <h2 class="section-title" style="margin-bottom: 0;"><i class="fa-solid fa-list"></i> Productos en Catálogo</h2>
-        
-        <!-- BUSCADOR ADMIN -->
-        <div style="position: relative; min-width: 280px;">
-          <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
-          <input type="text" id="buscar-admin" placeholder="Buscar producto por nombre..." style="padding: 10px 10px 10px 38px; border-radius: 20px; border: 1px solid #334155; background: #1e293b; color: white; width: 100%; box-sizing: border-box;">
-        </div>
-      </div>
-
-      <div id="grid-admin-productos" class="products-grid">
-        <p style="text-align:center; color: #94a3b8; grid-column: 1/-1;">Cargando productos...</p>
-      </div>
-    </section>
-
   </main>
 
+  <!-- LÓGICA CON FIREBASE SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc, getDoc, setDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
@@ -158,67 +216,166 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
 
     let productos = [];
     let pedidosGlobales = [];
 
-    // 1. CARGAR Y GUARDAR ESLOGAN
-    async function cargarSlogan() {
-      try {
-        const snap = await getDoc(doc(db, "configuracion", "slogan"));
-        if (snap.exists()) {
-          const d = snap.data();
-          document.getElementById("slogan-titulo").value = d.titulo || "";
-          document.getElementById("slogan-intro").value = d.intro || "";
-          document.getElementById("slogan-item1").value = d.item1 || "";
-          document.getElementById("slogan-item2").value = d.item2 || "";
-          document.getElementById("slogan-item3").value = d.item3 || "";
-          document.getElementById("slogan-badge").value = d.badge || "";
-        }
-      } catch(e) { console.error(e); }
-    }
-
-    document.getElementById("form-slogan").addEventListener("submit", async (e) => {
+    // FIX: CONSERVAR FORMATO AL PEGAR TEXTO EN EL TEXTAREA DE DESCRIPCIÓN
+    const txtDescripcion = document.getElementById("prod-descripcion");
+    txtDescripcion.addEventListener("paste", (e) => {
       e.preventDefault();
-      try {
-        await setDoc(doc(db, "configuracion", "slogan"), {
-          titulo: document.getElementById("slogan-titulo").value.trim(),
-          intro: document.getElementById("slogan-intro").value.trim(),
-          item1: document.getElementById("slogan-item1").value.trim(),
-          item2: document.getElementById("slogan-item2").value.trim(),
-          item3: document.getElementById("slogan-item3").value.trim(),
-          badge: document.getElementById("slogan-badge").value.trim()
-        });
-        alert("✅ Presentación guardada correctamente. Se actualizará en la página principal.");
-      } catch(err) { alert("Error: " + err.message); }
+      const text = (e.clipboardData || window.clipboardData).getData("text/plain");
+      const start = txtDescripcion.selectionStart;
+      const end = txtDescripcion.selectionEnd;
+      txtDescripcion.value = txtDescripcion.value.substring(0, start) + text + txtDescripcion.value.substring(end);
+      txtDescripcion.selectionStart = txtDescripcion.selectionEnd = start + text.length;
     });
 
-    // 2. CARGAR Y GUARDAR ENVÍOS
-    async function cargarConfigEnvios() {
-      try {
-        const snap = await getDoc(doc(db, "configuracion", "envios"));
-        if (snap.exists()) {
-          const d = snap.data();
-          document.getElementById("envio-puntos").value = d.puntos || "";
-          document.getElementById("envio-correo").value = d.correo || "";
-          document.getElementById("envio-condicion").value = d.condicion || "";
+    // RECTIFICAR / CAMBIAR CONTRASEÑA DE ADMINISTRADOR
+    document.getElementById("btn-cambiar-pass").addEventListener("click", async () => {
+      const email = prompt("Ingresa tu correo electrónico registrado para enviarte el enlace de restablecimiento de contraseña:");
+      if (email && email.trim()) {
+        try {
+          await sendPasswordResetEmail(auth, email.trim());
+          alert("✅ Se ha enviado un correo electrónico a " + email + ". Revisa tu bandeja de entrada o SPAM para restablecer la clave.");
+        } catch (error) {
+          alert("❌ Error al solicitar cambio de clave: " + error.message);
         }
-      } catch (err) { console.error(err); }
-    }
-
-    document.getElementById("form-envios").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      try {
-        await setDoc(doc(db, "configuracion", "envios"), {
-          puntos: document.getElementById("envio-puntos").value.trim(),
-          correo: document.getElementById("envio-correo").value.trim(),
-          condicion: document.getElementById("envio-condicion").value.trim()
-        });
-        alert("✅ Envíos guardados.");
-      } catch (err) { alert("Error: " + err.message); }
+      }
     });
 
-    // 3. PRODUCTOS Y BUSCADOR ADMIN
+    // 1. CARGAR PEDIDOS / ÓRDENES DE TRABAJO (FUNCIONES MEJORADAS)
+    window.cargarPedidos = async () => {
+      const contenedor = document.getElementById("lista-pedidos");
+      try {
+        const q = query(collection(db, "pedidos"), orderBy("timestamp", "desc"));
+        const snap = await getDocs(q);
+
+        if (snap.empty) {
+          contenedor.innerHTML = '<p style="text-align:center; color:#94a3b8; padding: 20px;">No hay órdenes registradas hasta el momento.</p>';
+          return;
+        }
+
+        pedidosGlobales = [];
+        let html = "";
+        
+        snap.forEach(d => {
+          const ped = { id: d.id, ...d.data() };
+          pedidosGlobales.push(ped);
+
+          const estadoActual = ped.estado || "Pendiente";
+          const claseBadge = estadoActual === "En Proceso" ? "estado-Proceso" : `estado-${estadoActual}`;
+
+          let itemsList = (ped.items || []).map((item, idx) => `
+            <li style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px; background:#0f172a; padding:8px 12px; border-radius:6px; border-left: 3px solid #0284c7;">
+              <span style="color:#f8fafc;"><strong>${item.nombre}</strong> x${item.cantidad} - $${(parseFloat(item.precio) * item.cantidad).toLocaleString('es-AR')}</span>
+              <button onclick="eliminarItemOrden('${ped.id}', ${idx})" style="background:#ef4444; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:12px;">
+                <i class="fa-solid fa-xmark"></i> Quitar
+              </button>
+            </li>
+          `).join('');
+
+          let opcionesProductos = productos.map(p => `<option value="${p.id}">${p.nombre} - $${p.precio}</option>`).join('');
+
+          html += `
+            <div style="background: #1e293b; border: 1px solid #334155; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 12px; margin-bottom: 15px; flex-wrap: wrap; gap:10px;">
+                <div>
+                  <span style="color: #38bdf8; font-weight: bold; font-size: 17px;"><i class="fa-solid fa-receipt"></i> ${ped.orden || 'Orden de Trabajo'}</span>
+                  <span style="color: #94a3b8; font-size: 13px; margin-left: 10px;">(${ped.fecha || ''})</span>
+                </div>
+                
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <span class="badge-estado ${claseBadge}">${estadoActual}</span>
+                  <select onchange="cambiarEstadoOrden('${ped.id}', this.value)" style="background:#0f172a; color:#38bdf8; border:1px solid #334155; padding:6px 10px; border-radius:6px; font-weight:bold; cursor:pointer;">
+                    <option value="Pendiente" ${estadoActual === 'Pendiente' ? 'selected' : ''}>⏳ Pendiente</option>
+                    <option value="En Proceso" ${estadoActual === 'En Proceso' ? 'selected' : ''}>⚙️ En Proceso</option>
+                    <option value="Enviado" ${estadoActual === 'Enviado' ? 'selected' : ''}>🚚 Enviado</option>
+                    <option value="Terminado" ${estadoActual === 'Terminado' ? 'selected' : ''}>✅ Terminado</option>
+                  </select>
+                </div>
+              </div>
+
+              <ul style="list-style:none; padding:0; margin:0 0 15px 0;">${itemsList}</ul>
+
+              <div style="display:flex; gap:10px; margin-bottom:15px; background:#0f172a; padding:10px; border-radius:8px; align-items:center; flex-wrap:wrap;">
+                <select id="select-prod-${ped.id}" style="flex:1; min-width:200px; padding:8px; border-radius:6px; background:#1e293b; color:white; border:1px solid #334155;">
+                  <option value="">-- Seleccionar producto para agregar --</option>
+                  ${opcionesProductos}
+                </select>
+                <button onclick="agregarProductoSeleccionado('${ped.id}')" style="background:#22c55e; color:white; border:none; padding:8px 15px; border-radius:6px; font-weight:bold; cursor:pointer;">
+                  <i class="fa-solid fa-plus"></i> Agregar a Orden
+                </button>
+              </div>
+
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <div style="color: #22c55e; font-weight: bold; font-size: 18px;">
+                  Total: $${parseFloat(ped.total || 0).toLocaleString('es-AR')}
+                </div>
+                <button onclick="eliminarOrden('${ped.id}')" style="background:#b91c1c; color:white; border:none; padding:7px 12px; border-radius:6px; cursor:pointer; font-size:13px;">
+                  <i class="fa-solid fa-trash"></i> Eliminar Orden
+                </button>
+              </div>
+            </div>
+          `;
+        });
+
+        contenedor.innerHTML = html;
+      } catch (err) { 
+        console.error(err); 
+        contenedor.innerHTML = '<p style="text-align:center; color:#ef4444;">Error al cargar las órdenes.</p>';
+      }
+    };
+
+    window.agregarProductoSeleccionado = async (pedId) => {
+      const select = document.getElementById(`select-prod-${pedId}`);
+      const prodId = select.value;
+      if (!prodId) return alert("Selecciona un producto del catálogo primero.");
+
+      const prod = productos.find(p => p.id === prodId);
+      const ped = pedidosGlobales.find(p => p.id === pedId);
+
+      if (prod && ped) {
+        if (!ped.items) ped.items = [];
+        ped.items.push({ nombre: prod.nombre, precio: parseFloat(prod.precio), cantidad: 1 });
+        const nuevoTotal = ped.items.reduce((acc, i) => acc + (parseFloat(i.precio) * i.cantidad), 0);
+
+        try {
+          await updateDoc(doc(db, "pedidos", pedId), { items: ped.items, total: nuevoTotal });
+          window.cargarPedidos();
+        } catch(err) { alert("Error al agregar producto: " + err.message); }
+      }
+    };
+
+    window.cambiarEstadoOrden = async (id, nuevoEstado) => {
+      try {
+        await updateDoc(doc(db, "pedidos", id), { estado: nuevoEstado });
+        window.cargarPedidos();
+      } catch(err) { alert("Error al actualizar estado: " + err.message); }
+    };
+
+    window.eliminarItemOrden = async (pedId, itemIdx) => {
+      const ped = pedidosGlobales.find(p => p.id === pedId);
+      if (!ped) return;
+
+      ped.items.splice(itemIdx, 1);
+      const nuevoTotal = ped.items.reduce((acc, i) => acc + (parseFloat(i.precio) * i.cantidad), 0);
+
+      try {
+        await updateDoc(doc(db, "pedidos", pedId), { items: ped.items, total: nuevoTotal });
+        window.cargarPedidos();
+      } catch(err) { alert("Error al modificar orden: " + err.message); }
+    };
+
+    window.eliminarOrden = async (id) => {
+      if (confirm("¿Estás seguro de eliminar toda esta orden?")) {
+        await deleteDoc(doc(db, "pedidos", id));
+        window.cargarPedidos();
+      }
+    };
+
+    // 2. PRODUCTOS Y BUSCADOR ADMIN
     async function cargarProductos() {
       const snap = await getDocs(collection(db, "productos"));
       productos = [];
@@ -242,22 +399,20 @@
             <h3>${p.nombre}</h3>
             <p class="price">$${parseFloat(p.precio || 0).toLocaleString('es-AR')}</p>
             <div style="display: flex; gap: 8px; margin-top: 10px;">
-              <button onclick="editarProducto('${p.id}')" style="background:#0284c7; color:white; border:none; padding:8px; border-radius:6px; flex:1; cursor:pointer;">Editar</button>
-              <button onclick="eliminarProducto('${p.id}')" style="background:#ef4444; color:white; border:none; padding:8px; border-radius:6px; flex:1; cursor:pointer;">Eliminar</button>
+              <button onclick="editarProducto('${p.id}')" style="background:#0284c7; color:white; border:none; padding:8px; border-radius:6px; flex:1; cursor:pointer;"><i class="fa-solid fa-pen"></i> Editar</button>
+              <button onclick="eliminarProducto('${p.id}')" style="background:#ef4444; color:white; border:none; padding:8px; border-radius:6px; flex:1; cursor:pointer;"><i class="fa-solid fa-trash"></i> Eliminar</button>
             </div>
           </div>
         `;
       }).join('');
     }
 
-    // EVENTO BUSCADOR ADMIN
     document.getElementById("buscar-admin").addEventListener("input", (e) => {
       const termino = e.target.value.toLowerCase().trim();
       const filtrados = productos.filter(p => p.nombre.toLowerCase().includes(termino));
       renderProductosAdmin(filtrados);
     });
 
-    // FORMULARIO PRODUCTO
     document.getElementById("form-producto").addEventListener("submit", async (e) => {
       e.preventDefault();
       const id = document.getElementById("prod-id").value;
@@ -265,7 +420,7 @@
       const precio = parseFloat(document.getElementById("prod-precio").value);
       const categoria = document.getElementById("prod-categoria").value.trim();
       const subcategoria = document.getElementById("prod-subcategoria").value.trim();
-      const descripcion = document.getElementById("prod-descripcion").value.trim();
+      const descripcion = document.getElementById("prod-descripcion").value;
       const colores = document.getElementById("prod-colores").value.split(",").map(c => c.trim()).filter(Boolean);
 
       const imgs = [
@@ -310,11 +465,11 @@
 
       document.getElementById("form-titulo").innerHTML = '<i class="fa-solid fa-pen"></i> Editar Producto';
       document.getElementById("btn-cancelar-edit").style.display = "block";
-      window.scrollTo({ top: 400, behavior: 'smooth' });
+      window.scrollTo({ top: 500, behavior: 'smooth' });
     };
 
     window.eliminarProducto = async (id) => {
-      if (confirm("¿Eliminar este producto?")) {
+      if (confirm("¿Eliminar este producto definitivamente?")) {
         await deleteDoc(doc(db, "productos", id));
         cargarProductos();
       }
@@ -329,132 +484,65 @@
       document.getElementById("btn-cancelar-edit").style.display = "none";
     }
 
-    // 4. GESTIÓN DE PEDIDOS Y AGREGAR DESDE LISTA DESPLEGABLE
-    async function cargarPedidos() {
-      const contenedor = document.getElementById("lista-pedidos");
+    // 3. ESLOGAN Y ENVÍOS
+    async function cargarSlogan() {
       try {
-        const q = query(collection(db, "pedidos"), orderBy("timestamp", "desc"));
-        const snap = await getDocs(q);
-
-        if (snap.empty) {
-          contenedor.innerHTML = '<p style="text-align:center; color:#94a3b8;">No hay órdenes registradas.</p>';
-          return;
+        const snap = await getDoc(doc(db, "configuracion", "slogan"));
+        if (snap.exists()) {
+          const d = snap.data();
+          document.getElementById("slogan-titulo").value = d.titulo || "";
+          document.getElementById("slogan-intro").value = d.intro || "";
+          document.getElementById("slogan-item1").value = d.item1 || "";
+          document.getElementById("slogan-item2").value = d.item2 || "";
+          document.getElementById("slogan-item3").value = d.item3 || "";
+          document.getElementById("slogan-badge").value = d.badge || "";
         }
+      } catch(e) { console.error(e); }
+    }
 
-        pedidosGlobales = [];
-        let html = "";
-        
-        snap.forEach(d => {
-          const ped = { id: d.id, ...d.data() };
-          pedidosGlobales.push(ped);
-
-          const estadoActual = ped.estado || "Pendiente";
-          
-          let itemsList = (ped.items || []).map((item, idx) => `
-            <li style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px; background:#0f172a; padding:6px 10px; border-radius:6px;">
-              <span><strong>${item.nombre}</strong> x${item.cantidad} - $${(item.precio * item.cantidad).toLocaleString('es-AR')}</span>
-              <button onclick="eliminarItemOrden('${ped.id}', ${idx})" style="background:#ef4444; color:white; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-size:12px;">Quitar</button>
-            </li>
-          `).join('');
-
-          // Generar Opciones de Productos para el Desplegable
-          let opcionesProductos = productos.map(p => `<option value="${p.id}">${p.nombre} - $${p.precio}</option>`).join('');
-
-          html += `
-            <div style="background: #1e293b; border: 1px solid #334155; padding: 18px; border-radius: 12px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 10px; margin-bottom: 12px; flex-wrap: wrap; gap:10px;">
-                <span style="color: #38bdf8; font-weight: bold; font-size: 16px;">${ped.orden || 'Orden de trabajo'}</span>
-                <span style="color: #cbd5e1; font-size: 13px;">${ped.fecha || ''}</span>
-                
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <label style="font-size:12px; color:#cbd5e1;">Estado:</label>
-                  <select onchange="cambiarEstadoOrden('${ped.id}', this.value)" style="background:#0f172a; color:#38bdf8; border:1px solid #334155; padding:5px 10px; border-radius:6px; font-weight:bold;">
-                    <option value="Pendiente" ${estadoActual === 'Pendiente' ? 'selected' : ''}>⏳ Pendiente</option>
-                    <option value="En Proceso" ${estadoActual === 'En Proceso' ? 'selected' : ''}>⚙️ En Proceso</option>
-                    <option value="Enviado" ${estadoActual === 'Enviado' ? 'selected' : ''}>🚚 Enviado</option>
-                    <option value="Terminado" ${estadoActual === 'Terminado' ? 'selected' : ''}>✅ Terminado</option>
-                  </select>
-                </div>
-              </div>
-
-              <ul style="list-style:none; padding:0; margin:0 0 15px 0;">${itemsList}</ul>
-
-              <!-- SELECCIONAR Y AGREGAR PRODUCTO A LA ORDEN DESDE CATÁLOGO -->
-              <div style="display:flex; gap:10px; margin-bottom:15px; background:#0f172a; padding:10px; border-radius:8px; align-items:center; flex-wrap:wrap;">
-                <select id="select-prod-${ped.id}" style="flex:1; min-width:200px; padding:8px; border-radius:6px; background:#1e293b; color:white; border:1px solid #334155;">
-                  <option value="">-- Seleccionar producto para agregar --</option>
-                  ${opcionesProductos}
-                </select>
-                <button onclick="agregarProductoSeleccionado('${ped.id}')" style="background:#22c55e; color:white; border:none; padding:8px 15px; border-radius:6px; font-weight:bold; cursor:pointer;">+ Agregar a Orden</button>
-              </div>
-
-              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-                <div style="color: #22c55e; font-weight: bold; font-size: 18px;">
-                  Total: $${parseFloat(ped.total || 0).toLocaleString('es-AR')}
-                </div>
-                <button onclick="eliminarOrden('${ped.id}')" style="background:#b91c1c; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:13px;">Eliminar Orden</button>
-              </div>
-            </div>
-          `;
+    document.getElementById("form-slogan").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        await setDoc(doc(db, "configuracion", "slogan"), {
+          titulo: document.getElementById("slogan-titulo").value.trim(),
+          intro: document.getElementById("slogan-intro").value.trim(),
+          item1: document.getElementById("slogan-item1").value.trim(),
+          item2: document.getElementById("slogan-item2").value.trim(),
+          item3: document.getElementById("slogan-item3").value.trim(),
+          badge: document.getElementById("slogan-badge").value.trim()
         });
+        alert("✅ Presentación guardada correctamente.");
+      } catch(err) { alert("Error: " + err.message); }
+    });
 
-        contenedor.innerHTML = html;
+    async function cargarConfigEnvios() {
+      try {
+        const snap = await getDoc(doc(db, "configuracion", "envios"));
+        if (snap.exists()) {
+          const d = snap.data();
+          document.getElementById("envio-puntos").value = d.puntos || "";
+          document.getElementById("envio-correo").value = d.correo || "";
+          document.getElementById("envio-condicion").value = d.condicion || "";
+        }
       } catch (err) { console.error(err); }
     }
 
-    // AGREGAR DESDE DESPLEGABLE
-    window.agregarProductoSeleccionado = async (pedId) => {
-      const select = document.getElementById(`select-prod-${pedId}`);
-      const prodId = select.value;
-      if (!prodId) {
-        alert("Selecciona un producto del catálogo primero.");
-        return;
-      }
-
-      const prod = productos.find(p => p.id === prodId);
-      const ped = pedidosGlobales.find(p => p.id === pedId);
-
-      if (prod && ped) {
-        ped.items.push({ nombre: prod.nombre, precio: parseFloat(prod.precio), cantidad: 1 });
-        const nuevoTotal = ped.items.reduce((acc, i) => acc + (i.precio * i.cantidad), 0);
-
-        try {
-          await updateDoc(doc(db, "pedidos", pedId), { items: ped.items, total: nuevoTotal });
-          cargarPedidos();
-        } catch(err) { alert("Error al agregar producto: " + err.message); }
-      }
-    };
-
-    window.cambiarEstadoOrden = async (id, nuevoEstado) => {
+    document.getElementById("form-envios").addEventListener("submit", async (e) => {
+      e.preventDefault();
       try {
-        await updateDoc(doc(db, "pedidos", id), { estado: nuevoEstado });
-        alert(`Estado actualizado a: ${nuevoEstado}`);
-      } catch(err) { alert("Error al actualizar estado: " + err.message); }
-    };
+        await setDoc(doc(db, "configuracion", "envios"), {
+          puntos: document.getElementById("envio-puntos").value.trim(),
+          correo: document.getElementById("envio-correo").value.trim(),
+          condicion: document.getElementById("envio-condicion").value.trim()
+        });
+        alert("✅ Configuración de envíos guardada.");
+      } catch (err) { alert("Error: " + err.message); }
+    });
 
-    window.eliminarItemOrden = async (pedId, itemIdx) => {
-      const ped = pedidosGlobales.find(p => p.id === pedId);
-      if (!ped) return;
-
-      ped.items.splice(itemIdx, 1);
-      const nuevoTotal = ped.items.reduce((acc, i) => acc + (i.precio * i.cantidad), 0);
-
-      try {
-        await updateDoc(doc(db, "pedidos", pedId), { items: ped.items, total: nuevoTotal });
-        cargarPedidos();
-      } catch(err) { alert("Error al modificar orden: " + err.message); }
-    };
-
-    window.eliminarOrden = async (id) => {
-      if (confirm("¿Estás seguro de eliminar toda esta orden?")) {
-        await deleteDoc(doc(db, "pedidos", id));
-        cargarPedidos();
-      }
-    };
-
+    // INICIALIZACIÓN
     cargarSlogan();
     cargarConfigEnvios();
-    cargarProductos().then(() => cargarPedidos());
+    cargarProductos().then(() => window.cargarPedidos());
   </script>
 </body>
 </html>
