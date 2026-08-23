@@ -15,7 +15,7 @@ body {
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-  background: #601212;
+  background: #1bca2c;
   overflow: hidden;
 }
 
@@ -34,8 +34,8 @@ body {
 
 /* NUEVO ESLOGAN DE PRESENTACIÓN */
 .hero-slogan {
-  background: linear-gradient(135deg, #1e8d38 0%, #0f172a 100%);
-  border-bottom: 1px solid #334155;
+  background: linear-gradient(135deg, #1e8d38 0%, #249748 100%);
+  border-bottom: 1px solid #33553d;
   padding: 35px 20px;
 }
 
@@ -46,7 +46,7 @@ body {
 }
 
 .slogan-container h2 {
-  color: #e67e06;
+  color: #3ee606;
   font-size: 26px;
   margin-top: 0;
   margin-bottom: 10px;
@@ -76,7 +76,7 @@ body {
 }
 
 .slogan-badge {
-  color: #ffffff;
+  color: #033a17;
   font-weight: bold;
   font-size: 15px;
   margin: 0;
@@ -109,12 +109,12 @@ body {
 
 .shipping-item i {
   font-size: 1.5rem;
-  color: #00aaff;
+  color: #2fe31b;
 }
 
 .shipping-item strong {
   display: block;
-  color: #ffffff;
+  color: #37ec3a;
   font-size: 0.9rem;
 }
 
@@ -153,7 +153,7 @@ body {
   left: 15px;
   top: 50%;
   transform: translateY(-50%);
-  color: #94a3b8;
+  color: #9eb894;
 }
 
 .search-wrapper input {
