@@ -97,6 +97,10 @@
         <input type="password" id="login-password" placeholder="Contraseña" required>
         <button type="submit"><i class="fa-solid fa-lock"></i> Iniciar Sesión</button>
       </form>
+      <!-- AQUÍ ESTÁ EL NUEVO BOTÓN DE RECUPERAR CONTRASEÑA -->
+      <a href="#" id="btn-olvido-pass-login" style="color: #38bdf8; display: block; margin-top: 15px; font-size: 13px; text-decoration: underline; cursor: pointer; text-align: center;">
+        ¿Olvidaste tu contraseña?
+      </a>
     </div>
   </div>
 
@@ -262,12 +266,26 @@
       }
     });
 
+    // --- NUEVO: FUNCIÓN PARA RECUPERAR CONTRASEÑA DESDE EL LOGIN ---
+    document.getElementById("btn-olvido-pass-login").addEventListener("click", async (e) => {
+      e.preventDefault();
+      const email = prompt("Ingresa el correo del administrador para enviarte un enlace de recuperación:");
+      if (email) {
+        try {
+          await sendPasswordResetEmail(auth, email.trim());
+          alert("✅ ¡Listo! Revisa tu bandeja de entrada o la carpeta de SPAM para restablecer tu contraseña.");
+        } catch (err) {
+          alert("❌ Error: " + err.message);
+        }
+      }
+    });
+
     // Cerrar Sesión
     document.getElementById("btn-cerrar-sesion").addEventListener("click", () => {
       signOut(auth);
     });
 
-    // Restablecer Contraseña
+    // Restablecer Contraseña desde adentro del panel
     document.getElementById("btn-cambiar-pass").addEventListener("click", async () => {
       const email = prompt("Ingresa tu correo para recibir el enlace de recuperación:");
       if (email) {

@@ -3,207 +3,232 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>peque Elektro - Catálogo Oficial</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Peque Elektro - Tu Solución Integral</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <style>
+    /* Estilos Generales y Reset */
+    body { margin: 0; font-family: Arial, sans-serif; background-color: #0f172a; color: white; }
+    * { box-sizing: border-box; }
+
+    /* Barra Superior Fija */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #1e293b;
+      border-bottom: 2px solid #0284c7;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+    .banner-mini {
+      height: 70px; /* Aprox 5-8 cm en pantalla */
+      object-fit: contain;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .cart-indicator {
+      font-size: 18px;
+      color: #38bdf8;
+      font-weight: bold;
+    }
+    
+    /* Botones Globales */
+    .btn-rojo { background: #ef4444; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+    .btn-rojo:hover { background: #dc2626; }
+    .btn-azul { background: #0284c7; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+    .btn-azul:hover { background: #0369a1; }
+    .btn-verde { background: #22c55e; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
+    .btn-verde:hover { background: #16a34a; }
+
+    /* Layout Estilo Mercado Libre */
+    .shop-container {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    
+    /* Barra Lateral Izquierda */
+    .sidebar-left {
+      width: 300px;
+      flex-shrink: 0;
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+      border: 1px solid #334155;
+    }
+
+    /* Categorías */
+    .category-group { margin-bottom: 15px; }
+    .category-title {
+      font-weight: bold;
+      color: #38bdf8;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 6px;
+      background: #0f172a;
+      display: flex;
+      justify-content: space-between;
+    }
+    .subcategory-list { list-style: none; padding-left: 15px; margin-top: 5px; display: none; }
+    .subcategory-list.active { display: block; }
+    .subcategory-list li { color: #94a3b8; padding: 6px 0; cursor: pointer; font-size: 14px; }
+    .subcategory-list li:hover { color: white; }
+
+    /* Resumen de Pedido Lateral */
+    .resumen-pedido { margin-top: 30px; padding-top: 20px; border-top: 1px solid #334155; }
+    .lista-carrito { list-style: none; padding: 0; max-height: 250px; overflow-y: auto; font-size: 14px; }
+    .lista-carrito li { display: flex; justify-content: space-between; margin-bottom: 8px; color: #cbd5e1; border-bottom: 1px solid #334155; padding-bottom: 5px; }
+
+    /* Grilla de 5 Productos */
+    .main-content { flex-grow: 1; }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+    }
+    .product-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .product-card img { width: 100%; height: 180px; object-fit: contain; border-radius: 8px; background: white; margin-bottom: 10px; }
+    .product-card h3 { font-size: 14px; margin: 5px 0; color: #e2e8f0; height: 40px; overflow: hidden; }
+    .product-card .price { font-size: 18px; color: #22c55e; font-weight: bold; margin-bottom: 10px; }
+    
+    .product-actions { display: flex; gap: 5px; }
+    .product-actions button { flex: 1; padding: 8px; font-size: 13px; }
+
+    /* Toast Flotante */
+    #toast-cart {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #22c55e;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      display: none;
+      z-index: 9999;
+      font-weight: bold;
+    }
+
+    /* Diseño Adaptativo (Responsive) */
+    @media (max-width: 1400px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 1100px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 850px) {
+      .shop-container { flex-direction: column; }
+      .sidebar-left { width: 100%; position: static; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .banner-mini { height: 50px; }
+    }
+    @media (max-width: 500px) { .products-grid { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
 
-  <!-- BANNER DE LOGO -->
-  <header class="banner-header">
-    <img src="logo.jpg" alt="Peque Elektro" class="banner-img">
-  </header>
-  
-  <!-- SECCIÓN PRESENTACIÓN / ESLOGAN DINÁMICO -->
-  <section class="slogan-section" style="background: #0f172a; padding: 40px 20px; text-align: center; color: white;">
-    <div class="slogan-container" style="max-width: 800px; margin: 0 auto;">
-      <h2 id="view-slogan-titulo" style="color: #109645; font-size: 28px; margin-bottom: 15px;">Peque Elektro: Tu solución integral.</h2>
-      <p id="view-slogan-intro" class="slogan-intro" style="color: #cbd5e1; font-size: 16px; margin-bottom: 20px;">Simplificamos tu búsqueda ofreciéndote variedad y calidad en un solo lugar:</p>
-      
-      <ul class="slogan-list" style="list-style: none; padding: 0; margin: 0 0 25px 0; text-align: left; display: inline-block;">
-        <li id="view-slogan-item1" style="margin-bottom: 10px; font-size: 15px;"><i class="fa-solid fa-mug-hot" style="color: #ec4899; margin-right: 8px;"></i> <strong>Hogar y Bazar:</strong> Pavas eléctricas, termos y esenciales para tu cocina.</li>
-        <li id="view-slogan-item2" style="margin-bottom: 10px; font-size: 15px;"><i class="fa-solid fa-clock" style="color: #a855f7; margin-right: 8px;"></i> <strong>Tecnología y Accesorios:</strong> Smartwatches y mochilas para seguir tu ritmo.</li>
-        <li id="view-slogan-item3" style="margin-bottom: 10px; font-size: 15px;"><i class="fa-solid fa-wrench" style="color: #38bdf8; margin-right: 8px;"></i> <strong>Herramientas:</strong> Todo lo necesario para tus proyectos y reparaciones.</li>
-      </ul>
-
-      <div>
-        <span id="view-slogan-badge" class="slogan-badge" style="background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8; color: #38bdf8; padding: 10px 20px; border-radius: 20px; font-weight: bold; display: inline-block;">🚀 Calidad garantizada para potenciar tu día a día.</span>
+  <!-- BARRA FIJA SUPERIOR -->
+  <header class="top-bar">
+    <img src="logo.jpg" alt="Peque Elektro" class="banner-mini">
+    <div class="header-actions">
+      <div class="cart-indicator">
+        <i class="fa-solid fa-cart-shopping"></i> <span id="cart-count-top">0</span>
       </div>
-    </div>
-  </section>
-
-  <!-- INFORMACIÓN DE ENVÍOS Y ENTREGAS -->
-  <div class="shipping-banner">
-    <div class="shipping-item">
-      <i class="fas fa-map-marker-alt"></i>
-      <div>
-        <strong>Puntos de encuentro sin costo:</strong>
-        <p id="info-puntos">Cargando...</p>
-      </div>
-    </div>
-
-    <div class="shipping-item">
-      <i class="fas fa-truck"></i>
-      <div>
-        <strong>Envíos por Correo:</strong>
-        <p id="info-correo">Cargando...</p>
-      </div>
-    </div>
-
-    <div class="shipping-item">
-      <i class="fas fa-check-circle"></i>
-      <div>
-        <strong>Condición de entrega:</strong>
-        <p id="info-condicion">Cargando...</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- CONTENEDOR PRINCIPAL DE PRODUCTOS -->
-  <main class="main-container">
-    
-    <!-- BARRA DE BÚSQUEDA Y FILTROS -->
-    <div class="search-filter-box">
-      <div class="search-wrapper">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="input-busqueda" placeholder="Buscar productos por nombre...">
-      </div>
-      <div id="contenedor-categorias" class="categories-bar">
-        <!-- Se generan dinámicamente -->
-      </div>
-    </div>
-
-    <!-- SECCIÓN CATÁLOGO CON CONTROLES DE PAGINACIÓN -->
-    <section>
-      <h2 class="section-title">Nuestros Productos</h2>
-      <div id="grid-productos" class="products-grid">
-        <p style="text-align:center; color: #94a3b8; grid-column: 1/-1;">Cargando catálogo...</p>
-      </div>
-
-      <!-- CONTENEDOR DE PAGINACIÓN DEBAJO DE LA GRILLA -->
-      <div id="paginacion-contenedor" class="pagination-container"></div>
-    </section>
-
-  </main>
-
-  <!-- SECCIÓN DEL CARRITO DE PEDIDOS -->
-  <section class="cart-section" style="max-width: 650px; margin: 40px auto; padding: 0 20px;">
-    <div style="background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 25px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-      <h2 style="color: #38bdf8; font-size: 22px; margin-top: 0; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px;">
-        <i class="fa-solid fa-cart-shopping"></i> Tu Pedido
-      </h2>
-      
-      <div id="cart-items" style="background: #0f172a; padding: 15px; border-radius: 10px; margin-bottom: 15px; min-height: 60px; color: #94a3b8; font-size: 14px; border: 1px dashed #334155;">
-        Aún no has agregado productos a tu lista.
-      </div>
-
-      <div style="font-size: 20px; font-weight: bold; color: #f8fafc; margin-bottom: 20px;">
-        Total Estimado: <span id="cart-total" style="color: #38bdf8;">$0.00</span>
-      </div>
-
-      <button id="btn-send-order" style="background: #22c55e; color: white; border: none; padding: 14px 20px; border-radius: 10px; font-weight: bold; font-size: 16px; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;">
-        <i class="fa-brands fa-whatsapp" style="font-size: 20px;"></i> Finalizar y Enviar Pedido
+      <!-- Botón de Finalizar y Enviar Directo -->
+      <button class="btn-rojo" onclick="finalizarPedidoWhatsapp()">
+        <i class="fa-brands fa-whatsapp"></i> Finalizar y Enviar
       </button>
     </div>
-  </section>
+  </header>
 
-  <!-- SECCIÓN RESEÑAS Y OPINIONES -->
-  <section class="reviews-section">
-    <div class="reviews-container">
-      <h2><i class="fa-solid fa-comments"></i> Lo que dicen nuestros clientes</h2>
-      
-      <div id="grid-reviews" class="reviews-grid">
-        <p style="text-align:center; color: #94a3b8; grid-column: 1/-1;">Cargando opiniones...</p>
+  <!-- MENSAJE FLOTANTE AL AGREGAR AL CARRITO -->
+  <div id="toast-cart"><i class="fa-solid fa-circle-check"></i> Producto agregado al pedido</div>
+
+  <div class="shop-container">
+    
+    <!-- BARRA LATERAL IZQUIERDA -->
+    <aside class="sidebar-left">
+      <h3 style="color: white; margin-top: 0;"><i class="fa-solid fa-list"></i> Categorías</h3>
+      <div id="categories-tree">
+        <!-- Generado dinámicamente -->
       </div>
 
-      <div class="add-review-box">
-        <h3><i class="fa-solid fa-pen-to-square"></i> ¡Déjanos tu opinión!</h3>
-        <form id="form-resena">
-          <div class="review-inputs">
-            <input type="text" id="rev-nombre" placeholder="Tu Nombre *" required>
-            <select id="rev-estrellas" required>
-              <option value="5">⭐⭐⭐⭐⭐ (5/5) - ¡Excelente!</option>
-              <option value="4">⭐⭐⭐⭐ (4/5) - Muy Buena</option>
-              <option value="3">⭐⭐⭐ (3/5) - Buena</option>
-              <option value="2">⭐⭐ (2/5) - Regular</option>
-              <option value="1">⭐ (1/5) - Mala</option>
-            </select>
-          </div>
-          <textarea id="rev-comentario" placeholder="Cuéntanos tu experiencia de compra o cómo fue la atención recibida..." required></textarea>
-          <button type="submit" class="btn-submit-review"><i class="fa-solid fa-paper-plane"></i> Publicar Reseña</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- PIE DE PÁGINA -->
-  <footer>
-    <p>&copy; 2026 Peque Elektro - Todos los derechos reservados.</p>
-  </footer>
-
-  <!-- MODAL DE DETALLES DEL PRODUCTO -->
-  <div id="modal-detalle" class="modal-overlay">
-    <div class="modal-content-fullscreen">
-      <div class="fullscreen-container">
-        <button class="modal-close" onclick="cerrarModal()" style="position: absolute; top: 20px; right: 25px; background: #334155; color: #f8fafc; border: none; font-size: 24px; border-radius: 50%; width: 42px; height: 42px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">&times;</button>
-        
-        <div class="modal-grid-large">
-          <div class="modal-images">
-            <div style="background: #1e293b; border-radius: 16px; padding: 20px; border: 1px solid #334155; text-align: center; position: relative;">
-              <img id="modal-img-principal" src="" alt="Producto" style="width: 100%; max-height: 480px; object-fit: contain; border-radius: 12px; cursor: zoom-in;" onclick="abrirZoomImagen(this.src)">
-              <span style="position: absolute; bottom: 15px; right: 15px; background: rgba(15, 23, 42, 0.85); color: #38bdf8; padding: 6px 12px; border-radius: 6px; font-size: 13px; pointer-events: none; border: 1px solid #334155;">
-                <i class="fa-solid fa-magnifying-glass-plus"></i> Clic para ampliar
-              </span>
-            </div>
-            <div id="modal-gallery" class="gallery-thumbs" style="display: flex; gap: 12px; margin-top: 15px; overflow-x: auto;"></div>
-          </div>
-          
-          <div class="modal-info" style="display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-              <h2 id="modal-titulo" style="color: #f8fafc; font-size: 28px; margin-top: 0; margin-bottom: 12px;"></h2>
-              <p id="modal-precio" class="modal-price" style="color: #38bdf8; font-size: 32px; font-weight: 800; margin-bottom: 20px;"></p>
-              
-              <div id="modal-box-colores" style="display:none; margin-bottom: 20px;">
-                <label style="font-weight:bold; color:#38bdf8; display:block; margin-bottom:8px; font-size: 15px;">Selecciona Color:</label>
-                <select id="modal-select-color" style="width: 100%; padding: 12px; border-radius: 10px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; font-size: 15px;"></select>
-              </div>
-
-              <!-- CONTROLES DE CANTIDAD -->
-              <div style="margin-bottom: 20px;">
-                <label style="font-weight:bold; color:#38bdf8; display:block; margin-bottom:8px; font-size: 15px;">Cantidad:</label>
-                <div style="display: flex; align-items: center; gap: 12px;">
-                  <button type="button" onclick="cambiarCantidadModal(-1)" style="background: #334155; color: #f8fafc; border: none; border-radius: 8px; width: 42px; height: 42px; font-size: 20px; font-weight: bold; cursor: pointer;">-</button>
-                  <input type="number" id="modal-cantidad-input" value="1" min="1" readonly style="width: 60px; text-align: center; padding: 10px; border-radius: 8px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; font-size: 18px; font-weight: bold;">
-                  <button type="button" onclick="cambiarCantidadModal(1)" style="background: #334155; color: #f8fafc; border: none; border-radius: 8px; width: 42px; height: 42px; font-size: 20px; font-weight: bold; cursor: pointer;">+</button>
-                </div>
-              </div>
-
-              <div class="modal-desc-box" style="background: #1e293b; padding: 20px; border-radius: 12px; border: 1px solid #334155; margin-bottom: 25px;">
-                <h4 style="color: #94a3b8; margin: 0 0 10px 0; font-size: 15px;">Descripción detallada:</h4>
-                <div id="modal-descripcion" style="color: #cbd5e1; font-size: 15px; line-height: 1.7; white-space: pre-line;"></div>
-              </div>
-            </div>
-
-            <div>
-              <button id="modal-btn-agregar" class="btn-detail" style="background: #38bdf8; color: #0f172a; border: none; padding: 16px; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 18px; width: 100%;">
-                🛒 Agregar al Pedido
-              </button>
-            </div>
-          </div>
+      <!-- RESUMEN DE TU PEDIDO -->
+      <div class="resumen-pedido">
+        <h3 style="color: #38bdf8; margin-top: 0;"><i class="fa-solid fa-basket-shopping"></i> Tu Pedido</h3>
+        <ul id="lista-carrito-lateral" class="lista-carrito">
+          <li style="color: #94a3b8;">El carrito está vacío.</li>
+        </ul>
+        <div style="font-size: 18px; font-weight: bold; margin-top: 10px; color: white;">
+          Total: $<span id="total-carrito">0.00</span>
         </div>
+        <button class="btn-verde" onclick="finalizarPedidoWhatsapp()">
+          <i class="fa-brands fa-whatsapp"></i> Enviar Pedido
+        </button>
       </div>
-    </div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL DE PRODUCTOS -->
+    <main class="main-content">
+      <input type="text" id="buscar-input" placeholder="Buscar productos..." style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: white; margin-bottom: 20px; font-size: 16px;">
+
+      <div id="grid-productos" class="products-grid">
+        <!-- Productos generados dinámicamente -->
+      </div>
+
+      <!-- SECCIÓN DE COMENTARIOS (ANTI-BOT) -->
+      <section style="margin-top: 40px; background: #1e293b; padding: 25px; border-radius: 12px; border: 1px solid #334155;">
+        <h3 style="color: #38bdf8; margin-top: 0;"><i class="fa-solid fa-comments"></i> Consultas y Opiniones</h3>
+        
+        <form id="form-resena" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
+          <input type="text" id="resena-nombre" placeholder="Tu nombre" required style="padding: 12px; border-radius: 6px; background: #0f172a; color: white; border: 1px solid #334155;">
+          <textarea id="resena-texto" placeholder="Escribe tu consulta..." required style="padding: 12px; border-radius: 6px; background: #0f172a; color: white; border: 1px solid #334155; height: 80px;"></textarea>
+          
+          <!-- ANTI-BOT -->
+          <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 6px; display: flex; align-items: center; gap: 10px;">
+            <input type="checkbox" id="chk-captcha" style="width: 22px; height: 22px; cursor: pointer;">
+            <label for="chk-captcha" style="color: white; cursor: pointer; font-weight: bold;">No soy un robot 🤖</label>
+          </div>
+
+          <button type="submit" class="btn-azul">Publicar Comentario</button>
+        </form>
+        <div id="lista-resenas"></div>
+      </section>
+    </main>
+
   </div>
 
-  <!-- VISOR FULLSCREEN PARA VER FOTO GIGANTE (LIGHTBOX) -->
-  <div id="lightbox-zoom" onclick="cerrarZoomImagen()" style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 3000; justify-content: center; align-items: center; padding: 10px; cursor: zoom-out;">
-    <button onclick="cerrarZoomImagen()" style="position: absolute; top: 15px; right: 20px; background: #ef4444; color: white; border: none; font-size: 24px; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 3001; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">&times;</button>
-    <img id="lightbox-img" src="" alt="Vista ampliada" style="width: 90vw; height: 90vh; object-fit: contain; border-radius: 12px; filter: drop-shadow(0 0 20px rgba(255,255,255,0.15));">
+  <!-- MODAL DE DETALLES -->
+  <div id="modal-detalle" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 10000;">
+    <div style="background: #1e293b; border: 1px solid #334155; width: 90%; max-width: 500px; padding: 25px; border-radius: 12px; position: relative; text-align: center;">
+      <button onclick="cerrarModal()" style="position: absolute; top: 10px; right: 10px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; font-weight: bold;">X</button>
+      <h2 id="modal-titulo" style="color: #38bdf8; margin-top: 10px;"></h2>
+      <img id="modal-img" src="" alt="" style="width: 100%; max-height: 250px; object-fit: contain; background: white; border-radius: 8px; margin-bottom: 15px;">
+      <p id="modal-precio" style="color: #22c55e; font-size: 24px; font-weight: bold; margin: 10px 0;"></p>
+      <div id="modal-descripcion" style="color: #cbd5e1; text-align: left; padding: 10px; background: #0f172a; border-radius: 8px;"></div>
+    </div>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, addDoc, query, orderBy, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
@@ -217,373 +242,204 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    let productosGlobal = [];
-    let categoriaSeleccionada = "Todas";
+    let productos = [];
     let carrito = [];
+    const numeroWhatsapp = "5491134970171"; // TU NÚMERO ACTUALIZADO
 
-    // VARIABLES DE PAGINACIÓN
-    let paginaActual = 1;
-    const productosPorPagina = 30;
-
-    // CARGAR ESLOGAN DINÁMICO DESDE FIREBASE
-    async function cargarSloganPrincipal() {
-      try {
-        const snap = await getDoc(doc(db, "configuracion", "slogan"));
-        if (snap.exists()) {
-          const d = snap.data();
-          if (d.titulo) document.getElementById("view-slogan-titulo").innerText = d.titulo;
-          if (d.intro) document.getElementById("view-slogan-intro").innerText = d.intro;
-          if (d.item1) document.getElementById("view-slogan-item1").innerHTML = `<i class="fa-solid fa-mug-hot" style="color:#ec4899; margin-right:8px;"></i> ${d.item1}`;
-          if (d.item2) document.getElementById("view-slogan-item2").innerHTML = `<i class="fa-solid fa-clock" style="color:#a855f7; margin-right:8px;"></i> ${d.item2}`;
-          if (d.item3) document.getElementById("view-slogan-item3").innerHTML = `<i class="fa-solid fa-wrench" style="color:#38bdf8; margin-right:8px;"></i> ${d.item3}`;
-          if (d.badge) document.getElementById("view-slogan-badge").innerText = d.badge;
-        }
-      } catch (err) {
-        console.error("Error al cargar eslogan:", err);
-      }
-    }
-
-    // CARGAR INFORMACIÓN DE ENVÍOS DESDE FIREBASE
-    async function cargarInfoEnvios() {
-      try {
-        const docRef = doc(db, "configuracion", "envios");
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          if (data.puntos) document.getElementById("info-puntos").textContent = data.puntos;
-          if (data.correo) document.getElementById("info-correo").textContent = data.correo;
-          if (data.condicion) document.getElementById("info-condicion").textContent = data.condicion;
-        }
-      } catch (error) {
-        console.error("Error al cargar la información de envíos:", error);
-      }
-    }
-
-    // CARGAR PRODUCTOS
-    async function cargarProductos() {
+    async function init() {
       const snap = await getDocs(collection(db, "productos"));
-      productosGlobal = [];
-      snap.forEach(d => productosGlobal.push({ id: d.id, ...d.data() }));
-      renderizarCategorias();
-      renderizarProductos();
+      snap.forEach(d => productos.push({ id: d.id, ...d.data() }));
+      renderProductos(productos);
+      renderCategorias();
+      cargarResenas();
     }
 
-    function renderizarCategorias() {
-      const contenedor = document.getElementById('contenedor-categorias');
-      const cats = ["Todas", ...new Set(productosGlobal.map(p => p.categoria).filter(Boolean))];
-      
-      contenedor.innerHTML = cats.map(c => `
-        <button class="btn-cat ${c === categoriaSeleccionada ? 'active' : ''}" onclick="filtrarCategoria('${c}')">${c}</button>
-      `).join('');
-    }
-
-    window.filtrarCategoria = (cat) => {
-      categoriaSeleccionada = cat;
-      paginaActual = 1;
-      renderizarCategorias();
-      renderizarProductos();
-    };
-
-    document.getElementById('input-busqueda').addEventListener('input', () => {
-      paginaActual = 1;
-      renderizarProductos();
-    });
-
-    // RENDERIZADO CON LÓGICA DE PAGINACIÓN
-    function renderizarProductos() {
-      const grid = document.getElementById('grid-productos');
-      const busqueda = document.getElementById('input-busqueda').value.toLowerCase();
-
-      let filtrados = productosGlobal.filter(p => {
-        const cumpleCat = categoriaSeleccionada === "Todas" || p.categoria === categoriaSeleccionada;
-        const cumpleBusqueda = p.nombre.toLowerCase().includes(busqueda);
-        return cumpleCat && cumpleBusqueda;
-      });
-
-      if (filtrados.length === 0) {
-        grid.innerHTML = `<p style="text-align:center; color: #94a3b8; grid-column: 1/-1;">No se encontraron productos.</p>`;
-        document.getElementById('paginacion-contenedor').innerHTML = '';
-        return;
-      }
-
-      const totalPaginas = Math.ceil(filtrados.length / productosPorPagina);
-      if (paginaActual > totalPaginas) paginaActual = 1;
-
-      const inicio = (paginaActual - 1) * productosPorPagina;
-      const fin = inicio + productosPorPagina;
-      const productosPagina = filtrados.slice(inicio, fin);
-
-      grid.innerHTML = productosPagina.map(p => {
+    function renderProductos(lista) {
+      const grid = document.getElementById("grid-productos");
+      grid.innerHTML = lista.map(p => {
         const img = (p.imagenes && p.imagenes[0]) || p.imagen || 'https://via.placeholder.com/200';
         return `
-          <div class="product-card" onclick="verDetalle('${p.id}')" style="cursor: pointer;">
-            <img src="${img}" alt="${p.nombre}" onerror="this.src='https://via.placeholder.com/200'">
+          <div class="product-card">
+            <img src="${img}" alt="${p.nombre}">
             <h3>${p.nombre}</h3>
             <p class="price">$${parseFloat(p.precio || 0).toLocaleString('es-AR')}</p>
-            <button class="btn-detail" onclick="event.stopPropagation(); verDetalle('${p.id}')">Ver Detalles / Agregar</button>
+            <div class="product-actions">
+              <button class="btn-azul" onclick="verDetalles('${p.id}')">Ver Detalle</button>
+              <button class="btn-rojo" onclick="agregarAlCarrito('${p.id}')">Agregar</button>
+            </div>
           </div>
         `;
       }).join('');
-
-      renderizarControlesPaginacion(totalPaginas);
     }
 
-    // CONTROLES DE PAGINACIÓN
-    function renderizarControlesPaginacion(totalPaginas) {
-      const pagContainer = document.getElementById('paginacion-contenedor');
-      if (totalPaginas <= 1) {
-        pagContainer.innerHTML = '';
-        return;
+    function renderCategorias() {
+      const container = document.getElementById("categories-tree");
+      const tree = {};
+
+      productos.forEach(p => {
+        const cat = p.categoria || "Otros";
+        const sub = p.subcategoria || "";
+        if (!tree[cat]) tree[cat] = new Set();
+        if (sub) tree[cat].add(sub);
+      });
+
+      let html = `<div class="category-group"><div class="category-title" onclick="filtrarCat('')">Todas las Categorías</div></div>`;
+
+      for (const [cat, subs] of Object.entries(tree)) {
+        html += `
+          <div class="category-group">
+            <div class="category-title" onclick="toggleSubcats('${cat}')">
+              ${cat} <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <ul id="sub-${cat}" class="subcategory-list">
+              <li onclick="filtrarCat('${cat}')">Ver todo en ${cat}</li>
+              ${Array.from(subs).map(s => `<li onclick="filtrarSubcat('${cat}', '${s}')">${s}</li>`).join('')}
+            </ul>
+          </div>
+        `;
       }
-
-      pagContainer.innerHTML = `
-        <button class="btn-page" ${paginaActual === 1 ? 'disabled' : ''} onclick="cambiarPagina(-1)">
-          <i class="fa-solid fa-chevron-left"></i> Anterior
-        </button>
-        <span class="page-info">Página ${paginaActual} de ${totalPaginas}</span>
-        <button class="btn-page" ${paginaActual === totalPaginas ? 'disabled' : ''} onclick="cambiarPagina(1)">
-          Siguiente <i class="fa-solid fa-chevron-right"></i>
-        </button>
-      `;
+      container.innerHTML = html;
     }
 
-    window.cambiarPagina = (direccion) => {
-      paginaActual += direccion;
-      renderizarProductos();
-      const grid = document.getElementById('grid-productos');
-      grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    window.toggleSubcats = (cat) => {
+      const el = document.getElementById(`sub-${cat}`);
+      if (el) el.classList.toggle("active");
     };
 
-    // VISOR DE IMAGEN A PANTALLA COMPLETA
-    window.abrirZoomImagen = (src) => {
-      const img = document.getElementById('lightbox-img');
-      img.src = src;
-      document.getElementById('lightbox-zoom').style.display = 'flex';
+    window.filtrarCat = (cat) => {
+      if (!cat) return renderProductos(productos);
+      renderProductos(productos.filter(p => p.categoria === cat));
     };
 
-    window.cerrarZoomImagen = () => {
-      document.getElementById('lightbox-zoom').style.display = 'none';
+    window.filtrarSubcat = (cat, sub) => {
+      renderProductos(productos.filter(p => p.categoria === cat && p.subcategoria === sub));
     };
 
-    // MODAL Y CANTIDAD EN MODAL
-    window.cambiarCantidadModal = (delta) => {
-      const input = document.getElementById('modal-cantidad-input');
-      let val = parseInt(input.value) + delta;
-      if (val < 1) val = 1;
-      input.value = val;
-    };
-
-    // DETALLE DE PRODUCTO
-    window.verDetalle = (id) => {
-      const p = productosGlobal.find(item => item.id === id);
-      if (!p) return;
-
-      document.getElementById('modal-titulo').innerText = p.nombre;
-      document.getElementById('modal-precio').innerText = `$${parseFloat(p.precio || 0).toLocaleString('es-AR')}`;
-      document.getElementById('modal-descripcion').innerText = p.descripcion || "Sin descripción disponible.";
-      document.getElementById('modal-cantidad-input').value = 1;
-
-      const imgs = p.imagenes && p.imagenes.length > 0 ? p.imagenes : [p.imagen || 'https://via.placeholder.com/200'];
-      document.getElementById('modal-img-principal').src = imgs[0];
-
-      const gallery = document.getElementById('modal-gallery');
-      gallery.innerHTML = imgs.map(img => `
-        <img src="${img}" onclick="document.getElementById('modal-img-principal').src='${img}'" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 1px solid #334155;">
-      `).join('');
-
-      const selectColor = document.getElementById('modal-select-color');
-      const boxColores = document.getElementById('modal-box-colores');
-      if (p.colores && p.colores.length > 0) {
-        boxColores.style.display = 'block';
-        selectColor.innerHTML = p.colores.map(c => `<option value="${c}">${c}</option>`).join('');
+    window.agregarAlCarrito = (id) => {
+      const prod = productos.find(p => p.id === id);
+      if (!prod) return;
+      const index = carrito.findIndex(item => item.id === id);
+      if (index > -1) {
+        carrito[index].cantidad++;
       } else {
-        boxColores.style.display = 'none';
-      }
-
-      document.getElementById('modal-btn-agregar').onclick = () => {
-        const color = boxColores.style.display !== 'none' ? selectColor.value : '';
-        const cantidad = parseInt(document.getElementById('modal-cantidad-input').value) || 1;
-        agregarAlCarrito(p, color, cantidad);
-        cerrarModal();
-      };
-
-      const modal = document.getElementById('modal-detalle');
-      modal.style.display = 'block';
-      document.body.style.overflow = 'hidden';
-      setTimeout(() => modal.classList.add('active'), 10);
-    };
-
-    window.cerrarModal = () => {
-      const modal = document.getElementById('modal-detalle');
-      modal.classList.remove('active');
-      document.body.style.overflow = 'auto';
-      setTimeout(() => { modal.style.display = 'none'; }, 350);
-    };
-
-    // FUNCIONES DEL CARRITO
-    function agregarAlCarrito(producto, color, cantidad = 1) {
-      const nombreItem = color ? `${producto.nombre} (${color})` : producto.nombre;
-      const existe = carrito.find(item => item.nombre === nombreItem);
-
-      if (existe) {
-        existe.cantidad += cantidad;
-      } else {
-        carrito.push({
-          id: producto.id,
-          nombre: nombreItem,
-          precio: parseFloat(producto.precio || 0),
-          cantidad: cantidad
-        });
+        carrito.push({ ...prod, cantidad: 1 });
       }
       actualizarCarritoUI();
-    }
-
-    window.modificarCantidadCarrito = (index, delta) => {
-      carrito[index].cantidad += delta;
-      if (carrito[index].cantidad <= 0) {
-        carrito.splice(index, 1);
-      }
-      actualizarCarritoUI();
-    };
-
-    window.eliminarDelCarrito = (index) => {
-      carrito.splice(index, 1);
-      actualizarCarritoUI();
+      mostrarToast();
     };
 
     function actualizarCarritoUI() {
-      const cartItemsContainer = document.getElementById('cart-items');
-      const cartTotalContainer = document.getElementById('cart-total');
+      const lista = document.getElementById("lista-carrito-lateral");
+      const totalEl = document.getElementById("total-carrito");
+      const countTop = document.getElementById("cart-count-top");
+
+      let total = 0;
+      let count = 0;
 
       if (carrito.length === 0) {
-        cartItemsContainer.innerHTML = 'Aún no has agregado productos a tu lista.';
-        cartTotalContainer.innerText = '$0.00';
-        return;
+        lista.innerHTML = '<li style="color: #94a3b8;">El carrito está vacío.</li>';
+      } else {
+        lista.innerHTML = carrito.map(i => {
+          const subtotal = parseFloat(i.precio) * i.cantidad;
+          total += subtotal;
+          count += i.cantidad;
+          return `<li><span>${i.nombre} (x${i.cantidad})</span> <span>$${subtotal.toLocaleString('es-AR')}</span></li>`;
+        }).join('');
       }
 
-      let html = '';
-      let total = 0;
+      totalEl.textContent = total.toLocaleString('es-AR');
+      countTop.textContent = count;
+    }
 
-      carrito.forEach((item, index) => {
-        const subtotal = item.precio * item.cantidad;
-        total += subtotal;
+    function mostrarToast() {
+      const toast = document.getElementById("toast-cart");
+      toast.style.display = "block";
+      setTimeout(() => { toast.style.display = "none"; }, 2500);
+    }
+
+    window.finalizarPedidoWhatsapp = async () => {
+      if (carrito.length === 0) return alert("Tu carrito está vacío.");
+
+      const total = carrito.reduce((acc, i) => acc + (parseFloat(i.precio) * i.cantidad), 0);
+      try {
+        await addDoc(collection(db, "pedidos"), {
+          orden: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
+          fecha: new Date().toLocaleDateString(),
+          timestamp: Date.now(),
+          estado: "Pendiente",
+          items: carrito,
+          total: total
+        });
+      } catch (err) { console.error(err); }
+
+      let mensaje = "Hola Peque Elektro, quiero realizar el siguiente pedido:%0A%0A";
+      carrito.forEach(i => {
+        mensaje += `• ${i.nombre} x${i.cantidad} - $${(parseFloat(i.precio) * i.cantidad).toLocaleString('es-AR')}%0A`;
+      });
+      mensaje += `%0A*Total Estimado: $${total.toLocaleString('es-AR')}*`;
+
+      window.open(`https://wa.me/${numeroWhatsapp}?text=${mensaje}`, '_blank');
+    };
+
+    window.verDetalles = (id) => {
+      const p = productos.find(item => item.id === id);
+      if (!p) return;
+      document.getElementById("modal-titulo").textContent = p.nombre;
+      document.getElementById("modal-img").src = (p.imagenes && p.imagenes[0]) || p.imagen;
+      document.getElementById("modal-precio").textContent = `$${parseFloat(p.precio).toLocaleString('es-AR')}`;
+      document.getElementById("modal-descripcion").textContent = p.descripcion || "Sin especificaciones detalladas.";
+      document.getElementById("modal-detalle").style.display = "flex";
+    };
+
+    window.cerrarModal = () => {
+      document.getElementById("modal-detalle").style.display = "none";
+    };
+
+    document.getElementById("form-resena").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const captcha = document.getElementById("chk-captcha").checked;
+      
+      if (!captcha) {
+        return alert("⚠️ Por favor, confirma que no eres un robot.");
+      }
+
+      const nombre = document.getElementById("resena-nombre").value.trim();
+      const texto = document.getElementById("resena-texto").value.trim();
+
+      await addDoc(collection(db, "resenas"), {
+        nombre,
+        texto,
+        fecha: new Date().toLocaleDateString()
+      });
+
+      document.getElementById("form-resena").reset();
+      cargarResenas();
+    });
+
+    async function cargarResenas() {
+      const snap = await getDocs(collection(db, "resenas"));
+      const list = document.getElementById("lista-resenas");
+      let html = "";
+      snap.forEach(d => {
+        const r = d.data();
         html += `
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #334155; padding-bottom: 8px; color: #f8fafc; text-align: left; gap: 10px;">
-            <div style="flex: 1;">
-              <div style="font-size: 14px; font-weight: bold; color: #f8fafc;">${item.nombre}</div>
-              <div style="color: #38bdf8; font-size: 13px; font-weight: bold; margin-top: 2px;">Subtotal: $${subtotal.toLocaleString('es-AR')}</div>
-            </div>
-            
-            <div style="display: flex; align-items: center; gap: 6px;">
-              <button onclick="modificarCantidadCarrito(${index}, -1)" style="background: #334155; color: white; border: none; border-radius: 4px; width: 26px; height: 26px; cursor: pointer; font-weight: bold;">-</button>
-              <span style="font-size: 14px; font-weight: bold; min-width: 20px; text-align: center;">${item.cantidad}</span>
-              <button onclick="modificarCantidadCarrito(${index}, 1)" style="background: #334155; color: white; border: none; border-radius: 4px; width: 26px; height: 26px; cursor: pointer; font-weight: bold;">+</button>
-              <button onclick="eliminarDelCarrito(${index})" style="background: #ef4444; color: white; border: none; border-radius: 4px; width: 26px; height: 26px; cursor: pointer; margin-left: 4px;">✕</button>
-            </div>
+          <div style="background: #0f172a; padding: 15px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid #38bdf8;">
+            <strong style="color: #38bdf8;">${r.nombre}</strong> <small style="color: #64748b;">(${r.fecha})</small>
+            <p style="color: #cbd5e1; margin: 8px 0 0 0;">${r.texto}</p>
           </div>
         `;
       });
-
-      cartItemsContainer.innerHTML = html;
-      cartTotalContainer.innerText = `$${total.toLocaleString('es-AR')}`;
+      list.innerHTML = html || '<p style="color: #64748b;">No hay opiniones aún. ¡Sé el primero!</p>';
     }
 
-    // ENVÍO DE PEDIDOS GUARDANDO EN FIREBASE
-    document.getElementById('btn-send-order').onclick = async () => {
-      if (carrito.length === 0) {
-        alert('Tu carrito está vacío. Agrega productos antes de enviar el pedido.');
-        return;
-      }
-
-      const orderNum = 'PED-' + Math.floor(100000 + Math.random() * 900000);
-      let total = 0;
-      let mensaje = `*Nuevo Pedido Peque Elektro #${orderNum}*\n\n`;
-
-      carrito.forEach(item => {
-        const subtotal = item.precio * item.cantidad;
-        total += subtotal;
-        mensaje += `• ${item.nombre} x${item.cantidad} - $${subtotal.toLocaleString('es-AR')}\n`;
-      });
-
-      mensaje += `\n*Total Estimado:* $${total.toLocaleString('es-AR')}`;
-
-      try {
-        await addDoc(collection(db, "pedidos"), {
-          orden: orderNum,
-          fecha: new Date().toLocaleString('es-AR'),
-          items: carrito,
-          total: total,
-          timestamp: new Date()
-        });
-      } catch (err) {
-        console.error("Error al registrar el pedido en la base de datos:", err);
-      }
-
-      const telefonoAdmin = '5491134970171';
-      const urlWsp = `https://api.whatsapp.com/send?phone=${telefonoAdmin}&text=${encodeURIComponent(mensaje)}`;
-
-      window.open(urlWsp, '_blank');
-    };
-
-    // CARGAR Y PUBLICAR RESEÑAS
-    async function cargarResenas() {
-      const contenedor = document.getElementById('grid-reviews');
-      try {
-        const q = query(collection(db, "resenas"), orderBy("fecha", "desc"));
-        const snap = await getDocs(q);
-
-        if (snap.empty) {
-          contenedor.innerHTML = `<p style="text-align:center; color: #94a3b8; grid-column: 1/-1;">Aún no hay opiniones. ¡Sé el primero en dejar la tuya!</p>`;
-          return;
-        }
-
-        let html = "";
-        snap.forEach(docSnap => {
-          const r = docSnap.data();
-          const estrellas = "⭐".repeat(r.estrellas || 5);
-          html += `
-            <div class="review-card">
-              <div class="review-header">
-                <strong>${r.nombre}</strong>
-                <span class="stars">${estrellas}</span>
-              </div>
-              <p class="review-text">"${r.comentario}"</p>
-            </div>
-          `;
-        });
-        contenedor.innerHTML = html;
-      } catch (err) {
-        console.error("Error al cargar reseñas:", err);
-      }
-    }
-
-    document.getElementById('form-resena').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const nombre = document.getElementById('rev-nombre').value.trim();
-      const estrellas = parseInt(document.getElementById('rev-estrellas').value);
-      const comentario = document.getElementById('rev-comentario').value.trim();
-
-      try {
-        await addDoc(collection(db, "resenas"), {
-          nombre,
-          estrellas,
-          comentario,
-          fecha: new Date()
-        });
-        alert("✅ ¡Gracias por tu opinión!");
-        document.getElementById('form-resena').reset();
-        cargarResenas();
-      } catch (err) {
-        alert("⚠️ Error al guardar reseña: " + err.message);
-      }
+    // Buscador
+    document.getElementById("buscar-input").addEventListener("input", (e) => {
+      const txt = e.target.value.toLowerCase();
+      const filtrados = productos.filter(p => p.nombre.toLowerCase().includes(txt));
+      renderProductos(filtrados);
     });
 
-    // EJECUTAR FUNCIONES AL CARGAR LA PÁGINA
-    cargarSloganPrincipal();
-    cargarInfoEnvios();
-    cargarProductos();
-    cargarResenas();
+    init();
   </script>
 </body>
 </html>
