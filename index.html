@@ -16,54 +16,131 @@
             overflow-x: hidden;
         }
 
-        /* BANNER HEADER (IMAGEN ORIGINAL) */
-        .banner-header {
-            width: 100vw;
-            position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
-            background: #020617;
-            overflow: hidden;
-            border-bottom: 1px solid #1e293b;
-        }
-        .banner-img {
-            width: 100%;
-            height: auto;
-            max-height: 280px;
-            display: block;
-            object-fit: cover;
-        }
-
-        /* HERO SLOGAN */
+        /* SECCIÓN DE PRESENTACIÓN / HERO CON LOGO A LA IZQUIERDA Y CONTENIDO A LA DERECHA */
         .hero-slogan {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             border-bottom: 1px solid #334155;
-            padding: 20px 20px;
+            padding: 35px 20px;
         }
         .slogan-container {
             max-width: 1200px;
             margin: 0 auto;
-            text-align: center;
         }
-        .slogan-container h2 {
+        .hero-grid-presentation {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+        @media (max-width: 768px) {
+            .hero-grid-presentation {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        /* LOGO UBICADO A LA IZQUIERDA */
+        .hero-logo-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .hero-logo-img {
+            width: 100%;
+            max-width: 150px;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            object-fit: contain;
+            background: #1e293b;
+            padding: 8px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        /* CONTENEDOR DERECHO (TEXTO + RECUADRO DE ENVÍOS) */
+        .hero-right-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 25px;
+            align-items: center;
+        }
+        @media (max-width: 900px) {
+            .hero-right-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* RECUADRO DE ENVÍOS UBICADO A LA DERECHA */
+        .hero-shipping-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 18px;
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.5;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            text-align: left;
+        }
+        .hero-shipping-card div {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .hero-shipping-card i {
             color: #38bdf8;
-            font-size: 22px;
-            margin-top: 0;
-            margin-bottom: 6px;
+            margin-top: 3px;
+            font-size: 14px;
+        }
+
+        .hero-text-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .hero-text-box h2 {
+            color: #38bdf8;
+            font-size: 24px;
+            margin: 0;
         }
         .slogan-intro {
             color: #94a3b8;
             font-size: 14px;
-            margin-bottom: 10px;
+            margin: 0;
+            line-height: 1.5;
+        }
+        .slogan-items-box {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+        @media (max-width: 768px) {
+            .slogan-items-box {
+                justify-content: center;
+            }
+        }
+        .slogan-item-tag {
+            color: #cbd5e1;
+            font-size: 13px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
+        .slogan-badge-wrapper {
+            margin-top: 6px;
         }
         .slogan-badge {
             color: #38bdf8;
             font-weight: bold;
             font-size: 13px;
             background: rgba(56, 189, 248, 0.1);
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 6px;
             display: inline-block;
             border: 1px solid rgba(56, 189, 248, 0.2);
@@ -85,7 +162,7 @@
             }
         }
 
-        /* BARRA LATERAL (FIJA, CON CATEGORÍAS Y CARRITO INTEGRADO) */
+        /* BARRA LATERAL */
         .sidebar {
             background: #1e293b;
             border: 1px solid #334155;
@@ -138,7 +215,6 @@
             border-color: #0284c7;
         }
         
-        /* SUBCATEGORÍAS (ACORDEÓN) */
         .subcat-list {
             list-style: none;
             padding-left: 15px;
@@ -167,7 +243,20 @@
             background: rgba(56, 189, 248, 0.08);
         }
 
-        /* SECCIÓN DEL CARRITO INTEGRADA EN LA BARRA LATERAL */
+        .sidebar-shipping-box {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+        .sidebar-shipping-box i {
+            color: #38bdf8;
+            margin-right: 5px;
+        }
+
         .sidebar-cart-section {
             border-top: 1px solid #334155;
             padding-top: 15px;
@@ -176,7 +265,7 @@
             gap: 12px;
         }
         .sidebar-cart-items {
-            max-height: 250px;
+            max-height: 220px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -292,7 +381,6 @@
             margin: 0 0 12px 0;
         }
         
-        /* BOTONES INDEPENDIENTES EN CADA PRODUCTO */
         .card-buttons {
             display: flex;
             flex-direction: column;
@@ -403,7 +491,7 @@
             border-color: #38bdf8;
         }
 
-        /* LIGHTBOX PANTALLA COMPLETA PARA LA FOTO PRINCIPAL */
+        /* LIGHTBOX PANTALLA COMPLETA */
         .lightbox-overlay {
             display: none;
             position: fixed;
@@ -450,30 +538,55 @@
 </head>
 <body>
 
-    <!-- BANNER HEADER (IMAGEN ORIGINAL) -->
-    <header class="banner-header">
-        <img src="banner.jpg" alt="Peque Elektro Banner" class="banner-img">
-    </header>
-
-    <!-- SLOGAN -->
+    <!-- SECCIÓN DE PRESENTACIÓN (CON LOGO A LA IZQUIERDA Y TEXTO + ENVÍOS A LA DERECHA) -->
     <section class="hero-slogan">
         <div class="slogan-container">
-            <h2>Peque Elektro: Tu solución integral.</h2>
-            <p class="slogan-intro">Encuentra herramientas, repuestos y componentes de la mejor calidad.</p>
-            <div>
-                <span class="slogan-badge">¡Envíos a todo el país!</span>
+            <div class="hero-grid-presentation">
+                <!-- Logo ubicado a la izquierda -->
+                <div class="hero-logo-box">
+                    <img src="logo.jpg" alt="Peque Elektro Logo" class="hero-logo-img">
+                </div>
+
+                <!-- Contenido derecho (Textos + Recuadro de envíos) -->
+                <div class="hero-right-content">
+                    <div class="hero-text-box">
+                        <h2 id="presentacion-titulo">Peque Elektro: Tu solución integral.</h2>
+                        <p class="slogan-intro" id="presentacion-intro">Simplificamos tu búsqueda ofreciéndote variedad y calidad en un solo lugar.</p>
+                        <div class="slogan-items-box" id="presentacion-items"></div>
+                        <div class="slogan-badge-wrapper">
+                            <span class="slogan-badge" id="presentacion-badge">¡Envíos a todo el país!</span>
+                        </div>
+                    </div>
+
+                    <!-- Recuadro de envíos ubicado a la derecha -->
+                    <div class="hero-shipping-card" id="hero-shipping-card">
+                        <div>
+                            <i class="fa-solid fa-location-dot"></i>
+                            <div><strong style="color: #f8fafc;">Zonas:</strong> San Justo Centro | Ramos Mejía | Estación Morón | La Tablada</div>
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-box"></i>
+                            <div>Al resto del país (costo a cargo del cliente).</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- LAYOUT PRINCIPAL: SIDEBAR FIJO + PRODUCTOS -->
     <div class="shop-layout">
-        <!-- BARRA LATERAL (CATEGORÍAS + CARRITO FIJO) -->
+        <!-- BARRA LATERAL (CATEGORÍAS + ENVÍOS + CARRITO FIJO) -->
         <aside class="sidebar">
             <h3><i class="fa-solid fa-list"></i> Categorías</h3>
             <ul class="cat-list" id="sidebar-categories">
                 <li><a class="cat-link active" onclick="filtrarCategoria('todos')"><span>Todas las Categorías</span></a></li>
             </ul>
+
+            <!-- INFORMACIÓN DE ENVÍOS DINÁMICA -->
+            <div class="sidebar-shipping-box" id="sidebar-shipping-info">
+                <div><i class="fa-solid fa-truck-fast"></i> <strong>Zonas de Entrega:</strong> Cargando...</div>
+            </div>
 
             <!-- CARRITO INTEGRADO Y FIJO EN LA BARRA LATERAL -->
             <div class="sidebar-cart-section">
@@ -515,7 +628,7 @@
                 </div>
 
                 <div class="modal-grid-large">
-                    <!-- Columna Izquierda: Imagen Principal con clic para pantalla completa -->
+                    <!-- Columna Izquierda: Imagen Principal -->
                     <div>
                         <img id="modal-img" src="" alt="Producto" class="modal-main-img" onclick="abrirLightbox(this.src)" title="Haz clic para ver en pantalla completa">
                         <span style="font-size: 12px; color: #94a3b8; display: block; text-align: center; margin-top: 6px;">
@@ -523,7 +636,7 @@
                         </span>
                     </div>
 
-                    <!-- Columna Derecha: Título, Precio, Selector de cantidad, Botón y Miniaturas abajo -->
+                    <!-- Columna Derecha: Título, Precio, Selector, Botón y Miniaturas abajo -->
                     <div>
                         <h2 id="modal-title" style="color: #f8fafc; margin-top: 0;"></h2>
                         <div id="modal-price" style="font-size: 26px; font-weight: bold; color: #38bdf8; margin-bottom: 20px;"></div>
@@ -570,7 +683,7 @@
     <!-- FIREBASE & LÓGICA -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
@@ -589,9 +702,17 @@
         let categoriaSeleccionada = "todos";
         let productoActualModal = null;
         let cantidadModal = 1;
+        let configGlobal = {};
 
         async function cargarDatos() {
             try {
+                const configSnap = await getDocs(collection(db, "configuracion"));
+                configSnap.forEach(docSnap => {
+                    configGlobal[docSnap.id] = docSnap.data();
+                });
+                
+                renderizarConfiguracion();
+
                 const querySnapshot = await getDocs(collection(db, "productos"));
                 productosGlobal = [];
                 querySnapshot.forEach((docSnap) => {
@@ -600,8 +721,53 @@
                 generarMenuLateral();
                 renderizarProductos(productosGlobal);
             } catch (err) {
-                console.error("Error al cargar productos:", err);
+                console.error("Error al cargar datos desde Firebase:", err);
             }
+        }
+
+        function renderizarConfiguracion() {
+            let presentacion = configGlobal["presentacion"] || configGlobal["general"] || Object.values(configGlobal)[0] || {};
+            let envios = configGlobal["envios"] || {};
+
+            if (presentacion.titulo || presentacion.tituloPresentacion) {
+                document.getElementById("presentacion-titulo").innerText = presentacion.titulo || presentacion.tituloPresentacion;
+            }
+            if (presentacion.intro || presentacion.subtitulo) {
+                document.getElementById("presentacion-intro").innerText = presentacion.intro || presentacion.subtitulo;
+            }
+            if (presentacion.badge || presentacion.textoBadge) {
+                document.getElementById("presentacion-badge").innerText = presentacion.badge || presentacion.textoBadge;
+            }
+
+            const itemsBox = document.getElementById("presentacion-items");
+            let itemsHTML = "";
+            [presentacion.item1, presentacion.item2, presentacion.item3].forEach(it => {
+                if (it) {
+                    itemsHTML += `<span class="slogan-item-tag"><i class="fa-solid fa-check" style="color: #38bdf8;"></i> ${it}</span>`;
+                }
+            });
+            itemsBox.innerHTML = itemsHTML;
+
+            const zona1 = envios.zona1 || envios.locales || "San Justo Centro | Ramos Mejía | Estación Morón | La Tablada";
+            const zona2 = envios.zona2 || envios.resto || "Al resto del país (costo a cargo del cliente).";
+
+            const heroShippingCard = document.getElementById("hero-shipping-card");
+            heroShippingCard.innerHTML = `
+                <div>
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div><strong style="color: #f8fafc;">Zonas:</strong> ${zona1}</div>
+                </div>
+                <div>
+                    <i class="fa-solid fa-box"></i>
+                    <div>${zona2}</div>
+                </div>
+            `;
+
+            const shippingBox = document.getElementById("sidebar-shipping-info");
+            shippingBox.innerHTML = `
+                <div style="margin-bottom: 6px;"><i class="fa-solid fa-location-dot"></i> <strong>Zonas:</strong> ${zona1}</div>
+                <div><i class="fa-solid fa-box"></i> ${zona2}</div>
+            `;
         }
 
         function generarMenuLateral() {
@@ -683,7 +849,6 @@
             });
         }
 
-        // FUNCIONES DE CARRITO (EN LA BARRA LATERAL)
         window.agregarAlCarrito = function(id, cantidad = 1) {
             const prod = productosGlobal.find(p => p.id === id);
             if (!prod) return;
@@ -751,28 +916,36 @@
             renderizarCarrito();
         };
 
-        window.enviarPedidoWhatsApp = function() {
+        window.enviarPedidoWhatsApp = async function() {
             if (carrito.length === 0) {
                 alert("Tu carrito está vacío.");
                 return;
             }
 
-            let mensaje = "Hola! Quiero realizar el siguiente pedido desde la web de Peque Elektro:%0A%0A";
-            let total = 0;
+            let total = carrito.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
 
+            try {
+                await addDoc(collection(db, "pedidos"), {
+                    items: carrito,
+                    total: total,
+                    fecha: new Date().toISOString(),
+                    estado: "Pendiente"
+                });
+            } catch (err) {
+                console.error("Error al registrar el pedido en admin:", err);
+            }
+
+            let mensaje = "Hola! Quiero realizar el siguiente pedido desde la web de Peque Elektro:%0A%0A";
             carrito.forEach(item => {
                 const subtotal = item.precio * item.cantidad;
-                total += subtotal;
                 mensaje += `- *${item.nombre}* (Cant: ${item.cantidad}) - Subtotal: $${subtotal}%0A`;
             });
-
             mensaje += `%0A*Total General: $${total}*%0A%0A¡Espero su confirmación!`;
 
-            const numeroWhatsApp = "549113497017"; // Reemplaza con tu número de WhatsApp
+            const numeroWhatsApp = "5491134970171"; // Reemplaza con tu número de WhatsApp
             window.open(`https://wa.me/${numeroWhatsApp}?text=${mensaje}`, '_blank');
         };
 
-        // MODAL DETALLE DE PRODUCTO
         window.verDetalleProducto = function(id) {
             const prod = productosGlobal.find(p => p.id === id);
             if (!prod) return;
@@ -830,7 +1003,6 @@
             setTimeout(() => modal.style.display = "none", 350);
         };
 
-        // LIGHTBOX
         window.abrirLightbox = function(src) {
             const lb = document.getElementById("lightbox-overlay");
             document.getElementById("lightbox-img").src = src;
@@ -841,7 +1013,6 @@
             document.getElementById("lightbox-overlay").classList.remove("active");
         };
 
-        // Buscador
         document.getElementById("search-input").addEventListener("input", (e) => {
             const texto = e.target.value.toLowerCase();
             const filtrados = productosGlobal.filter(p => (p.nombre && p.nombre.toLowerCase().includes(texto)) || (p.descripcion && p.descripcion.toLowerCase().includes(texto)));
