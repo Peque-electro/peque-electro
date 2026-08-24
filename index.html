@@ -1122,7 +1122,7 @@
                 });
 
                 // 4. ABRIMOS WHATSAPP
-                const telefono = configGlobal["general"]?.whatsapp || "5491134970171"; // Reemplazar por defecto si no hay conf
+                <button onclick="enviarPedidoWhatsApp()">Enviar pedido por WhatsApp</button>
                 const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
                 window.open(url, "_blank");
 
