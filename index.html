@@ -11,7 +11,7 @@
     body { margin: 0; font-family: Arial, sans-serif; background-color: #0f172a; color: white; }
     * { box-sizing: border-box; }
 
-    /* Barra Superior Fija (Altura aproximada de 10cm / 100px+, logo, slogan e info de envíos compartidos) */
+    /* Barra Superior Fija (Altura aproximada de 10cm / ~100px) */
     .top-bar {
       position: sticky;
       top: 0;
@@ -40,7 +40,7 @@
       justify-content: center;
     }
     .top-center-title {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: bold;
       color: #38bdf8;
       margin: 0 0 2px 0;
@@ -49,19 +49,42 @@
     .top-center-subtitle {
       font-size: 12px;
       color: #94a3b8;
-      margin: 0;
+      margin: 0 0 4px 0;
     }
+    .top-items-row {
+      display: flex;
+      gap: 12px;
+      font-size: 11px;
+      color: #cbd5e1;
+    }
+    .top-badge-container {
+      margin-top: 4px;
+    }
+    .top-badge {
+      background: #0284c7;
+      color: white;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+      display: inline-block;
+    }
+
     .top-envios-info {
-      font-size: 12px;
+      font-size: 11px;
       color: #94a3b8;
       display: flex;
       flex-direction: column;
       gap: 3px;
       border-left: 1px solid #334155;
       padding-left: 20px;
+      max-width: 320px;
     }
     .top-envios-info span {
       color: #cbd5e1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .header-actions {
       display: flex;
@@ -214,7 +237,7 @@
       font-weight: bold;
     }
 
-    /* MODAL AMPLIADO CON ZOOM Y DESCRIPCIÓN ABAJO A ANCHO COMPLETO */
+    /* MODAL AMPLIADO */
     #modal-detalle {
       position: fixed;
       top: 0; left: 0;
@@ -254,7 +277,6 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      transition: background 0.2s;
       z-index: 10;
     }
     .btn-cerrar-modal:hover { background: #dc2626; }
@@ -303,7 +325,6 @@
       border-radius: 8px;
       cursor: pointer;
       border: 2px solid transparent;
-      transition: border-color 0.2s;
     }
     .modal-miniatura.activa { border-color: #38bdf8; }
 
@@ -332,7 +353,6 @@
       font-size: 18px;
       height: 100%;
     }
-    .cantidad-control button:hover { background: #475569; }
     .cantidad-control span {
       padding: 0 15px;
       font-weight: bold;
@@ -386,19 +406,26 @@
 </head>
 <body>
 
-  <!-- BARRA FIJA SUPERIOR AMPLIADA (LOGO, SLOGAN E INFO DE ENVÍOS) -->
+  <!-- BARRA FIJA SUPERIOR AMPLIADA (CON DATOS DINÁMICOS DE FIREBASE) -->
   <header class="top-bar">
     <div class="top-brand-area">
       <img src="logo.jpg" alt="Peque Elektro" class="banner-mini">
       <div class="top-center-info">
-        <h1 class="top-center-title">peque elektro: tu solución integral.</h1>
-        <p class="top-center-subtitle">Simplificamos tu búsqueda ofreciéndote variedad y calidad en un solo lugar.</p>
+        <h1 class="top-center-title" id="top-title-txt">Cargando...</h1>
+        <p class="top-center-subtitle" id="top-subtitle-txt">Cargando...</p>
+        <div class="top-items-row" id="top-items-container"></div>
+        <div class="top-badge-container" id="top-badge-wrapper" style="display:none;">
+          <span class="top-badge" id="top-badge-txt"></span>
+        </div>
       </div>
     </div>
+    
     <div class="top-envios-info" id="top-envios-container">
       <span>📍 <strong style="color:#38bdf8;">Zonales:</strong> <span id="top-envio-local">Cargando...</span></span>
       <span>📦 <strong style="color:#38bdf8;">País:</strong> <span id="top-envio-pais">Cargando...</span></span>
+      <span id="top-envio-extra-wrap" style="display:none;">🚚 <span id="top-envio-extra"></span></span>
     </div>
+
     <div class="header-actions">
       <div class="cart-indicator">
         <i class="fa-solid fa-cart-shopping"></i> <span id="cart-count-top">0</span>
@@ -468,7 +495,7 @@
 
   </div>
 
-  <!-- MODAL DE DETALLES CON ZOOM Y DESCRIPCIÓN A ANCHO COMPLETO ABAJO -->
+  <!-- MODAL DE DETALLES -->
   <div id="modal-detalle">
     <div class="modal-content-wrapper">
       <button class="btn-cerrar-modal" onclick="cerrarModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -531,7 +558,9 @@
     const numeroWhatsapp = "5491134970171";
 
     async function init() {
-      cargarConfiguracion();
+      cargarConfiguracionPresentacion();
+      cargarConfiguracionEnvios();
+      
       const snap = await getDocs(collection(db, "productos"));
       snap.forEach(d => productos.push({ id: d.id, ...d.data() }));
       productosFiltrados = [...productos];
@@ -540,15 +569,42 @@
       cargarResenas();
     }
 
-    async function cargarConfiguracion() {
+    async function cargarConfiguracionPresentacion() {
+      try {
+        const snap = await getDoc(doc(db, "configuracion", "presentacion"));
+        if (snap.exists()) {
+          const d = snap.data();
+          document.getElementById("top-title-txt").textContent = d.titulo || 'peque elektro: tu solución integral.';
+          document.getElementById("top-subtitle-txt").textContent = d.subtitulo || '';
+          
+          let itemsHtml = '';
+          if (d.item1) itemsHtml += `<span>• ${d.item1}</span>`;
+          if (d.item2) itemsHtml += `<span>• ${d.item2}</span>`;
+          if (d.item3) itemsHtml += `<span>• ${d.item3}</span>`;
+          document.getElementById("top-items-container").innerHTML = itemsHtml;
+
+          if (d.badge) {
+            document.getElementById("top-badge-txt").textContent = d.badge;
+            document.getElementById("top-badge-wrapper").style.display = "block";
+          }
+        }
+      } catch (err) { console.error("Error al cargar presentación:", err); }
+    }
+
+    async function cargarConfiguracionEnvios() {
       try {
         const snapEnvios = await getDoc(doc(db, "configuracion", "envios"));
         if (snapEnvios.exists()) {
           const d = snapEnvios.data();
           document.getElementById("top-envio-local").textContent = d.locales || 'Disponibles';
           document.getElementById("top-envio-pais").textContent = d.pais || 'A todo el país';
+          
+          if (d.extra) {
+            document.getElementById("top-envio-extra").textContent = d.extra;
+            document.getElementById("top-envio-extra-wrap").style.display = "block";
+          }
         }
-      } catch (err) { console.error(err); }
+      } catch (err) { console.error("Error al cargar envíos:", err); }
     }
 
     function renderizarPagina() {
