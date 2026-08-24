@@ -16,7 +16,7 @@
             overflow-x: hidden;
         }
 
-        /* BANNER HEADER */
+        /* BANNER HEADER (IMAGEN ORIGINAL) */
         .banner-header {
             width: 100vw;
             position: relative;
@@ -31,16 +31,16 @@
         .banner-img {
             width: 100%;
             height: auto;
-            max-height: 250px;
+            max-height: 280px;
             display: block;
             object-fit: cover;
         }
 
-        /* HERO SLOGAN & ENVÍOS */
+        /* HERO SLOGAN */
         .hero-slogan {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             border-bottom: 1px solid #334155;
-            padding: 25px 20px;
+            padding: 20px 20px;
         }
         .slogan-container {
             max-width: 1200px;
@@ -49,34 +49,35 @@
         }
         .slogan-container h2 {
             color: #38bdf8;
-            font-size: 24px;
+            font-size: 22px;
             margin-top: 0;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .slogan-intro {
             color: #94a3b8;
-            font-size: 15px;
-            margin-bottom: 15px;
+            font-size: 14px;
+            margin-bottom: 10px;
         }
         .slogan-badge {
             color: #38bdf8;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
             background: rgba(56, 189, 248, 0.1);
-            padding: 8px 14px;
-            border-radius: 8px;
+            padding: 6px 12px;
+            border-radius: 6px;
             display: inline-block;
             border: 1px solid rgba(56, 189, 248, 0.2);
         }
 
-        /* LAYOUT PRINCIPAL DE DOS COLUMNAS (SIDEBAR + CONTENIDO) */
+        /* LAYOUT PRINCIPAL DE DOS COLUMNAS */
         .shop-layout {
             display: grid;
-            grid-template-columns: 260px 1fr;
+            grid-template-columns: 300px 1fr;
             gap: 25px;
             max-width: 1200px;
             margin: 30px auto;
             padding: 0 20px;
+            align-items: start;
         }
         @media (max-width: 768px) {
             .shop-layout {
@@ -84,32 +85,37 @@
             }
         }
 
-        /* BARRA LATERAL DE CATEGORÍAS Y SUBCATEGORÍAS */
+        /* BARRA LATERAL (FIJA, CON CATEGORÍAS Y CARRITO INTEGRADO) */
         .sidebar {
             background: #1e293b;
             border: 1px solid #334155;
             border-radius: 12px;
             padding: 20px;
-            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: sticky;
+            top: 20px;
         }
+
         .sidebar h3 {
             color: #38bdf8;
             font-size: 16px;
-            margin-top: 0;
-            margin-bottom: 15px;
+            margin: 0;
             border-bottom: 1px solid #334155;
-            padding-bottom: 8px;
+            padding-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
+
         .cat-list {
             list-style: none;
             padding: 0;
             margin: 0;
         }
         .cat-item {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .cat-link {
             display: flex;
@@ -131,11 +137,17 @@
             color: white;
             border-color: #0284c7;
         }
+        
+        /* SUBCATEGORÍAS (ACORDEÓN) */
         .subcat-list {
             list-style: none;
             padding-left: 15px;
             margin: 6px 0 0 0;
             border-left: 2px solid #334155;
+            display: none;
+        }
+        .cat-item.open .subcat-list {
+            display: block;
         }
         .subcat-item {
             margin-top: 4px;
@@ -155,7 +167,52 @@
             background: rgba(56, 189, 248, 0.08);
         }
 
-        /* CONTENIDO DERECHO (BUSCADOR + PRODUCTOS) */
+        /* SECCIÓN DEL CARRITO INTEGRADA EN LA BARRA LATERAL */
+        .sidebar-cart-section {
+            border-top: 1px solid #334155;
+            padding-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .sidebar-cart-items {
+            max-height: 250px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-right: 4px;
+        }
+        .sidebar-cart-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0f172a;
+            border: 1px solid #334155;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .btn-whatsapp {
+            background: #22c55e;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+        .btn-whatsapp:hover {
+            background: #16a34a;
+        }
+
+        /* CONTENIDO DERECHO */
         .content-area {
             display: flex;
             flex-direction: column;
@@ -217,15 +274,15 @@
         }
         .product-card img {
             width: 100%;
-            height: 170px;
+            height: 160px;
             object-fit: cover;
             border-radius: 8px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             background: #0f172a;
         }
         .product-card h3 {
             font-size: 15px;
-            margin: 0 0 8px 0;
+            margin: 0 0 6px 0;
             color: #f8fafc;
         }
         .product-card .price {
@@ -234,22 +291,43 @@
             color: #38bdf8;
             margin: 0 0 12px 0;
         }
+        
+        /* BOTONES INDEPENDIENTES EN CADA PRODUCTO */
+        .card-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
         .btn-detail {
-            background: #0284c7;
+            background: #334155;
             color: white;
             border: none;
-            padding: 10px;
+            padding: 8px;
             border-radius: 6px;
-            font-weight: bold;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
-            width: 100%;
             transition: background 0.2s;
         }
         .btn-detail:hover {
+            background: #475569;
+        }
+        .btn-add-cart {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-add-cart:hover {
             background: #0369a1;
         }
 
-        /* MODAL FULLSCREEN */
+        /* MODAL DE DETALLE DE PRODUCTO */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -298,26 +376,55 @@
             border-radius: 10px;
             border: 1px solid #334155;
             background: #1e293b;
+            cursor: zoom-in;
+            transition: opacity 0.2s;
+        }
+        .modal-main-img:hover {
+            opacity: 0.9;
         }
         .modal-thumbnails {
             display: flex;
             gap: 10px;
-            margin-top: 15px;
+            margin-top: 10px;
             overflow-x: auto;
             padding-bottom: 5px;
         }
         .modal-thumb {
-            width: 60px;
-            height: 60px;
+            width: 65px;
+            height: 65px;
             object-fit: cover;
             border-radius: 6px;
             border: 2px solid #334155;
             cursor: pointer;
             background: #1e293b;
+            flex-shrink: 0;
         }
         .modal-thumb.active {
             border-color: #38bdf8;
         }
+
+        /* LIGHTBOX PANTALLA COMPLETA PARA LA FOTO PRINCIPAL */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 4000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .lightbox-overlay.active {
+            display: flex;
+        }
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
         .product-description-box {
             background: #1e293b;
             border: 1px solid #334155;
@@ -343,31 +450,45 @@
 </head>
 <body>
 
-    <!-- BANNER HEADER -->
+    <!-- BANNER HEADER (IMAGEN ORIGINAL) -->
     <header class="banner-header">
-        <img src="banner.jpg" alt="Peque Elektro Banner" class="banner-img" onerror="this.src='https://via.placeholder.com/1200x250/0f172a/38bdf8?text=Peque+Elektro'">
+        <img src="banner.jpg" alt="Peque Elektro Banner" class="banner-img">
     </header>
 
     <!-- SLOGAN -->
     <section class="hero-slogan">
         <div class="slogan-container">
-            <h2 id="slogan-titulo">Peque Elektro: Tu solución integral.</h2>
-            <p id="slogan-intro" class="slogan-intro">Encuentra herramientas, repuestos y componentes de la mejor calidad.</p>
+            <h2>Peque Elektro: Tu solución integral.</h2>
+            <p class="slogan-intro">Encuentra herramientas, repuestos y componentes de la mejor calidad.</p>
             <div>
-                <span id="slogan-badge-elem" class="slogan-badge">¡Envíos a todo el país!</span>
+                <span class="slogan-badge">¡Envíos a todo el país!</span>
             </div>
         </div>
     </section>
 
-    <!-- LAYOUT PRINCIPAL: SIDEBAR + PRODUCTOS -->
+    <!-- LAYOUT PRINCIPAL: SIDEBAR FIJO + PRODUCTOS -->
     <div class="shop-layout">
-        <!-- BARRA LATERAL DE CATEGORÍAS Y SUBCATEGORÍAS -->
+        <!-- BARRA LATERAL (CATEGORÍAS + CARRITO FIJO) -->
         <aside class="sidebar">
             <h3><i class="fa-solid fa-list"></i> Categorías</h3>
             <ul class="cat-list" id="sidebar-categories">
-                <!-- Se cargan dinámicamente o por código -->
-                <li><a class="cat-link active" onclick="filtrarCategoria('todos')">Todas las Categorías</a></li>
+                <li><a class="cat-link active" onclick="filtrarCategoria('todos')"><span>Todas las Categorías</span></a></li>
             </ul>
+
+            <!-- CARRITO INTEGRADO Y FIJO EN LA BARRA LATERAL -->
+            <div class="sidebar-cart-section">
+                <h3><i class="fa-solid fa-cart-shopping"></i> Tu Pedido</h3>
+                <div class="sidebar-cart-items" id="cart-items-container">
+                    <p style="text-align: center; color: #94a3b8; font-size: 13px; margin: 10px 0;">Tu carrito está vacío.</p>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: bold; border-top: 1px solid #334155; padding-top: 10px;">
+                    <span>Total:</span>
+                    <span id="cart-total-price" style="color: #38bdf8;">$0</span>
+                </div>
+                <button class="btn-whatsapp" onclick="enviarPedidoWhatsApp()">
+                    <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> Enviar Pedido por WhatsApp
+                </button>
+            </div>
         </aside>
 
         <!-- CONTENIDO PRINCIPAL -->
@@ -385,7 +506,7 @@
         </main>
     </div>
 
-    <!-- MODAL DE DETALLE -->
+    <!-- MODAL DE DETALLE DE PRODUCTO -->
     <div class="modal-overlay" id="product-modal">
         <div class="modal-content-fullscreen">
             <div class="fullscreen-container">
@@ -394,23 +515,35 @@
                 </div>
 
                 <div class="modal-grid-large">
+                    <!-- Columna Izquierda: Imagen Principal con clic para pantalla completa -->
                     <div>
-                        <img id="modal-img" src="" alt="Producto" class="modal-main-img">
-                        <div class="modal-thumbnails" id="modal-thumbnails"></div>
+                        <img id="modal-img" src="" alt="Producto" class="modal-main-img" onclick="abrirLightbox(this.src)" title="Haz clic para ver en pantalla completa">
+                        <span style="font-size: 12px; color: #94a3b8; display: block; text-align: center; margin-top: 6px;">
+                            <i class="fa-solid fa-magnifying-glass-plus"></i> Clic en la imagen para ampliar
+                        </span>
                     </div>
+
+                    <!-- Columna Derecha: Título, Precio, Selector de cantidad, Botón y Miniaturas abajo -->
                     <div>
                         <h2 id="modal-title" style="color: #f8fafc; margin-top: 0;"></h2>
                         <div id="modal-price" style="font-size: 26px; font-weight: bold; color: #38bdf8; margin-bottom: 20px;"></div>
                         
                         <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 20px;">
-                            <button onclick="cambiarCantidad(-1)" style="background: #1e293b; color: white; border: 1px solid #334155; padding: 8px 16px; border-radius: 6px; cursor: pointer;">-</button>
+                            <span style="color: #94a3b8;">Cantidad:</span>
+                            <button onclick="cambiarCantidadModal(-1)" style="background: #1e293b; color: white; border: 1px solid #334155; padding: 8px 16px; border-radius: 6px; cursor: pointer;">-</button>
                             <span id="modal-qty" style="font-size: 18px; font-weight: bold; color: white;">1</span>
-                            <button onclick="cambiarCantidad(1)" style="background: #1e293b; color: white; border: 1px solid #334155; padding: 8px 16px; border-radius: 6px; cursor: pointer;">+</button>
+                            <button onclick="cambiarCantidadModal(1)" style="background: #1e293b; color: white; border: 1px solid #334155; padding: 8px 16px; border-radius: 6px; cursor: pointer;">+</button>
                         </div>
 
-                        <button style="background: #22c55e; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 16px;">
+                        <button class="btn-add-cart" style="padding: 14px; font-size: 16px; width: 100%;" onclick="agregarDesdeModal()">
                             <i class="fa-solid fa-cart-shopping"></i> Agregar al Carrito
                         </button>
+
+                        <!-- MINIATURAS UBICADAS ABAJO DEL BOTÓN AGREGAR AL CARRITO -->
+                        <div id="thumbnails-wrapper" style="margin-top: 25px; display: none;">
+                            <span style="font-size: 13px; color: #94a3b8; display: block; margin-bottom: 8px;">Más imágenes del producto:</span>
+                            <div class="modal-thumbnails" id="modal-thumbnails"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -422,11 +555,19 @@
         </div>
     </div>
 
+    <!-- LIGHTBOX PANTALLA COMPLETA -->
+    <div class="lightbox-overlay" id="lightbox-overlay" onclick="cerrarLightbox()">
+        <div style="position: relative; max-width: 90vw; max-height: 90vh;">
+            <button onclick="cerrarLightbox()" style="position: absolute; top: -40px; right: 0; background: #ef4444; color: white; border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 16px; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+            <img id="lightbox-img" src="" alt="Ampliada" class="lightbox-img">
+        </div>
+    </div>
+
     <footer>
         <p>&copy; 2026 Peque Elektro - Todos los derechos reservados.</p>
     </footer>
 
-    <!-- FIREBASE & LOGICA -->
+    <!-- FIREBASE & LÓGICA -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -444,8 +585,10 @@
         const db = getFirestore(app);
 
         let productosGlobal = [];
+        let carrito = [];
         let categoriaSeleccionada = "todos";
-        let subcategoriaSeleccionada = "";
+        let productoActualModal = null;
+        let cantidadModal = 1;
 
         async function cargarDatos() {
             try {
@@ -463,7 +606,6 @@
 
         function generarMenuLateral() {
             const sidebarList = document.getElementById("sidebar-categories");
-            // Estructurar categorías y subcategorías únicas desde los productos
             const categoriasMap = {};
             productosGlobal.forEach(p => {
                 const cat = p.categoria || "Sin categoría";
@@ -475,11 +617,15 @@
             let html = `<li><a class="cat-link ${categoriaSeleccionada === 'todos' ? 'active' : ''}" onclick="filtrarCategoria('todos')"><span>Todas las Categorías</span></a></li>`;
             
             for (const [cat, subcats] of Object.entries(categoriasMap)) {
+                const isOpen = categoriaSeleccionada === cat ? 'open' : '';
+                const isActive = categoriaSeleccionada === cat ? 'active' : '';
+                
                 html += `
-                    <li class="cat-item">
-                        <a class="cat-link ${categoriaSeleccionada === cat ? 'active' : ''}" onclick="filtrarCategoria('${cat}')">
+                    <li class="cat-item ${isOpen}">
+                        <div class="cat-link ${isActive}" onclick="toggleCategoria(this, '${cat}')">
                             <span>${cat}</span>
-                        </a>
+                            ${subcats.size > 0 ? '<i class="fa-solid fa-chevron-down" style="font-size: 11px;"></i>' : ''}
+                        </div>
                 `;
                 if (subcats.size > 0) {
                     html += `<ul class="subcat-list">`;
@@ -493,21 +639,22 @@
             sidebarList.innerHTML = html;
         }
 
+        window.toggleCategoria = function(element, cat) {
+            const liItem = element.parentElement;
+            liItem.classList.toggle("open");
+            filtrarCategoria(cat);
+        };
+
         window.filtrarCategoria = function(cat) {
             categoriaSeleccionada = cat;
-            subcategoriaSeleccionada = "";
             document.getElementById("current-category-title").innerText = cat === 'todos' ? 'Catálogo de Productos' : cat;
-            
             let filtrados = cat === 'todos' ? productosGlobal : productosGlobal.filter(p => p.categoria === cat);
             renderizarProductos(filtrados);
-            generarMenuLateral();
         };
 
         window.filtrarSubcategoria = function(cat, sub) {
             categoriaSeleccionada = cat;
-            subcategoriaSeleccionada = sub;
             document.getElementById("current-category-title").innerText = `${cat} > ${sub}`;
-            
             let filtrados = productosGlobal.filter(p => p.categoria === cat && p.subcategoria === sub);
             renderizarProductos(filtrados);
         };
@@ -527,15 +674,112 @@
                     <img src="${imgUrl}" alt="${prod.nombre || 'Producto'}">
                     <h3>${prod.nombre || 'Sin nombre'}</h3>
                     <p class="price">$${prod.precio || 0}</p>
-                    <button class="btn-detail" onclick="verDetalleProducto('${prod.id}')">Ver Detalle</button>
+                    <div class="card-buttons">
+                        <button class="btn-detail" onclick="verDetalleProducto('${prod.id}')"><i class="fa-solid fa-eye"></i> Ver Detalle</button>
+                        <button class="btn-add-cart" onclick="agregarAlCarrito('${prod.id}', 1)"><i class="fa-solid fa-cart-plus"></i> Agregar al Carrito</button>
+                    </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
+        // FUNCIONES DE CARRITO (EN LA BARRA LATERAL)
+        window.agregarAlCarrito = function(id, cantidad = 1) {
+            const prod = productosGlobal.find(p => p.id === id);
+            if (!prod) return;
+
+            const existente = carrito.find(item => item.id === id);
+            if (existente) {
+                existente.cantidad += cantidad;
+            } else {
+                carrito.push({
+                    id: prod.id,
+                    nombre: prod.nombre,
+                    precio: prod.precio,
+                    cantidad: cantidad
+                });
+            }
+            renderizarCarrito();
+        };
+
+        function renderizarCarrito() {
+            const container = document.getElementById("cart-items-container");
+            const totalPriceElem = document.getElementById("cart-total-price");
+            
+            if (carrito.length === 0) {
+                container.innerHTML = "<p style='text-align: center; color: #94a3b8; font-size: 13px; margin: 10px 0;'>Tu carrito está vacío.</p>";
+                totalPriceElem.innerText = "$0";
+                return;
+            }
+
+            let html = "";
+            let total = 0;
+
+            carrito.forEach((item, index) => {
+                const subtotal = item.precio * item.cantidad;
+                total += subtotal;
+                html += `
+                    <div class="sidebar-cart-item-row">
+                        <div style="flex: 1; padding-right: 6px;">
+                            <h4 style="margin: 0 0 3px 0; color: white; font-size: 12px;">${item.nombre}</h4>
+                            <div style="color: #38bdf8; font-size: 12px; font-weight: bold;">$${item.precio} x ${item.cantidad} = $${subtotal}</div>
+                            <div style="display: flex; gap: 6px; margin-top: 6px; align-items: center;">
+                                <button onclick="modificarCantidadItem(${index}, -1)" style="background: #334155; color: white; border: none; width: 20px; height: 20px; border-radius: 4px; cursor: pointer; font-size: 11px;">-</button>
+                                <span style="font-size: 12px; font-weight: bold; color: white;">${item.cantidad}</span>
+                                <button onclick="modificarCantidadItem(${index}, 1)" style="background: #334155; color: white; border: none; width: 20px; height: 20px; border-radius: 4px; cursor: pointer; font-size: 11px;">+</button>
+                            </div>
+                        </div>
+                        <button onclick="eliminarItemCarrito(${index})" style="background: #ef4444; color: white; border: none; width: 26px; height: 26px; border-radius: 6px; cursor: pointer; font-size: 12px;" title="Eliminar producto"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            totalPriceElem.innerText = `$${total}`;
+        }
+
+        window.modificarCantidadItem = function(index, cambio) {
+            carrito[index].cantidad += cambio;
+            if (carrito[index].cantidad <= 0) {
+                carrito.splice(index, 1);
+            }
+            renderizarCarrito();
+        };
+
+        window.eliminarItemCarrito = function(index) {
+            carrito.splice(index, 1);
+            renderizarCarrito();
+        };
+
+        window.enviarPedidoWhatsApp = function() {
+            if (carrito.length === 0) {
+                alert("Tu carrito está vacío.");
+                return;
+            }
+
+            let mensaje = "Hola! Quiero realizar el siguiente pedido desde la web de Peque Elektro:%0A%0A";
+            let total = 0;
+
+            carrito.forEach(item => {
+                const subtotal = item.precio * item.cantidad;
+                total += subtotal;
+                mensaje += `- *${item.nombre}* (Cant: ${item.cantidad}) - Subtotal: $${subtotal}%0A`;
+            });
+
+            mensaje += `%0A*Total General: $${total}*%0A%0A¡Espero su confirmación!`;
+
+            const numeroWhatsApp = "5491100000000"; // Reemplaza con tu número de WhatsApp
+            window.open(`https://wa.me/${numeroWhatsApp}?text=${mensaje}`, '_blank');
+        };
+
+        // MODAL DETALLE DE PRODUCTO
         window.verDetalleProducto = function(id) {
             const prod = productosGlobal.find(p => p.id === id);
             if (!prod) return;
+            productoActualModal = prod;
+            cantidadModal = 1;
+            document.getElementById("modal-qty").innerText = cantidadModal;
+
             document.getElementById("modal-title").innerText = prod.nombre || '';
             document.getElementById("modal-price").innerText = `$${prod.precio || 0}`;
             document.getElementById("modal-description").innerText = prod.descripcion || 'Sin descripción disponible.';
@@ -543,15 +787,41 @@
             const imagenes = (prod.imagenes && prod.imagenes.length > 0) ? prod.imagenes : ['https://via.placeholder.com/400'];
             document.getElementById("modal-img").src = imagenes[0];
 
+            const thumbsWrapper = document.getElementById("thumbnails-wrapper");
             const thumbs = document.getElementById("modal-thumbnails");
             thumbs.innerHTML = "";
-            imagenes.forEach((img, idx) => {
-                thumbs.innerHTML += `<img src="${img}" class="modal-thumb ${idx === 0 ? 'active' : ''}" onclick="document.getElementById('modal-img').src='${img}'">`;
-            });
+
+            if (imagenes.length > 1) {
+                thumbsWrapper.style.display = "block";
+                imagenes.forEach((img, idx) => {
+                    thumbs.innerHTML += `<img src="${img}" class="modal-thumb ${idx === 0 ? 'active' : ''}" onclick="seleccionarImagenModal('${img}', this)">`;
+                });
+            } else {
+                thumbsWrapper.style.display = "none";
+            }
 
             const modal = document.getElementById("product-modal");
             modal.style.display = "block";
             setTimeout(() => modal.classList.add("active"), 10);
+        };
+
+        window.seleccionarImagenModal = function(imgSrc, thumbElement) {
+            document.getElementById("modal-img").src = imgSrc;
+            document.querySelectorAll(".modal-thumb").forEach(t => t.classList.remove("active"));
+            thumbElement.classList.add("active");
+        };
+
+        window.cambiarCantidadModal = function(cambio) {
+            cantidadModal += cambio;
+            if (cantidadModal < 1) cantidadModal = 1;
+            document.getElementById("modal-qty").innerText = cantidadModal;
+        };
+
+        window.agregarDesdeModal = function() {
+            if (productoActualModal) {
+                agregarAlCarrito(productoActualModal.id, cantidadModal);
+                cerrarModal();
+            }
         };
 
         window.cerrarModal = function() {
@@ -560,7 +830,18 @@
             setTimeout(() => modal.style.display = "none", 350);
         };
 
-        // Buscador en tiempo real
+        // LIGHTBOX
+        window.abrirLightbox = function(src) {
+            const lb = document.getElementById("lightbox-overlay");
+            document.getElementById("lightbox-img").src = src;
+            lb.classList.add("active");
+        };
+
+        window.cerrarLightbox = function() {
+            document.getElementById("lightbox-overlay").classList.remove("active");
+        };
+
+        // Buscador
         document.getElementById("search-input").addEventListener("input", (e) => {
             const texto = e.target.value.toLowerCase();
             const filtrados = productosGlobal.filter(p => (p.nombre && p.nombre.toLowerCase().includes(texto)) || (p.descripcion && p.descripcion.toLowerCase().includes(texto)));
