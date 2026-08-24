@@ -11,7 +11,7 @@
     body { margin: 0; font-family: Arial, sans-serif; background-color: #0f172a; color: white; }
     * { box-sizing: border-box; }
 
-    /* Barra Superior Fija (Altura aproximada de 10cm / ~100px) */
+    /* Barra Superior Fija */
     .top-bar {
       position: sticky;
       top: 0;
@@ -34,69 +34,53 @@
       height: 70px;
       object-fit: contain;
     }
+    
+    /* ESTILOS CORREGIDOS PARA QUE EL TEXTO NO SE CORTE */
+    .slogan-container {
+      max-width: 500px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
     .top-center-info {
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
-    .top-center-title {
-      font-size: 16px;
-      font-weight: bold;
-      color: #38bdf8;
-      margin: 0 0 2px 0;
-      text-transform: lowercase;
-    }
-    .top-center-subtitle {
-      font-size: 12px;
-      color: #94a3b8;
+    .slogan-intro {
+      font-size: 12px; 
+      color: #94a3b8; 
       margin: 0 0 4px 0;
+      white-space: normal; 
+      line-height: 1.3;
     }
-    .top-items-row {
-      display: flex;
-      gap: 12px;
-      font-size: 11px;
-      color: #cbd5e1;
-    }
-    .top-badge-container {
-      margin-top: 4px;
-    }
-    .top-badge {
-      background: #0284c7;
-      color: white;
-      font-size: 10px;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-weight: bold;
-      display: inline-block;
-    }
-
+    
     .top-envios-info {
       font-size: 11px;
       color: #94a3b8;
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 6px; /* Espacio para que respire el texto largo */
       border-left: 1px solid #334155;
       padding-left: 20px;
-      max-width: 320px;
+      max-width: 450px; 
+      width: 100%;
     }
     .top-envios-info span {
       color: #cbd5e1;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      display: block;
+      line-height: 1.4;
+      white-space: normal !important; /* Fuerza a que baje de renglón */
+      overflow: visible !important;   /* Evita que desaparezca */
     }
+
     .header-actions {
       display: flex;
       align-items: center;
       gap: 15px;
       flex-shrink: 0;
     }
-    .cart-indicator {
-      font-size: 18px;
-      color: #38bdf8;
-      font-weight: bold;
-    }
+    .cart-indicator { font-size: 18px; color: #38bdf8; font-weight: bold; }
     
     /* Botones Globales */
     .btn-rojo { background: #ef4444; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; }
@@ -106,40 +90,16 @@
     .btn-verde { background: #22c55e; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
     .btn-verde:hover { background: #16a34a; }
 
-    /* Layout Pantalla Completa (Sin espacios negros sobrantes) */
-    .shop-container {
-      display: flex;
-      gap: 20px;
-      padding: 15px 20px;
-      width: 100%;
-      max-width: 100%;
-    }
+    /* Layout Pantalla Completa */
+    .shop-container { display: flex; gap: 20px; padding: 15px 20px; width: 100%; max-width: 100%; }
     
     /* Barra Lateral Izquierda */
     .sidebar-left {
-      width: 280px;
-      flex-shrink: 0;
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 12px;
-      height: fit-content;
-      position: sticky;
-      top: 115px;
-      border: 1px solid #334155;
+      width: 280px; flex-shrink: 0; background: #1e293b; padding: 20px;
+      border-radius: 12px; height: fit-content; position: sticky; top: 115px; border: 1px solid #334155;
     }
-
-    /* Categorías */
     .category-group { margin-bottom: 15px; }
-    .category-title {
-      font-weight: bold;
-      color: #38bdf8;
-      cursor: pointer;
-      padding: 10px;
-      border-radius: 6px;
-      background: #0f172a;
-      display: flex;
-      justify-content: space-between;
-    }
+    .category-title { font-weight: bold; color: #38bdf8; cursor: pointer; padding: 10px; border-radius: 6px; background: #0f172a; display: flex; justify-content: space-between; }
     .subcategory-list { list-style: none; padding-left: 15px; margin-top: 5px; display: none; }
     .subcategory-list.active { display: block; }
     .subcategory-list li { color: #94a3b8; padding: 6px 0; cursor: pointer; font-size: 14px; }
@@ -148,282 +108,85 @@
     /* Resumen de Pedido Lateral */
     .resumen-pedido { margin-top: 30px; padding-top: 20px; border-top: 1px solid #334155; }
     .lista-carrito { list-style: none; padding: 0; max-height: 200px; overflow-y: auto; font-size: 13px; }
-    .lista-carrito li { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center;
-      margin-bottom: 10px; 
-      color: #cbd5e1; 
-      border-bottom: 1px solid #334155; 
-      padding-bottom: 8px; 
-      gap: 5px;
-    }
-    .carrito-item-controles {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 4px;
-      padding: 2px 5px;
-    }
-    .carrito-item-controles button {
-      background: transparent;
-      color: #38bdf8;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 12px;
-    }
+    .lista-carrito li { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; color: #cbd5e1; border-bottom: 1px solid #334155; padding-bottom: 8px; gap: 5px; }
+    .carrito-item-controles { display: flex; align-items: center; gap: 4px; background: #0f172a; border: 1px solid #334155; border-radius: 4px; padding: 2px 5px; }
+    .carrito-item-controles button { background: transparent; color: #38bdf8; border: none; cursor: pointer; font-weight: bold; font-size: 12px; }
 
-    /* Grilla de Productos (5 de ancho por 6 de largo) */
+    /* Grilla de Productos */
     .main-content { flex-grow: 1; min-width: 0; }
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      grid-template-rows: repeat(6, auto);
-      gap: 15px;
-    }
-    .product-card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 10px;
-      padding: 12px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+    .products-grid { display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(6, auto); gap: 15px; }
+    .product-card { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px; text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
     .product-card img { width: 100%; height: 150px; object-fit: contain; border-radius: 8px; background: white; margin-bottom: 8px; }
     .product-card h3 { font-size: 13px; margin: 4px 0; color: #e2e8f0; height: 36px; overflow: hidden; }
     .product-card .price { font-size: 16px; color: #22c55e; font-weight: bold; margin-bottom: 8px; }
-    
     .product-actions { display: flex; gap: 5px; }
     .product-actions button { flex: 1; padding: 6px; font-size: 12px; }
 
     /* Paginación */
-    .pagination-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      margin: 25px 0;
-    }
-    .pagination-container button {
-      background: #1e293b;
-      color: #38bdf8;
-      border: 1px solid #334155;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+    .pagination-container { display: flex; justify-content: center; align-items: center; gap: 10px; margin: 25px 0; }
+    .pagination-container button { background: #1e293b; color: #38bdf8; border: 1px solid #334155; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; }
     .pagination-container button:hover:not(:disabled) { background: #0284c7; color: white; }
     .pagination-container button:disabled { opacity: 0.4; cursor: not-allowed; }
     .pagination-container span { color: #cbd5e1; font-weight: bold; }
 
     /* Toast Flotante */
-    #toast-cart {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #22c55e;
-      color: white;
-      padding: 15px 25px;
-      border-radius: 8px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-      display: none;
-      z-index: 9999;
-      font-weight: bold;
-    }
+    #toast-cart { position: fixed; bottom: 20px; right: 20px; background: #22c55e; color: white; padding: 15px 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: none; z-index: 9999; font-weight: bold; }
 
     /* MODAL AMPLIADO */
-    #modal-detalle {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(15, 23, 42, 0.95);
-      z-index: 10000;
-      display: none;
-      overflow-y: auto;
-      animation: deslizarModal 0.3s ease-out forwards;
-    }
-    @keyframes deslizarModal {
-      from { transform: translateX(-100%); }
-      to { transform: translateX(0); }
-    }
-    .modal-content-wrapper {
-      max-width: 1100px;
-      margin: 30px auto;
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 16px;
-      padding: 30px;
-      position: relative;
-      color: white;
-      box-shadow: 0 20px 25px rgba(0,0,0,0.5);
-    }
-    .btn-cerrar-modal {
-      position: absolute;
-      top: 20px; right: 20px;
-      background: #ef4444;
-      color: white;
-      border: none;
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      font-size: 20px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      z-index: 10;
-    }
+    #modal-detalle { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); z-index: 10000; display: none; overflow-y: auto; animation: deslizarModal 0.3s ease-out forwards; }
+    @keyframes deslizarModal { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+    .modal-content-wrapper { max-width: 1100px; margin: 30px auto; background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 30px; position: relative; color: white; box-shadow: 0 20px 25px rgba(0,0,0,0.5); }
+    .btn-cerrar-modal { position: absolute; top: 20px; right: 20px; background: #ef4444; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 10; }
     .btn-cerrar-modal:hover { background: #dc2626; }
-
-    .modal-grid-top {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
-      align-items: start;
-    }
-    @media (max-width: 850px) {
-      .modal-grid-top { grid-template-columns: 1fr; }
-    }
-
-    .modal-img-container {
-      width: 100%;
-      max-height: 380px;
-      background: white;
-      border-radius: 10px;
-      border: 1px solid #334155;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 15px;
-      position: relative;
-    }
-    .modal-imagen-principal {
-      width: 100%;
-      height: 380px;
-      object-fit: contain;
-      transition: transform 0.3s ease;
-      cursor: zoom-in;
-    }
-    .modal-miniaturas {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      margin-bottom: 15px;
-      padding-bottom: 5px;
-    }
-    .modal-miniatura {
-      width: 70px; height: 70px;
-      object-fit: cover;
-      background: white;
-      border-radius: 8px;
-      cursor: pointer;
-      border: 2px solid transparent;
-    }
+    .modal-grid-top { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; }
+    
+    .modal-img-container { width: 100%; max-height: 380px; background: white; border-radius: 10px; border: 1px solid #334155; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; position: relative; }
+    .modal-imagen-principal { width: 100%; height: 380px; object-fit: contain; transition: transform 0.3s ease; cursor: zoom-in; }
+    .modal-miniaturas { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; }
+    .modal-miniatura { width: 70px; height: 70px; object-fit: cover; background: white; border-radius: 8px; cursor: pointer; border: 2px solid transparent; }
     .modal-miniatura.activa { border-color: #38bdf8; }
 
-    .modal-acciones {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-top: 20px;
-    }
-    .cantidad-control {
-      display: flex;
-      align-items: center;
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      overflow: hidden;
-      height: 45px;
-    }
-    .cantidad-control button {
-      background: #334155;
-      color: white;
-      border: none;
-      padding: 0 15px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 18px;
-      height: 100%;
-    }
-    .cantidad-control span {
-      padding: 0 15px;
-      font-weight: bold;
-      font-size: 16px;
-    }
-    .btn-add-carrito-modal {
-      background: #22c55e;
-      color: white;
-      border: none;
-      padding: 0 25px;
-      height: 45px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      flex: 1;
-      justify-content: center;
-    }
-    .btn-add-carrito-modal:hover { background: #16a34a; }
-
-    .modal-descripcion-full {
-      margin-top: 25px;
-      border-top: 1px solid #334155;
-      padding-top: 20px;
-    }
-    .modal-descripcion-texto {
-      color: #cbd5e1;
-      font-size: 14px;
-      line-height: 1.7;
-      max-height: 250px;
-      overflow-y: auto;
-      background: #0f172a;
-      padding: 15px;
-      border-radius: 8px;
-      border: 1px solid #334155;
-    }
+    .modal-acciones { display: flex; align-items: center; gap: 15px; margin-top: 20px; }
+    .cantidad-control { display: flex; align-items: center; background: #0f172a; border: 1px solid #334155; border-radius: 8px; overflow: hidden; height: 45px; }
+    .cantidad-control button { background: #334155; color: white; border: none; padding: 0 15px; cursor: pointer; font-weight: bold; font-size: 18px; height: 100%; }
+    .cantidad-control span { padding: 0 15px; font-weight: bold; font-size: 16px; }
+    .btn-add-carrito-modal { background: #22c55e; color: white; border: none; padding: 0 25px; height: 45px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; flex: 1; justify-content: center; }
+    
+    .modal-descripcion-full { margin-top: 25px; border-top: 1px solid #334155; padding-top: 20px; }
+    .modal-descripcion-texto { color: #cbd5e1; font-size: 14px; line-height: 1.7; max-height: 250px; overflow-y: auto; background: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #334155; }
 
     @media (max-width: 1400px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
     @media (max-width: 1100px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 850px) {
-      .shop-container { flex-direction: column; }
-      .sidebar-left { width: 100%; position: static; }
-      .products-grid { grid-template-columns: repeat(2, 1fr); }
-      .top-envios-info { display: none; }
-    }
+    @media (max-width: 850px) { .shop-container { flex-direction: column; } .sidebar-left { width: 100%; position: static; } .products-grid { grid-template-columns: repeat(2, 1fr); } .top-envios-info { display: none; } .modal-grid-top { grid-template-columns: 1fr; } }
     @media (max-width: 500px) { .products-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
-  <!-- BARRA FIJA SUPERIOR AMPLIADA (CON DATOS DINÁMICOS DE FIREBASE) -->
+  <!-- BARRA FIJA SUPERIOR AMPLIADA (CON TU HTML CORRECTO) -->
   <header class="top-bar">
-    <div class="top-brand-area">
+    <div class="top-brand-area slogan-container">
       <img src="logo.jpg" alt="Peque Elektro" class="banner-mini">
       <div class="top-center-info">
-        <h1 class="top-center-title" id="top-title-txt">Cargando...</h1>
-        <p class="top-center-subtitle" id="top-subtitle-txt">Cargando...</p>
-        <div class="top-items-row" id="top-items-container"></div>
-        <div class="top-badge-container" id="top-badge-wrapper" style="display:none;">
-          <span class="top-badge" id="top-badge-txt"></span>
+        <h2 style="font-size: 16px; font-weight: bold; color: #38bdf8; margin: 0 0 2px 0;">Cargando...</h2>
+        <p class="slogan-intro">Cargando...</p>
+        
+        <ul class="slogan-list" style="display: flex; gap: 12px; font-size: 11px; color: #cbd5e1; padding: 0; margin: 0; list-style: none;">
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+        
+        <div class="top-badge-container" style="margin-top: 4px;">
+          <span class="slogan-badge" style="background: #0284c7; color: white; font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: bold;"></span>
         </div>
       </div>
     </div>
     
-    <div class="top-envios-info" id="top-envios-container">
-      <span>📍 <strong style="color:#38bdf8;">Zonales:</strong> <span id="top-envio-local">Cargando...</span></span>
-      <span>📦 <strong style="color:#38bdf8;">País:</strong> <span id="top-envio-pais">Cargando...</span></span>
-      <span id="top-envio-extra-wrap" style="display:none;">🚚 <span id="top-envio-extra"></span></span>
+    <div class="top-envios-info">
+      <span>📍 <strong style="color:#38bdf8;">Zonales:</strong> <span id="info-puntos">Cargando...</span></span>
+      <span>📦 <strong style="color:#38bdf8;">País:</strong> <span id="info-correo">Cargando...</span></span>
+      <span>🚚 <strong style="color:#38bdf8;">Condiciones:</strong> <span id="info-condicion">Cargando...</span></span>
     </div>
 
     <div class="header-actions">
@@ -474,7 +237,7 @@
         <button id="btn-next" onclick="cambiarPagina(1)">Siguiente <i class="fa-solid fa-chevron-right"></i></button>
       </div>
 
-      <!-- SECCIÓN DE COMENTARIOS (ANTI-BOT) -->
+      <!-- SECCIÓN DE COMENTARIOS -->
       <section style="margin-top: 30px; background: #1e293b; padding: 25px; border-radius: 12px; border: 1px solid #334155;">
         <h3 style="color: #38bdf8; margin-top: 0;"><i class="fa-solid fa-comments"></i> Consultas y Opiniones</h3>
         
@@ -536,6 +299,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, getDocs, getDoc, doc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+    // Tu configuración de Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
       authDomain: "peque-elektro.firebaseapp.com",
@@ -552,59 +316,66 @@
     let productosFiltrados = [];
     let carrito = [];
     let paginaActual = 1;
-    const productosPorPagina = 30; // 5 de ancho x 6 de largo
+    const productosPorPagina = 30; 
     let productoActualModalId = null;
     let cantidadModalActual = 1;
     const numeroWhatsapp = "5491134970171";
 
+    // --- CARGAR INFORMACIÓN DE ENVÍOS EN LA TIENDA ---
+    async function cargarInfoEnviosTienda() {
+      try {
+        const docRef = doc(db, "configuracion", "envios");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+
+          const elemPuntos = document.getElementById("info-puntos");
+          const elemCorreo = document.getElementById("info-correo");
+          const elemCondicion = document.getElementById("info-condicion");
+
+          if (elemPuntos && data.puntos) elemPuntos.textContent = data.puntos;
+          if (elemCorreo && data.correo) elemCorreo.textContent = data.correo;
+          if (elemCondicion && data.condicion) elemCondicion.textContent = data.condicion;
+        }
+      } catch (error) {
+        console.error("Error al cargar la información de envíos:", error);
+      }
+    }
+
+    // --- LEER ESLOGAN Y PRESENTACIÓN DINÁMICA ---
+    async function cargarSloganDinamico() {
+      try {
+        const snap = await getDoc(doc(db, "configuracion", "slogan"));
+        if (snap.exists()) {
+          const d = snap.data();
+          if (d.titulo) document.querySelector(".slogan-container h2").innerText = d.titulo;
+          if (d.intro) document.querySelector(".slogan-intro").innerText = d.intro;
+          
+          const items = document.querySelectorAll(".slogan-list li");
+          if (d.item1 && items[0]) items[0].innerHTML = `<i class="fa-solid fa-mug-hot"></i> ${d.item1}`;
+          if (d.item2 && items[1]) items[1].innerHTML = `<i class="fa-solid fa-clock"></i> ${d.item2}`;
+          if (d.item3 && items[2]) items[2].innerHTML = `<i class="fa-solid fa-wrench"></i> ${d.item3}`;
+          
+          if (d.badge) document.querySelector(".slogan-badge").innerText = d.badge;
+        }
+      } catch (err) {
+        console.error("Error al cargar eslogan:", err);
+      }
+    }
+
     async function init() {
-      cargarConfiguracionPresentacion();
-      cargarConfiguracionEnvios();
+      // Ejecutamos tus funciones
+      cargarInfoEnviosTienda();
+      cargarSloganDinamico();
       
+      // Cargamos productos
       const snap = await getDocs(collection(db, "productos"));
       snap.forEach(d => productos.push({ id: d.id, ...d.data() }));
       productosFiltrados = [...productos];
       renderizarPagina();
       renderCategorias();
       cargarResenas();
-    }
-
-    async function cargarConfiguracionPresentacion() {
-      try {
-        const snap = await getDoc(doc(db, "configuracion", "presentacion"));
-        if (snap.exists()) {
-          const d = snap.data();
-          document.getElementById("top-title-txt").textContent = d.titulo || 'peque elektro: tu solución integral.';
-          document.getElementById("top-subtitle-txt").textContent = d.subtitulo || '';
-          
-          let itemsHtml = '';
-          if (d.item1) itemsHtml += `<span>• ${d.item1}</span>`;
-          if (d.item2) itemsHtml += `<span>• ${d.item2}</span>`;
-          if (d.item3) itemsHtml += `<span>• ${d.item3}</span>`;
-          document.getElementById("top-items-container").innerHTML = itemsHtml;
-
-          if (d.badge) {
-            document.getElementById("top-badge-txt").textContent = d.badge;
-            document.getElementById("top-badge-wrapper").style.display = "block";
-          }
-        }
-      } catch (err) { console.error("Error al cargar presentación:", err); }
-    }
-
-    async function cargarConfiguracionEnvios() {
-      try {
-        const snapEnvios = await getDoc(doc(db, "configuracion", "envios"));
-        if (snapEnvios.exists()) {
-          const d = snapEnvios.data();
-          document.getElementById("top-envio-local").textContent = d.locales || 'Disponibles';
-          document.getElementById("top-envio-pais").textContent = d.pais || 'A todo el país';
-          
-          if (d.extra) {
-            document.getElementById("top-envio-extra").textContent = d.extra;
-            document.getElementById("top-envio-extra-wrap").style.display = "block";
-          }
-        }
-      } catch (err) { console.error("Error al cargar envíos:", err); }
     }
 
     function renderizarPagina() {
@@ -683,11 +454,8 @@
 
     window.filtrarCat = (cat) => {
       paginaActual = 1;
-      if (!cat) {
-        productosFiltrados = [...productos];
-      } else {
-        productosFiltrados = productos.filter(p => p.categoria === cat);
-      }
+      if (!cat) productosFiltrados = [...productos];
+      else productosFiltrados = productos.filter(p => p.categoria === cat);
       renderizarPagina();
     };
 
@@ -701,11 +469,8 @@
       const prod = productos.find(p => p.id === id);
       if (!prod) return;
       const index = carrito.findIndex(item => item.id === id);
-      if (index > -1) {
-        carrito[index].cantidad += cantidad;
-      } else {
-        carrito.push({ ...prod, cantidad: cantidad });
-      }
+      if (index > -1) carrito[index].cantidad += cantidad;
+      else carrito.push({ ...prod, cantidad: cantidad });
       actualizarCarritoUI();
       mostrarToast();
     };
@@ -714,9 +479,7 @@
       const index = carrito.findIndex(item => item.id === id);
       if (index > -1) {
         carrito[index].cantidad += cambio;
-        if (carrito[index].cantidad <= 0) {
-          carrito.splice(index, 1);
-        }
+        if (carrito[index].cantidad <= 0) carrito.splice(index, 1);
         actualizarCarritoUI();
       }
     };
@@ -764,7 +527,6 @@
 
     window.finalizarPedidoWhatsapp = async () => {
       if (carrito.length === 0) return alert("Tu carrito está vacío.");
-
       const total = carrito.reduce((acc, i) => acc + (parseFloat(i.precio) * i.cantidad), 0);
       try {
         await addDoc(collection(db, "pedidos"), {
@@ -782,7 +544,6 @@
         mensaje += `• ${i.nombre} x${i.cantidad} - $${(parseFloat(i.precio) * i.cantidad).toLocaleString('es-AR')}%0A`;
       });
       mensaje += `%0A*Total Estimado: $${total.toLocaleString('es-AR')}*`;
-
       window.open(`https://wa.me/${numeroWhatsapp}?text=${mensaje}`, '_blank');
     };
 
@@ -825,7 +586,6 @@
 
     const zoomContainer = document.getElementById("zoom-container");
     const modalImg = document.getElementById("modal-img");
-
     zoomContainer.addEventListener("mousemove", (e) => {
       const rect = zoomContainer.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -833,7 +593,6 @@
       modalImg.style.transformOrigin = `${x}% ${y}%`;
       modalImg.style.transform = "scale(2)";
     });
-
     zoomContainer.addEventListener("mouseleave", () => {
       modalImg.style.transformOrigin = "center center";
       modalImg.style.transform = "scale(1)";
@@ -858,11 +617,8 @@
     document.getElementById("form-resena").addEventListener("submit", async (e) => {
       e.preventDefault();
       const captcha = document.getElementById("chk-captcha").checked;
+      if (!captcha) return alert("⚠️ Por favor, confirma que no eres un robot.");
       
-      if (!captcha) {
-        return alert("⚠️ Por favor, confirma que no eres un robot.");
-      }
-
       const nombre = document.getElementById("resena-nombre").value.trim();
       const texto = document.getElementById("resena-texto").value.trim();
 
