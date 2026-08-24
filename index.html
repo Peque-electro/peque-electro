@@ -11,27 +11,47 @@
     body { margin: 0; font-family: Arial, sans-serif; background-color: #0f172a; color: white; }
     * { box-sizing: border-box; }
 
-    /* Barra Superior Fija */
+    /* Barra Superior Fija (Logo + Info de Envíos Compartida) */
     .top-bar {
       position: sticky;
       top: 0;
       z-index: 1000;
       background: #1e293b;
       border-bottom: 2px solid #0284c7;
-      padding: 10px 20px;
+      padding: 8px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      gap: 20px;
+    }
+    .top-brand-area {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
     }
     .banner-mini {
-      height: 70px;
+      height: 50px;
       object-fit: contain;
+    }
+    .top-envios-info {
+      font-size: 12px;
+      color: #94a3b8;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      border-left: 1px solid #334155;
+      padding-left: 15px;
+    }
+    .top-envios-info span {
+      color: #cbd5e1;
     }
     .header-actions {
       display: flex;
       align-items: center;
       gap: 15px;
+      flex-shrink: 0;
     }
     .cart-indicator {
       font-size: 18px;
@@ -65,7 +85,7 @@
       border-radius: 12px;
       height: fit-content;
       position: sticky;
-      top: 100px;
+      top: 90px;
       border: 1px solid #334155;
     }
 
@@ -156,7 +176,7 @@
       font-weight: bold;
     }
 
-    /* MODAL DESLIZANTE DE IZQUIERDA A DERECHA (ANCHO TOTAL Y OPTIMIZADO) */
+    /* MODAL AMPLIADO CON ZOOM Y DESCRIPCIÓN ABAJO A ANCHO COMPLETO */
     #modal-detalle {
       position: fixed;
       top: 0; left: 0;
@@ -201,24 +221,36 @@
     }
     .btn-cerrar-modal:hover { background: #dc2626; }
 
-    .modal-grid {
+    .modal-grid-top {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 30px;
       align-items: start;
     }
     @media (max-width: 850px) {
-      .modal-grid { grid-template-columns: 1fr; }
+      .modal-grid-top { grid-template-columns: 1fr; }
     }
 
-    .modal-imagen-principal {
+    /* Contenedor con Zoom para la Foto */
+    .modal-img-container {
       width: 100%;
-      max-height: 400px;
-      object-fit: contain;
+      max-height: 380px;
       background: white;
       border-radius: 10px;
       border: 1px solid #334155;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 15px;
+      position: relative;
+    }
+    .modal-imagen-principal {
+      width: 100%;
+      height: 380px;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+      cursor: zoom-in;
     }
     .modal-miniaturas {
       display: flex;
@@ -242,8 +274,7 @@
       display: flex;
       align-items: center;
       gap: 15px;
-      margin-top: 15px;
-      margin-bottom: 20px;
+      margin-top: 20px;
     }
     .cantidad-control {
       display: flex;
@@ -288,6 +319,24 @@
     }
     .btn-add-carrito-modal:hover { background: #16a34a; }
 
+    /* Descripción ocupando todo el ancho inferior */
+    .modal-descripcion-full {
+      margin-top: 25px;
+      border-top: 1px solid #334155;
+      padding-top: 20px;
+    }
+    .modal-descripcion-texto {
+      color: #cbd5e1;
+      font-size: 14px;
+      line-height: 1.7;
+      max-height: 250px;
+      overflow-y: auto;
+      background: #0f172a;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+    }
+
     /* Diseño Adaptativo (Responsive) */
     @media (max-width: 1400px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
     @media (max-width: 1100px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
@@ -295,16 +344,22 @@
       .shop-container { flex-direction: column; }
       .sidebar-left { width: 100%; position: static; }
       .products-grid { grid-template-columns: repeat(2, 1fr); }
-      .banner-mini { height: 50px; }
+      .top-envios-info { display: none; } /* Ocultar info de envíos en barra si es muy chico en celu */
     }
     @media (max-width: 500px) { .products-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
-  <!-- BARRA FIJA SUPERIOR -->
+  <!-- BARRA FIJA SUPERIOR CON LOGO E INFO DE ENVÍOS -->
   <header class="top-bar">
-    <img src="logo.jpg" alt="Peque Elektro" class="banner-mini">
+    <div class="top-brand-area">
+      <img src="logo.jpg" alt="Peque Elektro" class="banner-mini">
+      <div class="top-envios-info" id="top-envios-container">
+        <span>📍 <strong style="color:#38bdf8;">Zonales:</strong> <span id="top-envio-local">Cargando...</span></span>
+        <span>📦 <strong style="color:#38bdf8;">País:</strong> <span id="top-envio-pais">Cargando...</span></span>
+      </div>
+    </div>
     <div class="header-actions">
       <div class="cart-indicator">
         <i class="fa-solid fa-cart-shopping"></i> <span id="cart-count-top">0</span>
@@ -358,14 +413,6 @@
         <!-- Productos generados dinámicamente -->
       </div>
 
-      <!-- SECCIÓN DE ENVÍOS -->
-      <section style="margin-top: 30px; background: #1e293b; padding: 20px; border-radius: 12px; border: 1px solid #334155; font-size: 14px;">
-        <h3 style="color: #38bdf8; margin-top: 0;"><i class="fa-solid fa-truck-fast"></i> Información de Envíos</h3>
-        <p id="envios-locales" style="color: #cbd5e1; margin: 5px 0;">📍 <strong>Retiros / Envíos zonales:</strong> Cargando...</p>
-        <p id="envios-pais" style="color: #cbd5e1; margin: 5px 0;">📦 <strong>Resto del país:</strong> Cargando...</p>
-        <p id="envios-condiciones" style="color: #94a3b8; margin: 5px 0 0 0; font-size: 13px;"></p>
-      </section>
-
       <!-- SECCIÓN DE COMENTARIOS (ANTI-BOT) -->
       <section style="margin-top: 30px; background: #1e293b; padding: 25px; border-radius: 12px; border: 1px solid #334155;">
         <h3 style="color: #38bdf8; margin-top: 0;"><i class="fa-solid fa-comments"></i> Consultas y Opiniones</h3>
@@ -388,24 +435,25 @@
 
   </div>
 
-  <!-- MODAL DE DETALLES (FOTO A LA IZQUIERDA, ACCIONES Y INFO A LA DERECHA) -->
+  <!-- MODAL DE DETALLES CON ZOOM Y DESCRIPCIÓN A ANCHO COMPLETO ABAJO -->
   <div id="modal-detalle">
     <div class="modal-content-wrapper">
       <button class="btn-cerrar-modal" onclick="cerrarModal()"><i class="fa-solid fa-xmark"></i></button>
       
-      <div class="modal-grid">
-        <!-- COLUMNA IZQUIERDA: IMAGEN Y MINIATURAS -->
+      <div class="modal-grid-top">
+        <!-- COLUMNA IZQUIERDA: IMAGEN CON ZOOM Y MINIATURAS -->
         <div>
-          <img id="modal-img" class="modal-imagen-principal" src="" alt="Imagen principal">
+          <div class="modal-img-container" id="zoom-container">
+            <img id="modal-img" class="modal-imagen-principal" src="" alt="Imagen principal">
+          </div>
           <div id="modal-miniaturas-container" class="modal-miniaturas"></div>
         </div>
 
-        <!-- COLUMNA DERECHA: TÍTULO, PRECIO, CANTIDAD Y ACCIONES -->
+        <!-- COLUMNA DERECHA: TÍTULO, PRECIO Y BOTÓN DE CANTIDAD/CARRITO -->
         <div>
           <h2 id="modal-titulo" style="color: #38bdf8; margin-top: 0; font-size: 24px;"></h2>
-          <div id="modal-precio" style="color: #22c55e; font-size: 28px; font-weight: bold; margin-bottom: 15px;"></div>
+          <div id="modal-precio" style="color: #22c55e; font-size: 28px; font-weight: bold; margin-bottom: 20px;"></div>
           
-          <!-- BOTÓN DE SUMAR Y AGREGAR AL CARRITO ARRIBA AL LADO DE LA FOTO -->
           <div class="modal-acciones">
             <div class="cantidad-control">
               <button onclick="cambiarCantidadModal(-1)">-</button>
@@ -416,12 +464,13 @@
               <i class="fa-solid fa-cart-plus"></i> Agregar al Carrito
             </button>
           </div>
-
-          <div style="margin-top: 15px;">
-            <strong style="color: #38bdf8; display: block; margin-bottom: 5px;">Descripción y Ficha Técnica:</strong>
-            <div id="modal-descripcion" style="color: #cbd5e1; font-size: 14px; line-height: 1.6; max-height: 220px; overflow-y: auto; background: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #334155;"></div>
-          </div>
         </div>
+      </div>
+
+      <!-- DESCRIPCIÓN Y FICHA TÉCNICA A ANCHO COMPLETO DEBAJO -->
+      <div class="modal-descripcion-full">
+        <strong style="color: #38bdf8; display: block; margin-bottom: 8px; font-size: 16px;">Descripción y Ficha Técnica:</strong>
+        <div id="modal-descripcion" class="modal-descripcion-texto"></div>
       </div>
     </div>
   </div>
@@ -474,9 +523,8 @@
         const snapEnvios = await getDoc(doc(db, "configuracion", "envios"));
         if (snapEnvios.exists()) {
           const d = snapEnvios.data();
-          document.getElementById("envios-locales").innerHTML = `📍 <strong>Retiros / Envíos zonales:</strong> ${d.locales || ''}`;
-          document.getElementById("envios-pais").innerHTML = `📦 <strong>Resto del país:</strong> ${d.pais || ''}`;
-          document.getElementById("envios-condiciones").textContent = d.condiciones || '';
+          document.getElementById("top-envio-local").textContent = d.locales || 'Disponibles';
+          document.getElementById("top-envio-pais").textContent = d.pais || 'A todo el país';
         }
       } catch (err) { console.error(err); }
     }
@@ -555,7 +603,6 @@
       mostrarToast();
     };
 
-    // Funciones para sumar, restar o eliminar directamente desde el carrito lateral
     window.modificarCantidadCarrito = function(id, cambio) {
       const index = carrito.findIndex(item => item.id === id);
       if (index > -1) {
@@ -644,7 +691,6 @@
       document.getElementById("modal-precio").textContent = `$${parseFloat(p.precio).toLocaleString('es-AR')}`;
       document.getElementById("modal-descripcion").textContent = p.descripcion || "Sin especificaciones detalladas.";
 
-      // Manejo de imágenes múltiples y miniaturas
       const imagenes = (p.imagenes && p.imagenes.length > 0) ? p.imagenes : [p.imagen || 'https://via.placeholder.com/300'];
       const imgPrincipalEl = document.getElementById("modal-img");
       const miniaturasContainer = document.getElementById("modal-miniaturas-container");
@@ -669,6 +715,23 @@
       document.querySelectorAll(".modal-miniatura").forEach(m => m.classList.remove("activa"));
       elementoMiniatura.classList.add("activa");
     };
+
+    // Funcionalidad de Zoom interactivo en la foto principal del modal
+    const zoomContainer = document.getElementById("zoom-container");
+    const modalImg = document.getElementById("modal-img");
+
+    zoomContainer.addEventListener("mousemove", (e) => {
+      const rect = zoomContainer.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      modalImg.style.transformOrigin = `${x}% ${y}%`;
+      modalImg.style.transform = "scale(2)";
+    });
+
+    zoomContainer.addEventListener("mouseleave", () => {
+      modalImg.style.transformOrigin = "center center";
+      modalImg.style.transform = "scale(1)";
+    });
 
     window.cambiarCantidadModal = (delta) => {
       cantidadModalActual += delta;
@@ -723,7 +786,6 @@
       list.innerHTML = html || '<p style="color: #64748b;">No hay opiniones aún. ¡Sé el primero!</p>';
     }
 
-    // Buscador
     document.getElementById("buscar-input").addEventListener("input", (e) => {
       const txt = e.target.value.toLowerCase();
       const filtrados = productos.filter(p => p.nombre.toLowerCase().includes(txt));
