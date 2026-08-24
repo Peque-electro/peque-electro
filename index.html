@@ -312,7 +312,7 @@
             }
         }
 
-        /* GALERÍA DE IMÁGENES DENTRO DEL MODAL */
+        /* IMAGEN PRINCIPAL Y MINIATURAS */
         .modal-main-img-container {
             position: relative;
             cursor: zoom-in;
@@ -325,7 +325,7 @@
             border: 1px solid #334155;
             background: #1e293b;
         }
-        /* Miniaturas debajo del botón de agregar (en la columna derecha) */
+        /* Miniaturas ubicadas en la columna derecha debajo del botón de compra */
         .modal-thumbnails {
             display: flex;
             gap: 10px;
@@ -384,7 +384,7 @@
             justify-content: center;
         }
 
-        /* DESCRIPCIÓN CON SALTOS DE LÍNEA CORREGIDOS */
+        /* DESCRIPCIÓN CON SALTOS DE LÍNEA Y SEPARACIONES */
         .product-description-box {
             background: #1e293b;
             border: 1px solid #334155;
@@ -394,7 +394,7 @@
             color: #cbd5e1;
             font-size: 15px;
             line-height: 1.6;
-            white-space: pre-line; /* Soluciona el problema del texto continuo respetando enter/separaciones */
+            white-space: pre-line; /* Respeta saltos de línea y separaciones */
         }
         .product-description-box h3 {
             color: #38bdf8;
@@ -403,113 +403,6 @@
         }
 
         /* FOOTER Y RESEÑAS */
-        .reviews-section {
-            background-color: #264f076e;
-            padding: 50px 20px;
-            border-top: 1px solid #334155;
-            margin-top: 50px;
-        }
-        .reviews-container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .reviews-container h2 {
-            text-align: center;
-            color: #38bdf8;
-            margin-bottom: 30px;
-            font-size: 24px;
-        }
-        .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        .review-card {
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 18px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 8px;
-        }
-        .review-header strong {
-            color: #38bdf8;
-            font-size: 15px;
-        }
-        .review-text {
-            color: #cbd5e1;
-            font-size: 14px;
-            font-style: italic;
-            margin: 0;
-            line-height: 1.5;
-        }
-        .add-review-box {
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-        }
-        .add-review-box h3 {
-            color: #38bdf8;
-            margin-top: 0;
-            margin-bottom: 18px;
-            font-size: 18px;
-            text-align: center;
-        }
-        .review-inputs {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-        .review-inputs input, .review-inputs select {
-            flex: 1;
-            min-width: 200px;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            background: #0f172a;
-            color: white;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-        .add-review-box textarea {
-            width: 100%;
-            height: 90px;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            background: #0f172a;
-            color: white;
-            font-size: 14px;
-            resize: vertical;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-        }
-        .btn-submit-review {
-            background: #0284c7;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            font-size: 15px;
-            transition: 0.2s;
-        }
-        .btn-submit-review:hover {
-            background: #0369a1;
-        }
         footer {
             text-align: center;
             padding: 20px;
@@ -609,7 +502,7 @@
                         </div>
                     </div>
 
-                    <!-- Columna Derecha: Título, Precio, Acciones y Miniaturas debajo del botón -->
+                    <!-- Columna Derecha: Título, Precio, Acciones, Botón de Agregar y Miniaturas debajo -->
                     <div>
                         <h2 id="modal-title" style="color: #f8fafc; margin-top: 0;"></h2>
                         <div id="modal-price" style="font-size: 24px; font-weight: bold; color: #f84538; margin-bottom: 20px;"></div>
@@ -620,11 +513,11 @@
                             <button onclick="cambiarCantidad(1)" style="background: #1e293b; color: white; border: 1px solid #334155; padding: 8px 14px; border-radius: 6px; cursor: pointer;">+</button>
                         </div>
 
-                        <button id="btn-agregar-carrito" style="background: #22c55e; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 16px;">
+                        <button id="btn-agregar-carrito" style="background: #22c55e; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 16px; margin-bottom: 20px;">
                             <i class="fa-solid fa-cart-shopping"></i> Agregar al Carrito
                         </button>
 
-                        <!-- MINIATURAS UBICADAS DEBAJO DEL BOTÓN DE AGREGAR -->
+                        <!-- MINIATURAS UBICADAS EXACTAMENTE DEBAJO DEL BOTÓN DE AGREGAR -->
                         <div class="modal-thumbnails" id="modal-thumbnails">
                             <!-- Miniaturas dinámicas -->
                         </div>
@@ -755,14 +648,14 @@
             document.getElementById("modal-title").innerText = prod.nombre || '';
             document.getElementById("modal-price").innerText = `$${prod.precio || 0}`;
             
-            // Descripción con conservación de saltos de línea
-            document.getElementById("modal-description").innerText = prod.descripcion || 'Sin descripción disponible.';
+            // Descripción preservando saltos de línea y formato guardado
+            document.getElementById("modal-description").innerHTML = prod.descripcion || 'Sin descripción disponible.';
 
             const imagenes = (prod.imagenes && prod.imagenes.length > 0) ? prod.imagenes : ['https://via.placeholder.com/400'];
             imagenActualZoomUrl = imagenes[0];
             document.getElementById("modal-img").src = imagenActualZoomUrl;
 
-            // Renderizar miniaturas debajo del botón de agregar
+            // Renderizar miniaturas exclusivamente debajo del botón de agregar en la columna derecha
             const thumbsContainer = document.getElementById("modal-thumbnails");
             thumbsContainer.innerHTML = "";
             imagenes.forEach((imgSrc, index) => {
@@ -802,7 +695,6 @@
         };
 
         window.cerrarZoom = function(e) {
-            // Cierra si hace clic en el botón de cerrar o en el fondo oscuro
             document.getElementById("zoom-lightbox").classList.remove("active");
         };
 
