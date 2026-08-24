@@ -86,10 +86,36 @@
     .subcategory-list li { color: #94a3b8; padding: 6px 0; cursor: pointer; font-size: 14px; }
     .subcategory-list li:hover { color: white; }
 
-    /* Resumen de Pedido Lateral */
+    /* Resumen de Pedido Lateral con controles de cantidad */
     .resumen-pedido { margin-top: 30px; padding-top: 20px; border-top: 1px solid #334155; }
-    .lista-carrito { list-style: none; padding: 0; max-height: 250px; overflow-y: auto; font-size: 14px; }
-    .lista-carrito li { display: flex; justify-content: space-between; margin-bottom: 8px; color: #cbd5e1; border-bottom: 1px solid #334155; padding-bottom: 5px; }
+    .lista-carrito { list-style: none; padding: 0; max-height: 250px; overflow-y: auto; font-size: 13px; }
+    .lista-carrito li { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      margin-bottom: 10px; 
+      color: #cbd5e1; 
+      border-bottom: 1px solid #334155; 
+      padding-bottom: 8px; 
+      gap: 5px;
+    }
+    .carrito-item-controles {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      padding: 2px 5px;
+    }
+    .carrito-item-controles button {
+      background: transparent;
+      color: #38bdf8;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 12px;
+    }
 
     /* Grilla de Productos */
     .main-content { flex-grow: 1; }
@@ -130,7 +156,7 @@
       font-weight: bold;
     }
 
-    /* MODAL DESLIZANTE DE IZQUIERDA A DERECHA */
+    /* MODAL DESLIZANTE DE IZQUIERDA A DERECHA (ANCHO TOTAL Y OPTIMIZADO) */
     #modal-detalle {
       position: fixed;
       top: 0; left: 0;
@@ -146,8 +172,8 @@
       to { transform: translateX(0); }
     }
     .modal-content-wrapper {
-      max-width: 900px;
-      margin: 40px auto;
+      max-width: 1100px;
+      margin: 30px auto;
       background: #1e293b;
       border: 1px solid #334155;
       border-radius: 16px;
@@ -171,12 +197,23 @@
       justify-content: center;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       transition: background 0.2s;
+      z-index: 10;
     }
     .btn-cerrar-modal:hover { background: #dc2626; }
 
+    .modal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: start;
+    }
+    @media (max-width: 850px) {
+      .modal-grid { grid-template-columns: 1fr; }
+    }
+
     .modal-imagen-principal {
       width: 100%;
-      max-height: 350px;
+      max-height: 400px;
       object-fit: contain;
       background: white;
       border-radius: 10px;
@@ -187,11 +224,11 @@
       display: flex;
       gap: 10px;
       overflow-x: auto;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       padding-bottom: 5px;
     }
     .modal-miniatura {
-      width: 65px; height: 65px;
+      width: 70px; height: 70px;
       object-fit: cover;
       background: white;
       border-radius: 8px;
@@ -205,10 +242,8 @@
       display: flex;
       align-items: center;
       gap: 15px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-      padding-top: 15px;
-      border-top: 1px solid #334155;
+      margin-top: 15px;
+      margin-bottom: 20px;
     }
     .cantidad-control {
       display: flex;
@@ -217,19 +252,21 @@
       border: 1px solid #334155;
       border-radius: 8px;
       overflow: hidden;
+      height: 45px;
     }
     .cantidad-control button {
       background: #334155;
       color: white;
       border: none;
-      padding: 10px 15px;
+      padding: 0 15px;
       cursor: pointer;
       font-weight: bold;
-      font-size: 16px;
+      font-size: 18px;
+      height: 100%;
     }
     .cantidad-control button:hover { background: #475569; }
     .cantidad-control span {
-      padding: 0 20px;
+      padding: 0 15px;
       font-weight: bold;
       font-size: 16px;
     }
@@ -237,7 +274,8 @@
       background: #22c55e;
       color: white;
       border: none;
-      padding: 12px 25px;
+      padding: 0 25px;
+      height: 45px;
       border-radius: 8px;
       font-weight: bold;
       font-size: 16px;
@@ -306,14 +344,30 @@
 
     <!-- ÁREA PRINCIPAL DE PRODUCTOS -->
     <main class="main-content">
+      
+      <!-- SECCIÓN SLOGAN / PRESENTACIÓN -->
+      <section id="seccion-slogan" style="background: #1e293b; border: 1px solid #334155; padding: 20px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
+        <h2 id="slogan-titulo" style="color: #38bdf8; margin: 0 0 8px 0; font-size: 20px;">Cargando...</h2>
+        <p id="slogan-intro" style="color: #94a3b8; margin: 0 0 10px 0; font-size: 14px;"></p>
+        <div id="slogan-items" style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; font-size: 13px; color: #cbd5e1;"></div>
+      </section>
+
       <input type="text" id="buscar-input" placeholder="Buscar productos..." style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: white; margin-bottom: 20px; font-size: 16px;">
 
       <div id="grid-productos" class="products-grid">
         <!-- Productos generados dinámicamente -->
       </div>
 
+      <!-- SECCIÓN DE ENVÍOS -->
+      <section style="margin-top: 30px; background: #1e293b; padding: 20px; border-radius: 12px; border: 1px solid #334155; font-size: 14px;">
+        <h3 style="color: #38bdf8; margin-top: 0;"><i class="fa-solid fa-truck-fast"></i> Información de Envíos</h3>
+        <p id="envios-locales" style="color: #cbd5e1; margin: 5px 0;">📍 <strong>Retiros / Envíos zonales:</strong> Cargando...</p>
+        <p id="envios-pais" style="color: #cbd5e1; margin: 5px 0;">📦 <strong>Resto del país:</strong> Cargando...</p>
+        <p id="envios-condiciones" style="color: #94a3b8; margin: 5px 0 0 0; font-size: 13px;"></p>
+      </section>
+
       <!-- SECCIÓN DE COMENTARIOS (ANTI-BOT) -->
-      <section style="margin-top: 40px; background: #1e293b; padding: 25px; border-radius: 12px; border: 1px solid #334155;">
+      <section style="margin-top: 30px; background: #1e293b; padding: 25px; border-radius: 12px; border: 1px solid #334155;">
         <h3 style="color: #38bdf8; margin-top: 0;"><i class="fa-solid fa-comments"></i> Consultas y Opiniones</h3>
         
         <form id="form-resena" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
@@ -334,27 +388,24 @@
 
   </div>
 
-  <!-- MODAL DE DETALLES MEJORADO (DESLIZANTE + MINIATURAS + CANTIDAD) -->
+  <!-- MODAL DE DETALLES (FOTO A LA IZQUIERDA, ACCIONES Y INFO A LA DERECHA) -->
   <div id="modal-detalle">
     <div class="modal-content-wrapper">
       <button class="btn-cerrar-modal" onclick="cerrarModal()"><i class="fa-solid fa-xmark"></i></button>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+      <div class="modal-grid">
+        <!-- COLUMNA IZQUIERDA: IMAGEN Y MINIATURAS -->
         <div>
           <img id="modal-img" class="modal-imagen-principal" src="" alt="Imagen principal">
           <div id="modal-miniaturas-container" class="modal-miniaturas"></div>
         </div>
 
+        <!-- COLUMNA DERECHA: TÍTULO, PRECIO, CANTIDAD Y ACCIONES -->
         <div>
           <h2 id="modal-titulo" style="color: #38bdf8; margin-top: 0; font-size: 24px;"></h2>
-          <div id="modal-precio" style="color: #22c55e; font-size: 26px; font-weight: bold; margin-bottom: 15px;"></div>
+          <div id="modal-precio" style="color: #22c55e; font-size: 28px; font-weight: bold; margin-bottom: 15px;"></div>
           
-          <div style="margin-bottom: 20px;">
-            <strong style="color: #38bdf8; display: block; margin-bottom: 5px;">Descripción y Ficha Técnica:</strong>
-            <div id="modal-descripcion" style="color: #cbd5e1; font-size: 14px; line-height: 1.6; max-height: 180px; overflow-y: auto; background: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #334155;"></div>
-          </div>
-
-          <!-- CONTROLES DE CANTIDAD Y BOTÓN DE COMPRA -->
+          <!-- BOTÓN DE SUMAR Y AGREGAR AL CARRITO ARRIBA AL LADO DE LA FOTO -->
           <div class="modal-acciones">
             <div class="cantidad-control">
               <button onclick="cambiarCantidadModal(-1)">-</button>
@@ -365,6 +416,11 @@
               <i class="fa-solid fa-cart-plus"></i> Agregar al Carrito
             </button>
           </div>
+
+          <div style="margin-top: 15px;">
+            <strong style="color: #38bdf8; display: block; margin-bottom: 5px;">Descripción y Ficha Técnica:</strong>
+            <div id="modal-descripcion" style="color: #cbd5e1; font-size: 14px; line-height: 1.6; max-height: 220px; overflow-y: auto; background: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #334155;"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -372,7 +428,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, getDoc, doc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
@@ -393,11 +449,36 @@
     const numeroWhatsapp = "5491134970171";
 
     async function init() {
+      cargarConfiguracion();
       const snap = await getDocs(collection(db, "productos"));
       snap.forEach(d => productos.push({ id: d.id, ...d.data() }));
       renderProductos(productos);
       renderCategorias();
       cargarResenas();
+    }
+
+    async function cargarConfiguracion() {
+      try {
+        const snapSlogan = await getDoc(doc(db, "configuracion", "slogan"));
+        if (snapSlogan.exists()) {
+          const d = snapSlogan.data();
+          document.getElementById("slogan-titulo").textContent = d.titulo || "";
+          document.getElementById("slogan-intro").textContent = d.intro || "";
+          let itemsHtml = "";
+          if (d.item1) itemsHtml += `<span><i class="fa-solid fa-check" style="color:#38bdf8;"></i> ${d.item1}</span>`;
+          if (d.item2) itemsHtml += `<span><i class="fa-solid fa-check" style="color:#38bdf8;"></i> ${d.item2}</span>`;
+          if (d.item3) itemsHtml += `<span><i class="fa-solid fa-check" style="color:#38bdf8;"></i> ${d.item3}</span>`;
+          document.getElementById("slogan-items").innerHTML = itemsHtml;
+        }
+
+        const snapEnvios = await getDoc(doc(db, "configuracion", "envios"));
+        if (snapEnvios.exists()) {
+          const d = snapEnvios.data();
+          document.getElementById("envios-locales").innerHTML = `📍 <strong>Retiros / Envíos zonales:</strong> ${d.locales || ''}`;
+          document.getElementById("envios-pais").innerHTML = `📦 <strong>Resto del país:</strong> ${d.pais || ''}`;
+          document.getElementById("envios-condiciones").textContent = d.condiciones || '';
+        }
+      } catch (err) { console.error(err); }
     }
 
     function renderProductos(lista) {
@@ -474,6 +555,18 @@
       mostrarToast();
     };
 
+    // Funciones para sumar, restar o eliminar directamente desde el carrito lateral
+    window.modificarCantidadCarrito = function(id, cambio) {
+      const index = carrito.findIndex(item => item.id === id);
+      if (index > -1) {
+        carrito[index].cantidad += cambio;
+        if (carrito[index].cantidad <= 0) {
+          carrito.splice(index, 1);
+        }
+        actualizarCarritoUI();
+      }
+    };
+
     function actualizarCarritoUI() {
       const lista = document.getElementById("lista-carrito-lateral");
       const totalEl = document.getElementById("total-carrito");
@@ -489,7 +582,19 @@
           const subtotal = parseFloat(i.precio) * i.cantidad;
           total += subtotal;
           count += i.cantidad;
-          return `<li><span>${i.nombre} (x${i.cantidad})</span> <span>$${subtotal.toLocaleString('es-AR')}</span></li>`;
+          return `
+            <li>
+              <span>${i.nombre}</span>
+              <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                <span style="font-weight: bold; color: #22c55e;">$${subtotal.toLocaleString('es-AR')}</span>
+                <div class="carrito-item-controles">
+                  <button onclick="modificarCantidadCarrito('${i.id}', -1)">-</button>
+                  <span style="color: white; font-weight: bold; font-size: 11px;">${i.cantidad}</span>
+                  <button onclick="modificarCantidadCarrito('${i.id}', 1)">+</button>
+                </div>
+              </div>
+            </li>
+          `;
         }).join('');
       }
 
@@ -556,7 +661,7 @@
         miniaturasContainer.innerHTML = "";
       }
 
-      document.getElementById("modal-detalle").style.display = "block";
+      document.getElementById("modal-detalle").style.display = "flex";
     };
 
     window.cambiarImagenModal = (urlImg, elementoMiniatura) => {
