@@ -536,6 +536,9 @@
             transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             box-sizing: border-box;
         }
+        .modal-overlay.active {
+            display: block;
+        }
         .modal-overlay.active .modal-content-fullscreen {
             transform: translateX(0);
         }
@@ -769,10 +772,10 @@
         <p>&copy; 2026 Peque Elektro - Todos los derechos reservados.</p>
     </footer>
 
-    <!-- FIREBASE & LÓGICA -->
+    <!-- FIREBASE & LÓGICA COMPLETA -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
@@ -793,19 +796,23 @@
         let cantidadModal = 1;
         let configGlobal = {};
 
+        // Inicialización de la App
         async function cargarDatos() {
             try {
+                // Cargar Configuración
                 const configSnap = await getDocs(collection(db, "configuracion"));
                 configSnap.forEach(docSnap => {
                     configGlobal[docSnap.id] = docSnap.data();
                 });
                 renderizarConfiguracion();
 
+                // Cargar Productos
                 const querySnapshot = await getDocs(collection(db, "productos"));
                 productosGlobal = [];
                 querySnapshot.forEach((docSnap) => {
                     productosGlobal.push({ id: docSnap.id, ...docSnap.data() });
                 });
+
                 generarMenuLateral();
                 renderizarProductos(productosGlobal);
             } catch (err) {
@@ -834,7 +841,7 @@
                     itemsHTML += `<span class="slogan-item-tag"><i class="fa-solid fa-check" style="color: #38bdf8;"></i> ${it}</span>`;
                 }
             });
-            itemsBox.innerHTML = itemsHTML;
+            if (itemsHTML) itemsBox.innerHTML = itemsHTML;
 
             const zona1 = envios.zona1 || envios.locales || "San Justo Centro | Ramos Mejía | Estación Morón | La Tablada";
             const zona2 = envios.zona2 || envios.resto || "Al resto del país (costo a cargo del cliente).";
@@ -854,6 +861,7 @@
         function generarMenuLateral() {
             const sidebarList = document.getElementById("sidebar-categories");
             const categoriasMap = {};
+            
             productosGlobal.forEach(p => {
                 const cat = p.categoria || "Sin categoría";
                 const subcat = p.subcategoria || null;
@@ -886,6 +894,7 @@
             sidebarList.innerHTML = html;
         }
 
+        // Eventos del Menú de Categorías
         document.getElementById("sidebar-categories").addEventListener("click", (e) => {
             const linkSub = e.target.closest(".subcat-link");
             const linkToggle = e.target.closest("[data-cat-toggle]");
@@ -912,200 +921,226 @@
             document.getElementById("current-category-title").innerText = cat === 'todos' ? 'Catálogo de Productos' : cat;
             let filtrados = cat === 'todos' ? productosGlobal : productosGlobal.filter(p => p.categoria === cat);
             renderizarProductos(filtrados);
+            actualizarActiveSidebar();
         }
 
         function filtrarSubcategoria(cat, sub) {
-            categoriaSeleccionada = cat;
+            categoriaSeleccionada = `${cat} - ${sub}`;
             document.getElementById("current-category-title").innerText = `${cat} > ${sub}`;
             let filtrados = productosGlobal.filter(p => p.categoria === cat && p.subcategoria === sub);
             renderizarProductos(filtrados);
         }
 
+        function actualizarActiveSidebar() {
+            document.querySelectorAll(".cat-link").forEach(el => el.classList.remove("active"));
+            const actual = document.querySelector(`[data-cat-toggle="${categoriaSeleccionada}"]`) || document.querySelector(`[data-cat="${categoriaSeleccionada}"]`);
+            if (actual) actual.classList.add("active");
+        }
+
+        // Renderizado de tarjetas de Productos
         function renderizarProductos(productos) {
             const grid = document.getElementById("products-grid");
-            grid.innerHTML = "";
-            if (productos.length === 0) {
-                grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #94a3b8;'>No se encontraron productos en esta sección.</p>";
+            if (!productos || productos.length === 0) {
+                grid.innerHTML = `<p style="color: #94a3b8; grid-column: 1 / -1; text-align: center; padding: 40px 0;">No se encontraron productos en esta categoría.</p>`;
                 return;
             }
-            productos.forEach(prod => {
-                const imgUrl = (prod.imagenes && prod.imagenes.length > 0) ? prod.imagenes[0] : 'https://via.placeholder.com/200';
-                const card = document.createElement("div");
-                card.className = "product-card";
-                card.innerHTML = `
-                    <img src="${imgUrl}" alt="${prod.nombre || 'Producto'}">
-                    <h3>${prod.nombre || 'Sin nombre'}</h3>
-                    <p class="price">$${prod.precio || 0}</p>
-                    <div class="card-buttons">
-                        <button class="btn-detail" data-id="${prod.id}"><i class="fa-solid fa-eye"></i> Ver Detalle</button>
-                        <button class="btn-add-cart" data-id="${prod.id}"><i class="fa-solid fa-cart-plus"></i> Agregar al Carrito</button>
+
+            grid.innerHTML = productos.map(p => {
+                const img = p.imagen || (p.imagenes && p.imagenes[0]) || 'https://via.placeholder.com/300?text=Sin+Imagen';
+                const precio = Number(p.precio || 0).toLocaleString('es-AR');
+
+                return `
+                    <div class="product-card">
+                        <div>
+                            <img src="${img}" alt="${p.nombre}" loading="lazy">
+                            <h3>${p.nombre}</h3>
+                        </div>
+                        <div>
+                            <div class="price">$${precio}</div>
+                            <div class="card-buttons">
+                                <button class="btn-detail" data-id="${p.id}"><i class="fa-solid fa-eye"></i> Ver Detalle</button>
+                                <button class="btn-add-cart" data-id="${p.id}"><i class="fa-solid fa-cart-plus"></i> Agregar</button>
+                            </div>
+                        </div>
                     </div>
                 `;
-                grid.appendChild(card);
+            }).join('');
+
+            // Asignar eventos a los botones de la tarjeta
+            grid.querySelectorAll('.btn-detail').forEach(btn => {
+                btn.addEventListener('click', () => abrirModal(btn.dataset.id));
+            });
+
+            grid.querySelectorAll('.btn-add-cart').forEach(btn => {
+                btn.addEventListener('click', () => agregarAlCarrito(btn.dataset.id, 1));
             });
         }
 
-        document.getElementById("products-grid").addEventListener("click", (e) => {
-            const btnAdd = e.target.closest(".btn-add-cart");
-            const btnDetail = e.target.closest(".btn-detail");
-
-            if (btnAdd) {
-                const id = btnAdd.getAttribute("data-id");
-                agregarAlCarrito(id, 1);
-            } else if (btnDetail) {
-                const id = btnDetail.getAttribute("data-id");
-                verDetalleProducto(id);
+        // Búsqueda en vivo
+        document.getElementById("search-input").addEventListener("input", (e) => {
+            const busqueda = e.target.value.toLowerCase().trim();
+            if (!busqueda) {
+                filtrarCategoria(categoriaSeleccionada);
+                return;
             }
+            const filtrados = productosGlobal.filter(p => 
+                (p.nombre && p.nombre.toLowerCase().includes(busqueda)) ||
+                (p.descripcion && p.descripcion.toLowerCase().includes(busqueda))
+            );
+            document.getElementById("current-category-title").innerText = `Resultados para: "${busqueda}"`;
+            renderizarProductos(filtrados);
         });
 
+        // Lógica del Carrito
         function agregarAlCarrito(id, cantidad = 1) {
             const prod = productosGlobal.find(p => p.id === id);
             if (!prod) return;
 
-            const existente = carrito.find(item => item.id === id);
-            if (existente) {
-                existente.cantidad += cantidad;
+            const idx = carrito.findIndex(item => item.id === id);
+            if (idx > -1) {
+                carrito[idx].cantidad += cantidad;
             } else {
-                carrito.push({
-                    id: prod.id,
-                    nombre: prod.nombre,
-                    precio: prod.precio,
-                    cantidad: cantidad
-                });
+                carrito.push({ ...prod, cantidad });
             }
+            renderizarCarrito();
+        }
+
+        function modificarCantidadCarrito(id, delta) {
+            const idx = carrito.findIndex(item => item.id === id);
+            if (idx > -1) {
+                carrito[idx].cantidad += delta;
+                if (carrito[idx].cantidad <= 0) {
+                    carrito.splice(idx, 1);
+                }
+            }
+            renderizarCarrito();
+        }
+
+        function eliminarDelCarrito(id) {
+            carrito = carrito.filter(item => item.id !== id);
             renderizarCarrito();
         }
 
         function renderizarCarrito() {
             const container = document.getElementById("cart-items-container");
-            const totalPriceElem = document.getElementById("cart-total-price");
-            
+            const totalEl = document.getElementById("cart-total-price");
+
             if (carrito.length === 0) {
-                container.innerHTML = "<p style='text-align: center; color: #94a3b8; font-size: 13px; margin: 15px 0;'>Tu carrito está vacío.</p>";
-                totalPriceElem.innerText = "$0";
+                container.innerHTML = `<p style="text-align: center; color: #94a3b8; font-size: 13px; margin: 15px 0;">Tu carrito está vacío.</p>`;
+                totalEl.innerText = "$0";
                 return;
             }
 
-            let html = "";
             let total = 0;
-
-            carrito.forEach((item, index) => {
-                const subtotal = item.precio * item.cantidad;
+            container.innerHTML = carrito.map(item => {
+                const subtotal = Number(item.precio || 0) * item.cantidad;
                 total += subtotal;
-                html += `
+
+                return `
                     <div class="sidebar-cart-item-row">
-                        <div style="flex: 1; min-width: 0; padding-right: 4px;">
-                            <h4 style="margin: 0 0 2px 0; color: white; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${item.nombre}">${item.nombre}</h4>
-                            <div style="color: #38bdf8; font-size: 12px; font-weight: 600; margin-bottom: 6px;">$${item.precio} x ${item.cantidad} = $${subtotal}</div>
-                            <div style="display: flex; gap: 6px; align-items: center;">
-                                <button class="btn-cart-qty" data-index="${index}" data-cambio="-1">-</button>
-                                <span style="font-size: 12px; font-weight: bold; color: white; min-width: 14px; text-align: center;">${item.cantidad}</span>
-                                <button class="btn-cart-qty" data-index="${index}" data-cambio="1">+</button>
+                        <div style="flex-grow: 1; overflow: hidden;">
+                            <div style="font-size: 13px; font-weight: 600; color: #f8fafc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.nombre}</div>
+                            <div style="font-size: 12px; color: #38bdf8;">$${Number(item.precio || 0).toLocaleString('es-AR')} c/u</div>
+                            <div style="display: flex; gap: 6px; align-items: center; margin-top: 6px;">
+                                <button class="btn-cart-qty" data-id="${item.id}" data-action="minus">-</button>
+                                <span style="font-size: 12px; font-weight: bold;">${item.cantidad}</span>
+                                <button class="btn-cart-qty" data-id="${item.id}" data-action="plus">+</button>
                             </div>
                         </div>
-                        <button class="btn-cart-delete" data-index="${index}" title="Eliminar producto"><i class="fa-solid fa-trash"></i></button>
+                        <button class="btn-cart-delete" data-id="${item.id}"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 `;
+            }).join('');
+
+            totalEl.innerText = `$${total.toLocaleString('es-AR')}`;
+
+            // Listeners dentro del carrito
+            container.querySelectorAll('.btn-cart-qty').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const action = btn.dataset.action;
+                    modificarCantidadCarrito(btn.dataset.id, action === 'plus' ? 1 : -1);
+                });
             });
 
-            container.innerHTML = html;
-            totalPriceElem.innerText = `$${total}`;
+            container.querySelectorAll('.btn-cart-delete').forEach(btn => {
+                btn.addEventListener('click', () => eliminarDelCarrito(btn.dataset.id));
+            });
         }
 
-        document.getElementById("cart-items-container").addEventListener("click", (e) => {
-            const btnQty = e.target.closest(".btn-cart-qty");
-            const btnDel = e.target.closest(".btn-cart-delete");
-
-            if (btnQty) {
-                const index = parseInt(btnQty.getAttribute("data-index"));
-                const cambio = parseInt(btnQty.getAttribute("data-cambio"));
-                carrito[index].cantidad += cambio;
-                if (carrito[index].cantidad <= 0) {
-                    carrito.splice(index, 1);
-                }
-                renderizarCarrito();
-            } else if (btnDel) {
-                const index = parseInt(btnDel.getAttribute("data-index"));
-                carrito.splice(index, 1);
-                renderizarCarrito();
-            }
-        });
-
-        document.getElementById("btn-enviar-whatsapp").addEventListener("click", async () => {
+        // WhatsApp Pedido
+        document.getElementById("btn-enviar-whatsapp").addEventListener("click", () => {
             if (carrito.length === 0) {
-                alert("Tu carrito está vacío.");
+                alert("Agrega al menos un producto al carrito para realizar el pedido.");
                 return;
             }
 
-            let total = carrito.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+            const telefono = configGlobal["general"]?.whatsapp || "5491134970171"; // Número por defecto si no está configurado
+            let mensaje = "¡Hola Peque Elektro! Quisiera realizar el siguiente pedido:\n\n";
 
-            try {
-                await addDoc(collection(db, "pedidos"), {
-                    items: carrito,
-                    total: total,
-                    fecha: new Date().toISOString(),
-                    estado: "Pendiente"
-                });
-            } catch (err) {
-                console.error("Error al registrar el pedido en admin:", err);
-            }
-
-            let mensaje = "Hola! Quiero realizar el siguiente pedido desde la web de Peque Elektro:%0A%0A";
-            carrito.forEach(item => {
-                const subtotal = item.precio * item.cantidad;
-                mensaje += `- *${item.nombre}* (Cant: ${item.cantidad}) - Subtotal: $${subtotal}%0A`;
+            let total = 0;
+            carrito.forEach((item, index) => {
+                const subtotal = Number(item.precio || 0) * item.cantidad;
+                total += subtotal;
+                mensaje += `${index + 1}. *${item.nombre}* (x${item.cantidad}) - $${subtotal.toLocaleString('es-AR')}\n`;
             });
-            mensaje += `%0A*Total General: $${total}*%0A%0A¡Espero su confirmación!`;
 
-            const numeroWhatsApp = "5491134970171"; // Reemplaza con tu número de WhatsApp
-            window.open(`https://wa.me/${numeroWhatsApp}?text=${mensaje}`, '_blank');
+            mensaje += `\n*Total a pagar: $${total.toLocaleString('es-AR')}*`;
+            
+            const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, "_blank");
         });
 
-        function verDetalleProducto(id) {
+        // Modal Detalle de Producto
+        function abrirModal(id) {
             const prod = productosGlobal.find(p => p.id === id);
             if (!prod) return;
+
             productoActualModal = prod;
             cantidadModal = 1;
+
+            const mainImg = prod.imagen || (prod.imagenes && prod.imagenes[0]) || 'https://via.placeholder.com/300?text=Sin+Imagen';
+            
+            document.getElementById("modal-img").src = mainImg;
+            document.getElementById("modal-title").innerText = prod.nombre || 'Producto sin título';
+            document.getElementById("modal-price").innerText = `$${Number(prod.precio || 0).toLocaleString('es-AR')}`;
             document.getElementById("modal-qty").innerText = cantidadModal;
+            document.getElementById("modal-description").innerText = prod.descripcion || 'Sin descripción disponible para este producto.';
 
-            document.getElementById("modal-title").innerText = prod.nombre || '';
-            document.getElementById("modal-price").innerText = `$${prod.precio || 0}`;
-            document.getElementById("modal-description").innerText = prod.descripcion || 'Sin descripción disponible.';
-
-            const imagenes = (prod.imagenes && prod.imagenes.length > 0) ? prod.imagenes : ['https://via.placeholder.com/400'];
-            document.getElementById("modal-img").src = imagenes[0];
-
+            // Renderizar Miniaturas si hay múltiples imágenes
             const thumbsWrapper = document.getElementById("thumbnails-wrapper");
-            const thumbs = document.getElementById("modal-thumbnails");
-            thumbs.innerHTML = "";
-
-            if (imagenes.length > 1) {
+            const thumbsContainer = document.getElementById("modal-thumbnails");
+            
+            if (prod.imagenes && prod.imagenes.length > 1) {
+                thumbsContainer.innerHTML = prod.imagenes.map((imgUrl, i) => `
+                    <img src="${imgUrl}" class="modal-thumb ${imgUrl === mainImg ? 'active' : ''}" data-src="${imgUrl}">
+                `).join('');
                 thumbsWrapper.style.display = "block";
-                imagenes.forEach((img, idx) => {
-                    thumbs.innerHTML += `<img src="${img}" class="modal-thumb ${idx === 0 ? 'active' : ''}" data-img="${img}">`;
+
+                thumbsContainer.querySelectorAll('.modal-thumb').forEach(thumb => {
+                    thumb.addEventListener('click', (e) => {
+                        document.getElementById("modal-img").src = e.target.dataset.src;
+                        thumbsContainer.querySelectorAll('.modal-thumb').forEach(t => t.classList.remove('active'));
+                        e.target.classList.add('active');
+                    });
                 });
             } else {
                 thumbsWrapper.style.display = "none";
             }
 
-            const modal = document.getElementById("product-modal");
-            modal.style.display = "block";
-            setTimeout(() => modal.classList.add("active"), 10);
+            document.getElementById("product-modal").classList.add("active");
         }
 
-        document.getElementById("modal-thumbnails").addEventListener("click", (e) => {
-            const thumb = e.target.closest(".modal-thumb");
-            if (thumb) {
-                const imgSrc = thumb.getAttribute("data-img");
-                document.getElementById("modal-img").src = imgSrc;
-                document.querySelectorAll(".modal-thumb").forEach(t => t.classList.remove("active"));
-                thumb.classList.add("active");
-            }
-        });
+        function cerrarModal() {
+            document.getElementById("product-modal").classList.remove("active");
+        }
 
+        document.getElementById("btn-close-modal").addEventListener("click", cerrarModal);
+        
         document.getElementById("modal-qty-minus").addEventListener("click", () => {
-            cantidadModal = Math.max(1, cantidadModal - 1);
-            document.getElementById("modal-qty").innerText = cantidadModal;
+            if (cantidadModal > 1) {
+                cantidadModal--;
+                document.getElementById("modal-qty").innerText = cantidadModal;
+            }
         });
 
         document.getElementById("modal-qty-plus").addEventListener("click", () => {
@@ -1120,18 +1155,12 @@
             }
         });
 
-        document.getElementById("btn-close-modal").addEventListener("click", cerrarModal);
-
-        function cerrarModal() {
-            const modal = document.getElementById("product-modal");
-            modal.classList.remove("active");
-            setTimeout(() => modal.style.display = "none", 350);
-        }
-
+        // Lightbox para imagen ampliada
         document.getElementById("modal-img").addEventListener("click", (e) => {
-            const src = e.target.src;
-            document.getElementById("lightbox-img").src = src;
-            document.getElementById("lightbox-overlay").classList.add("active");
+            if (e.target.src) {
+                document.getElementById("lightbox-img").src = e.target.src;
+                document.getElementById("lightbox-overlay").classList.add("active");
+            }
         });
 
         document.getElementById("btn-close-lightbox").addEventListener("click", () => {
@@ -1144,12 +1173,7 @@
             }
         });
 
-        document.getElementById("search-input").addEventListener("input", (e) => {
-            const texto = e.target.value.toLowerCase();
-            const filtrados = productosGlobal.filter(p => (p.nombre && p.nombre.toLowerCase().includes(texto)) || (p.descripcion && p.descripcion.toLowerCase().includes(texto)));
-            renderizarProductos(filtrados);
-        });
-
+        // Carga inicial
         cargarDatos();
     </script>
 </body>
