@@ -3,705 +3,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peque Elektro - Tu solución integral</title>
-    <!-- FontAwesome para iconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Peque Elektro</title>
     <style>
-        body {
-            background-color: #7772d4e8;
-            color: #eae1e1;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        :root {
+            --primary-color: #ff6b00;
+            --secondary-color: #222;
+            --bg-color: #f9f9f9;
+            --card-bg: #fff;
+            --text-color: #333;
+        }
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        /* BANNER HEADER */
-        .banner-header {
-            width: 100vw;
-            position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
-            background: #1bca2c;
-            overflow: hidden;
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
         }
-        .banner-img {
-            width: 100%;
-            height: auto;
-            display: block;
-            object-fit: fill;
-        }
-        @media (max-width: 768px) {
-            .banner-img {
-                max-height: 300px;
-            }
-        }
-
-        /* HERO SLOGAN */
-        .hero-slogan {
-            background: linear-gradient(135deg, #1e8d38 0%, #249748 100%);
-            border-bottom: 1px solid #33553d;
-            padding: 35px 20px;
-        }
-        .slogan-container {
-            max-width: 800px;
-            margin: 0 auto;
+        header {
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 20px;
             text-align: center;
         }
-        .slogan-container h2 {
-            color: #3ee606;
-            font-size: 26px;
-            margin-top: 0;
-            margin-bottom: 10px;
+        header h1 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 5px;
         }
-        .slogan-intro {
-            color: #d4f2d7;
-            font-size: 16px;
-            margin-bottom: 20px;
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
         }
-        .slogan-list {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 25px 0;
-            text-align: left;
-            display: inline-block;
-        }
-        .slogan-list li {
-            font-size: 15px;
-            color: #55ea9f;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .slogan-badge {
-            color: #033a17;
-            font-weight: bold;
-            font-size: 15px;
-            margin: 0;
-            background: rgba(248, 56, 56, 0.505);
-            padding: 10px 15px;
-            border-radius: 8px;
-            display: inline-block;
-            border: 1px solid rgba(56, 189, 248, 0.2);
-        }
-
-        /* BANNER DE ENVÍOS */
-        .shipping-banner {
+        .catalog {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 15px;
-            max-width: 1100px;
-            margin: 25px auto 0 auto;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            text-align: left;
-        }
-        .shipping-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .shipping-item i {
-            font-size: 1.5rem;
-            color: #2fe31b;
-        }
-        .shipping-item strong {
-            display: block;
-            color: #37ec3a;
-            font-size: 0.9rem;
-        }
-        .shipping-item p {
-            margin: 0;
-            color: #79f7ad;
-            font-size: 0.85rem;
-        }
-
-        /* CONTENEDOR PRINCIPAL */
-        .main-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .section-title {
-            color: #55f838;
-            border-left: 4px solid #38bdf8;
-            padding-left: 10px;
-            margin-bottom: 20px;
-        }
-
-        /* BUSCADOR Y FILTROS */
-        .search-filter-box {
-            margin-bottom: 30px;
-        }
-        .search-wrapper {
-            position: relative;
-            margin-bottom: 15px;
-        }
-        .search-wrapper i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9eb894;
-        }
-        .search-wrapper input {
-            width: 100%;
-            padding: 12px 12px 12px 42px;
-            border-radius: 25px;
-            border: 1px solid #334155;
-            background: #1e293b;
-            color: white;
-            font-size: 15px;
-            box-sizing: border-box;
-        }
-        .categories-bar {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 5px;
-        }
-        .btn-cat {
-            background: #1e293b;
-            color: #94a3b8;
-            border: 1px solid #334155;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            white-space: nowrap;
-            font-size: 14px;
-        }
-        .btn-cat.active, .btn-cat:hover {
-            background: #0284c7;
-            color: white;
-            border-color: #c20202;
-        }
-
-        /* GRID DE PRODUCTOS */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
         }
         .product-card {
-            background: #25def78c;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.2s;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.2s ease, border-color 0.2s ease;
         }
         .product-card:hover {
-            transform: translateY(-4px);
-            border-color: #44010f;
+            transform: translateY(-5px);
         }
         .product-card img {
             width: 100%;
-            height: 180px;
+            height: 200px;
             object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 12px;
         }
-        .product-card h3 {
-            font-size: 15px;
-            margin: 0 0 8px 0;
-            color: #f8fafc;
+        .product-card-body {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        .product-card .price {
-            font-size: 18px;
+        .product-card-title {
+            font-size: 1.1rem;
             font-weight: bold;
-            color: #f84538;
-            margin: 0 0 12px 0;
+            margin-bottom: 10px;
         }
-        .btn-detail {
-            background: #0284c7;
+        .product-card-price {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .btn-ver {
+            background-color: var(--secondary-color);
             color: white;
             border: none;
             padding: 10px;
-            border-radius: 6px;
+            width: 100%;
+            border-radius: 4px;
             font-weight: bold;
             cursor: pointer;
-            width: 100%;
             transition: background 0.2s;
         }
-        .btn-detail:hover {
-            background: #0369a1;
+        .btn-ver:hover {
+            background-color: var(--primary-color);
         }
 
-        /* PAGINACIÓN */
-        .pagination-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            margin-top: 30px;
-        }
-        .btn-page {
-            background: #1e293b;
-            color: #38bdf8;
-            border: 1px solid #334155;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-page:hover:not(:disabled) {
-            background: #0284c7;
-            color: white;
-            border-color: #38bdf8;
-        }
-        .btn-page:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-        .page-info {
-            color: #cbd5e1;
-            font-size: 15px;
-            font-weight: 500;
-        }
-
-        /* MODAL FULLSCREEN */
-        .modal-overlay {
+        /* Modal de Detalle de Producto */
+        .modal {
             display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(3, 114, 47, 0.75);
-            z-index: 2000;
-        }
-        .modal-content-fullscreen {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: #0f2a25;
-            overflow-y: auto;
-            transform: translateX(-100%);
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
         }
-        .modal-overlay.active .modal-content-fullscreen {
-            transform: translateX(0);
-        }
-        .fullscreen-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            position: relative;
-            min-height: 100vh;
-            box-sizing: border-box;
-        }
-        .modal-grid-large {
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            max-width: 900px;
+            width: 100%;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-top: 30px;
+            gap: 20px;
+            padding: 30px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
         }
-        @media (max-width: 850px) {
-            .modal-grid-large {
+        @media(max-width: 768px) {
+            .modal-content {
                 grid-template-columns: 1fr;
-                gap: 25px;
             }
         }
-
-        /* IMAGEN PRINCIPAL Y MINIATURAS */
-        .modal-main-img-container {
-            position: relative;
-            cursor: zoom-in;
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        .modal-left {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
         .modal-main-img {
             width: 100%;
-            height: 380px;
+            height: 350px;
             object-fit: cover;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            background: #1e293b;
+            border-radius: 6px;
+            cursor: zoom-in;
+            border: 1px solid #ddd;
         }
-        /* Miniaturas ubicadas en la columna derecha debajo del botón de compra */
+        .modal-right {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .modal-price {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        /* DESCRIPCIÓN CON SEPARACIONES Y SALTOS DE LÍNEA */
+        .product-description-box {
+            white-space: pre-line;
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .btn-agregar-pedido {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 5px;
+        }
+        .btn-agregar-pedido:hover {
+            opacity: 0.9;
+        }
+
+        /* MINIATURAS COLOCADAS DEBAJO DEL BOTÓN DE AGREGAR PEDIDO */
         .modal-thumbnails {
             display: flex;
             gap: 10px;
-            margin-top: 15px;
+            margin-top: 10px;
             overflow-x: auto;
             padding-bottom: 5px;
         }
-        .modal-thumb {
-            width: 65px;
-            height: 65px;
+        .modal-thumbnails img {
+            width: 70px;
+            height: 70px;
             object-fit: cover;
-            border-radius: 8px;
-            border: 2px solid #334155;
+            border-radius: 4px;
             cursor: pointer;
+            border: 2px solid transparent;
             transition: border-color 0.2s;
-            background: #1e293b;
         }
-        .modal-thumb:hover, .modal-thumb.active {
-            border-color: #38bdf8;
+        .modal-thumbnails img:hover, .modal-thumbnails img.active {
+            border-color: var(--primary-color);
         }
 
-        /* ZOOM FULLSCREEN LIGHTBOX */
-        #zoom-lightbox {
+        /* ZOOM LIGHTBOX EN PANTALLA COMPLETA */
+        .zoom-lightbox {
             display: none;
             position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 3000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            z-index: 2000;
+            cursor: zoom-out;
         }
-        #zoom-lightbox.active {
-            display: flex;
-        }
-        #zoom-lightbox img {
-            max-width: 100%;
-            max-height: 100vh;
+        .zoom-lightbox img {
+            max-width: 90%;
+            max-height: 90%;
             object-fit: contain;
-            border-radius: 8px;
+            border-radius: 4px;
         }
-        #zoom-lightbox .close-zoom {
+        .zoom-close {
             position: absolute;
             top: 20px;
             right: 30px;
-            background: #ef4444;
             color: white;
-            border: none;
-            font-size: 24px;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
+            font-size: 2.5rem;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* DESCRIPCIÓN CON SALTOS DE LÍNEA Y SEPARACIONES */
-        .product-description-box {
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 30px;
-            color: #cbd5e1;
-            font-size: 15px;
-            line-height: 1.6;
-            white-space: pre-line; /* Respeta saltos de línea y separaciones */
-        }
-        .product-description-box h3 {
-            color: #38bdf8;
-            margin-top: 0;
-            margin-bottom: 12px;
-        }
-
-        /* FOOTER Y RESEÑAS */
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #94a3b8;
-            font-size: 14px;
-            border-top: 1px solid #334155;
-            background: #0f172a;
         }
     </style>
 </head>
 <body>
 
-    <!-- BANNER HEADER -->
-    <header class="banner-header">
-        <img src="banner.jpg" alt="Peque Elektro Banner" class="banner-img" onerror="this.src='https://via.placeholder.com/1200x300/1bca2c/ffffff?text=Peque+Elektro'">
+    <header>
+        <h1>Peque Elektro</h1>
+        <p>Materiales eléctricos y tecnología</p>
     </header>
 
-    <!-- SLOGAN DINÁMICO -->
-    <section class="hero-slogan">
-        <div class="slogan-container">
-            <h2 id="slogan-titulo">Peque Elektro: Tu solución integral.</h2>
-            <p id="slogan-intro" class="slogan-intro">Simplificamos tu búsqueda ofreciéndote variedad y calidad en un solo lugar:</p>
-            <ul class="slogan-list" id="slogan-lista-ul">
-                <li><i class="fa-solid fa-mug-hot"></i> Variedad en artículos</li>
-                <li><i class="fa-solid fa-clock"></i> Atención rápida</li>
-                <li><i class="fa-solid fa-wrench"></i> Garantía y confianza</li>
-            </ul>
-            <div>
-                <span id="slogan-badge-elem" class="slogan-badge">¡Envios a todo el país!</span>
-            </div>
-
-            <!-- BANNER DE ENVÍOS -->
-            <div class="shipping-banner">
-                <div class="shipping-item">
-                    <i class="fa-solid fa-location-dot"></i>
+    <div class="container">
+        <div class="catalog" id="catalog">
+            <!-- Producto de Ejemplo -->
+            <div class="product-card" onclick="abrirModal('Kit de Herramientas Eléctricas Pro', '$45.000', 'Incluye taladro percutor, atornillador inalámbrico\ny maletín de transporte reforzado.\n\nIdeal para profesionales y uso hogareño.\n\nVoltaje: 220V', ['https://images.unsplash.com/photo-1504148455328-c376907d081c?w=600', 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=600', 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600'])">
+                <img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=600" alt="Producto">
+                <div class="product-card-body">
                     <div>
-                        <strong>Zonales:</strong>
-                        <p id="info-puntos">Cargando...</p>
+                        <div class="product-card-title">Kit de Herramientas Eléctricas Pro</div>
+                        <div class="product-card-price">$45.000</div>
                     </div>
-                </div>
-                <div class="shipping-item">
-                    <i class="fa-solid fa-envelope"></i>
-                    <div>
-                        <strong>Consultas:</strong>
-                        <p id="info-correo">Cargando...</p>
-                    </div>
-                </div>
-                <div class="shipping-item">
-                    <i class="fa-solid fa-box"></i>
-                    <div>
-                        <strong>Condiciones:</strong>
-                        <p id="info-condicion">Cargando...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CONTENEDOR PRINCIPAL DE TIENDA -->
-    <main class="main-container">
-        <div class="search-filter-box">
-            <div class="search-wrapper">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="search-input" placeholder="Buscar productos...">
-            </div>
-            <div class="categories-bar" id="categories-bar">
-                <button class="btn-cat active" data-cat="todos">Todas las Categorías</button>
-            </div>
-        </div>
-
-        <h2 class="section-title">Nuestros Productos</h2>
-        <div class="products-grid" id="products-grid">
-            <!-- Productos renderizados dinámicamente -->
-        </div>
-
-        <!-- PAGINACIÓN -->
-        <div class="pagination-container" id="pagination-container">
-            <button class="btn-page" id="btn-prev" disabled><i class="fa-solid fa-chevron-left"></i> Anterior</button>
-            <span class="page-info" id="page-info">Página 1 de 1</span>
-            <button class="btn-page" id="btn-next">Siguiente <i class="fa-solid fa-chevron-right"></i></button>
-        </div>
-    </main>
-
-    <!-- MODAL DE DETALLE DE PRODUCTO (SCREEN FULLSLIDE) -->
-    <div class="modal-overlay" id="product-modal">
-        <div class="modal-content-fullscreen">
-            <div class="fullscreen-container">
-                <div style="display: flex; justify-content: flex-end;">
-                    <button onclick="cerrarModal()" style="background: #ef4444; color: white; border: none; font-size: 20px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-
-                <div class="modal-grid-large">
-                    <!-- Columna Izquierda: Imagen Principal -->
-                    <div>
-                        <div class="modal-main-img-container" onclick="abrirZoom()">
-                            <img id="modal-img" src="" alt="Producto" class="modal-main-img">
-                        </div>
-                    </div>
-
-                    <!-- Columna Derecha: Título, Precio, Acciones, Botón de Agregar y Miniaturas debajo -->
-                    <div>
-                        <h2 id="modal-title" style="color: #f8fafc; margin-top: 0;"></h2>
-                        <div id="modal-price" style="font-size: 24px; font-weight: bold; color: #f84538; margin-bottom: 20px;"></div>
-                        
-                        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 20px;">
-                            <button onclick="cambiarCantidad(-1)" style="background: #1e293b; color: white; border: 1px solid #334155; padding: 8px 14px; border-radius: 6px; cursor: pointer;">-</button>
-                            <span id="modal-qty" style="font-size: 18px; font-weight: bold; color: white;">1</span>
-                            <button onclick="cambiarCantidad(1)" style="background: #1e293b; color: white; border: 1px solid #334155; padding: 8px 14px; border-radius: 6px; cursor: pointer;">+</button>
-                        </div>
-
-                        <button id="btn-agregar-carrito" style="background: #22c55e; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 16px; margin-bottom: 20px;">
-                            <i class="fa-solid fa-cart-shopping"></i> Agregar al Carrito
-                        </button>
-
-                        <!-- MINIATURAS UBICADAS EXACTAMENTE DEBAJO DEL BOTÓN DE AGREGAR -->
-                        <div class="modal-thumbnails" id="modal-thumbnails">
-                            <!-- Miniaturas dinámicas -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Descripción Completa y Ficha Técnica -->
-                <div class="product-description-box">
-                    <h3>Descripción y Ficha Técnica:</h3>
-                    <div id="modal-description">Cargando descripción...</div>
+                    <button class="btn-ver">Ver Producto</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- LIGHTBOX ZOOM FULLSCREEN -->
-    <div id="zoom-lightbox" onclick="cerrarZoom()">
-        <button class="close-zoom"><i class="fa-solid fa-xmark"></i></button>
-        <img id="zoom-img" src="" alt="Zoom Fullscreen">
-    </div>
-
-    <footer>
-        <p>&copy; 2026 Peque Elektro - Todos los derechos reservados.</p>
-    </footer>
-
-    <!-- SCRIPTS DE FIREBASE Y LÓGICA -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
-            authDomain: "peque-elektro.firebaseapp.com",
-            projectId: "peque-elektro",
-            storageBucket: "peque-elektro.firebasestorage.app",
-            messagingSenderId: "873169424486",
-            appId: "1:873169424486:web:e9f77cb2052aa06b3b9da7"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Variables globales de la tienda
-        let productosGlobal = [];
-        let productoActual = null;
-        let imagenActualZoomUrl = "";
-        let cantidadActual = 1;
-
-        // Cargar Información de Envíos
-        async function cargarInfoEnviosTienda() {
-            try {
-                const docRef = doc(db, "configuracion", "envios");
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    if (document.getElementById("info-puntos") && data.puntos) document.getElementById("info-puntos").textContent = data.puntos;
-                    if (document.getElementById("info-correo") && data.correo) document.getElementById("info-correo").textContent = data.correo;
-                    if (document.getElementById("info-condicion") && data.condicion) document.getElementById("info-condicion").textContent = data.condicion;
-                }
-            } catch (error) {
-                console.error("Error al cargar envíos:", error);
-            }
-        }
-
-        // Cargar Eslogan y Presentación Dinámica
-        async function cargarSloganDinamico() {
-            try {
-                const snap = await getDoc(doc(db, "configuracion", "slogan"));
-                if (snap.exists()) {
-                    const d = snap.data();
-                    if (d.titulo) document.getElementById("slogan-titulo").innerText = d.titulo;
-                    if (d.intro) document.getElementById("slogan-intro").innerText = d.intro;
-                    
-                    const items = document.querySelectorAll(".slogan-list li");
-                    if (d.item1 && items[0]) items[0].innerHTML = `<i class="fa-solid fa-mug-hot"></i> ${d.item1}`;
-                    if (d.item2 && items[1]) items[1].innerHTML = `<i class="fa-solid fa-clock"></i> ${d.item2}`;
-                    if (d.item3 && items[2]) items[2].innerHTML = `<i class="fa-solid fa-wrench"></i> ${d.item3}`;
-                    
-                    if (d.badge) document.getElementById("slogan-badge-elem").innerText = d.badge;
-                }
-            } catch (err) {
-                console.error("Error al cargar eslogan:", err);
-            }
-        }
-
-        // Cargar Productos desde Firestore
-        async function cargarProductos() {
-            try {
-                const querySnapshot = await getDocs(collection(db, "productos"));
-                productosGlobal = [];
-                querySnapshot.forEach((docSnap) => {
-                    productosGlobal.push({ id: docSnap.id, ...docSnap.data() });
-                });
-                renderizarProductos(productosGlobal);
-            } catch (err) {
-                console.error("Error al cargar productos:", err);
-            }
-        }
-
-        function renderizarProductos(productos) {
-            const grid = document.getElementById("products-grid");
-            grid.innerHTML = "";
-            if (productos.length === 0) {
-                grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center;'>No se encontraron productos.</p>";
-                return;
-            }
-            productos.forEach(prod => {
-                const imgUrl = (prod.imagenes && prod.imagenes.length > 0) ? prod.imagenes[0] : 'https://via.placeholder.com/200';
-                const card = document.createElement("div");
-                card.className = "product-card";
-                card.innerHTML = `
-                    <img src="${imgUrl}" alt="${prod.nombre || 'Producto'}">
-                    <h3>${prod.nombre || 'Sin nombre'}</h3>
-                    <p class="price">$${prod.precio || 0}</p>
-                    <button class="btn-detail" onclick="verDetalleProducto('${prod.id}')">Ver Detalle</button>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        window.verDetalleProducto = function(id) {
-            const prod = productosGlobal.find(p => p.id === id);
-            if (!prod) return;
-            productoActual = prod;
-            cantidadActual = 1;
-            document.getElementById("modal-qty").innerText = cantidadActual;
-
-            document.getElementById("modal-title").innerText = prod.nombre || '';
-            document.getElementById("modal-price").innerText = `$${prod.precio || 0}`;
+    <!-- Modal de Detalle -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="cerrarModal()">&times;</span>
             
-            // Descripción preservando saltos de línea y formato guardado
-            document.getElementById("modal-description").innerHTML = prod.descripcion || 'Sin descripción disponible.';
+            <!-- Columna Izquierda: Imagen Principal -->
+            <div class="modal-left">
+                <img id="modalMainImg" class="modal-main-img" src="" alt="Imagen Principal" onclick="abrirZoom(this.src)">
+            </div>
 
-            const imagenes = (prod.imagenes && prod.imagenes.length > 0) ? prod.imagenes : ['https://via.placeholder.com/400'];
-            imagenActualZoomUrl = imagenes[0];
-            document.getElementById("modal-img").src = imagenActualZoomUrl;
+            <!-- Columna Derecha: Información, Descripción, Botón y Miniaturas -->
+            <div class="modal-right">
+                <div class="modal-title" id="modalTitle">Título del Producto</div>
+                <div class="modal-price" id="modalPrice">$0</div>
+                
+                <!-- Descripción con separación -->
+                <div class="product-description-box" id="modalDesc">
+                    Descripción del producto.
+                </div>
 
-            // Renderizar miniaturas exclusivamente debajo del botón de agregar en la columna derecha
-            const thumbsContainer = document.getElementById("modal-thumbnails");
-            thumbsContainer.innerHTML = "";
-            imagenes.forEach((imgSrc, index) => {
-                const thumb = document.createElement("img");
-                thumb.src = imgSrc;
-                thumb.className = `modal-thumb ${index === 0 ? 'active' : ''}`;
-                thumb.onclick = () => {
-                    imagenActualZoomUrl = imgSrc;
-                    document.getElementById("modal-img").src = imgSrc;
-                    document.querySelectorAll(".modal-thumb").forEach(t => t.classList.remove("active"));
-                    thumb.classList.add("active");
-                };
-                thumbsContainer.appendChild(thumb);
-            });
+                <!-- Botón Agregar Pedido -->
+                <button class="btn-agregar-pedido" onclick="agregarPedido()">Agregar Pedido</button>
 
-            document.getElementById("product-modal").style.display = "block";
-            setTimeout(() => document.getElementById("product-modal").classList.add("active"), 10);
-        };
+                <!-- Miniaturas (Ubicadas DEBAJO del botón de agregar pedido) -->
+                <div class="modal-thumbnails" id="modalThumbnails"></div>
+            </div>
+        </div>
+    </div>
 
-        window.cerrarModal = function() {
-            const modal = document.getElementById("product-modal");
-            modal.classList.remove("active");
-            setTimeout(() => modal.style.display = "none", 350);
-        };
+    <!-- Lightbox de Pantalla Completa -->
+    <div class="zoom-lightbox" id="zoomLightbox" onclick="cerrarZoom()">
+        <span class="zoom-close">&times;</span>
+        <img id="zoomImg" src="" alt="Zoom Imagen">
+    </div>
 
-        window.cambiarCantidad = function(delta) {
-            cantidadActual += delta;
-            if (cantidadActual < 1) cantidadActual = 1;
-            document.getElementById("modal-qty").innerText = cantidadActual;
-        };
+    <script>
+        function abrirModal(titulo, precio, descripcion, imagenes) {
+            document.getElementById('modalTitle').innerText = titulo;
+            document.getElementById('modalPrice').innerText = precio;
+            document.getElementById('modalDesc').innerText = descripcion;
 
-        // Funciones de Zoom en pantalla completa
-        window.abrirZoom = function() {
-            if (!imagenActualZoomUrl) return;
-            document.getElementById("zoom-img").src = imagenActualZoomUrl;
-            document.getElementById("zoom-lightbox").classList.add("active");
-        };
+            const mainImg = document.getElementById('modalMainImg');
+            const thumbnailsContainer = document.getElementById('modalThumbnails');
+            
+            thumbnailsContainer.innerHTML = '';
 
-        window.cerrarZoom = function(e) {
-            document.getElementById("zoom-lightbox").classList.remove("active");
-        };
+            if (imagenes && imagenes.length > 0) {
+                mainImg.src = imagenes[0];
+                
+                imagenes.forEach((imgSrc, index) => {
+                    const thumb = document.createElement('img');
+                    thumb.src = imgSrc;
+                    if (index === 0) thumb.classList.add('active');
+                    
+                    thumb.onclick = function() {
+                        mainImg.src = imgSrc;
+                        document.querySelectorAll('.modal-thumbnails img').forEach(t => t.classList.remove('active'));
+                        thumb.classList.add('active');
+                    };
+                    
+                    thumbnailsContainer.appendChild(thumb);
+                });
+            }
 
-        // Inicializar ejecuciones al cargar la página
-        cargarInfoEnviosTienda();
-        cargarSloganDinamico();
-        cargarProductos();
+            document.getElementById('productModal').style.display = 'flex';
+        }
+
+        function cerrarModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+
+        function abrirZoom(src) {
+            const zoomLightbox = document.getElementById('zoomLightbox');
+            const zoomImg = document.getElementById('zoomImg');
+            zoomImg.src = src;
+            zoomLightbox.style.display = 'flex';
+        }
+
+        function cerrarZoom() {
+            document.getElementById('zoomLightbox').style.display = 'none';
+        }
+
+        function agregarPedido() {
+            alert('¡Pedido agregado con éxito!');
+            cerrarModal();
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('productModal');
+            if (event.target === modal) {
+                cerrarModal();
+            }
+        }
     </script>
 </body>
 </html>
