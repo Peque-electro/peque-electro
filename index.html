@@ -393,9 +393,14 @@
             transition: all 0.2s;
             box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
         }
-        .btn-whatsapp:hover {
+        .btn-whatsapp:hover:not(:disabled) {
             background: #16a34a;
             transform: translateY(-1px);
+        }
+        .btn-whatsapp:disabled {
+            background: #15803d;
+            cursor: not-allowed;
+            opacity: 0.8;
         }
 
         /* CONTENIDO DERECHO */
@@ -774,8 +779,9 @@
 
     <!-- FIREBASE & LÓGICA COMPLETA -->
     <script type="module">
+        // 1. IMPORTANTE: Agregamos "addDoc" y "serverTimestamp" a las importaciones de Firestore.
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
@@ -1067,27 +1073,71 @@
             });
         }
 
-        // WhatsApp Pedido
-        document.getElementById("btn-enviar-whatsapp").addEventListener("click", () => {
+        // 2. NUEVA FUNCIÓN: ENVIAR PEDIDO POR WHATSAPP Y GUARDAR EN FIREBASE (Sección "ordenes")
+        document.getElementById("btn-enviar-whatsapp").addEventListener("click", async () => {
             if (carrito.length === 0) {
                 alert("Agrega al menos un producto al carrito para realizar el pedido.");
                 return;
             }
 
-            const telefono = configGlobal["general"]?.whatsapp || "5491134970171"; // Número por defecto si no está configurado
-            let mensaje = "¡Hola Peque Elektro! Quisiera realizar el siguiente pedido:\n\n";
+            // Cambiamos el texto del botón temporalmente para que el usuario sepa que está cargando
+            const btn = document.getElementById("btn-enviar-whatsapp");
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Registrando Pedido...';
+            btn.disabled = true;
 
-            let total = 0;
-            carrito.forEach((item, index) => {
-                const subtotal = Number(item.precio || 0) * item.cantidad;
-                total += subtotal;
-                mensaje += `${index + 1}. *${item.nombre}* (x${item.cantidad}) - $${subtotal.toLocaleString('es-AR')}\n`;
-            });
+            try {
+                // Generar un número de orden aleatorio único (Ej: PEQ-893241)
+                const numeroOrden = "PEQ-" + Math.floor(100000 + Math.random() * 900000);
+                
+                let total = 0;
+                let itemsParaBD = [];
+                
+                let mensaje = `¡Hola Peque Elektro! Quisiera realizar el siguiente pedido (*Orden #${numeroOrden}*):\n\n`;
 
-            mensaje += `\n*Total a pagar: $${total.toLocaleString('es-AR')}*`;
-            
-            const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
-            window.open(url, "_blank");
+                carrito.forEach((item, index) => {
+                    const subtotal = Number(item.precio || 0) * item.cantidad;
+                    total += subtotal;
+                    mensaje += `${index + 1}. *${item.nombre}* (x${item.cantidad}) - $${subtotal.toLocaleString('es-AR')}\n`;
+                    
+                    // Preparamos los items limpios para guardarlos en la base de datos
+                    itemsParaBD.push({
+                        id: item.id,
+                        nombre: item.nombre,
+                        precio: Number(item.precio || 0),
+                        cantidad: item.cantidad,
+                        subtotal: subtotal
+                    });
+                });
+
+                mensaje += `\n*Total a pagar: $${total.toLocaleString('es-AR')}*`;
+
+                // 3. GUARDAMOS EN FIREBASE (Colección "ordenes")
+                await addDoc(collection(db, "ordenes"), {
+                    numero: numeroOrden,
+                    items: itemsParaBD,
+                    total: total,
+                    fecha: serverTimestamp(),
+                    estado: "Pendiente" // Estado inicial para que lo veas en el admin
+                });
+
+                // 4. ABRIMOS WHATSAPP
+                const telefono = configGlobal["general"]?.whatsapp || "5491134970171"; // Reemplazar por defecto si no hay conf
+                const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
+                window.open(url, "_blank");
+
+                // 5. Opcional: Vaciamos el carrito tras generar la orden exitosamente
+                carrito = [];
+                renderizarCarrito();
+
+            } catch (error) {
+                console.error("Error al guardar la orden en Firebase:", error);
+                alert("Hubo un problema al procesar tu pedido. Por favor intenta de nuevo.");
+            } finally {
+                // Restauramos el botón a su estado normal
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
         });
 
         // Modal Detalle de Producto
