@@ -3,361 +3,571 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peque Elektro</title>
+    <title>Peque Elektro - Tu solución integral</title>
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #ff6b00;
-            --secondary-color: #222;
-            --bg-color: #f9f9f9;
-            --card-bg: #fff;
-            --text-color: #333;
-        }
-        * {
-            box-sizing: border-box;
+        body {
+            background-color: #0f172a;
+            color: #f1f5f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
         }
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
+
+        /* BANNER HEADER */
+        .banner-header {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            background: #020617;
+            overflow: hidden;
+            border-bottom: 1px solid #1e293b;
         }
-        header {
-            background-color: var(--secondary-color);
-            color: #fff;
-            padding: 20px;
+        .banner-img {
+            width: 100%;
+            height: auto;
+            max-height: 250px;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* HERO SLOGAN & ENVÍOS */
+        .hero-slogan {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-bottom: 1px solid #334155;
+            padding: 25px 20px;
+        }
+        .slogan-container {
+            max-width: 1200px;
+            margin: 0 auto;
             text-align: center;
         }
-        header h1 {
-            color: var(--primary-color);
-            font-size: 2rem;
-            margin-bottom: 5px;
+        .slogan-container h2 {
+            color: #38bdf8;
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 8px;
         }
-        .container {
+        .slogan-intro {
+            color: #94a3b8;
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+        .slogan-badge {
+            color: #38bdf8;
+            font-weight: bold;
+            font-size: 14px;
+            background: rgba(56, 189, 248, 0.1);
+            padding: 8px 14px;
+            border-radius: 8px;
+            display: inline-block;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        /* LAYOUT PRINCIPAL DE DOS COLUMNAS (SIDEBAR + CONTENIDO) */
+        .shop-layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 25px;
             max-width: 1200px;
             margin: 30px auto;
             padding: 0 20px;
         }
-        .catalog {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        .product-card {
-            background: var(--card-bg);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            cursor: pointer;
-            transition: transform 0.2s;
-            display: flex;
-            flex-direction: column;
-        }
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
-        .product-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        .product-card-body {
-            padding: 15px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .product-card-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .product-card-price {
-            color: var(--primary-color);
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        .btn-ver {
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .btn-ver:hover {
-            background-color: var(--primary-color);
-        }
-
-        /* Modal de Detalle de Producto */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-        .modal-content {
-            background: white;
-            border-radius: 8px;
-            max-width: 900px;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            padding: 30px;
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        @media(max-width: 768px) {
-            .modal-content {
+        @media (max-width: 768px) {
+            .shop-layout {
                 grid-template-columns: 1fr;
             }
         }
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #666;
+
+        /* BARRA LATERAL DE CATEGORÍAS Y SUBCATEGORÍAS */
+        .sidebar {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 20px;
+            height: fit-content;
         }
-        .modal-left {
+        .sidebar h3 {
+            color: #38bdf8;
+            font-size: 16px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .cat-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .cat-item {
+            margin-bottom: 10px;
+        }
+        .cat-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+            background: #0f172a;
+            border: 1px solid #334155;
+        }
+        .cat-link:hover, .cat-link.active {
+            background: #0284c7;
+            color: white;
+            border-color: #0284c7;
+        }
+        .subcat-list {
+            list-style: none;
+            padding-left: 15px;
+            margin: 6px 0 0 0;
+            border-left: 2px solid #334155;
+        }
+        .subcat-item {
+            margin-top: 4px;
+        }
+        .subcat-link {
+            display: block;
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .subcat-link:hover, .subcat-link.active {
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.08);
+        }
+
+        /* CONTENIDO DERECHO (BUSCADOR + PRODUCTOS) */
+        .content-area {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
+        }
+        .search-wrapper {
+            position: relative;
+        }
+        .search-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+        .search-wrapper input {
+            width: 100%;
+            padding: 14px 14px 14px 45px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            background: #1e293b;
+            color: white;
+            font-size: 15px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .search-wrapper input:focus {
+            border-color: #38bdf8;
+        }
+
+        .section-title {
+            color: #f8fafc;
+            font-size: 20px;
+            margin: 0 0 15px 0;
+            border-left: 4px solid #38bdf8;
+            padding-left: 10px;
+        }
+
+        /* GRID DE PRODUCTOS */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 20px;
+        }
+        .product-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            border-color: #38bdf8;
+        }
+        .product-card img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            background: #0f172a;
+        }
+        .product-card h3 {
+            font-size: 15px;
+            margin: 0 0 8px 0;
+            color: #f8fafc;
+        }
+        .product-card .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #38bdf8;
+            margin: 0 0 12px 0;
+        }
+        .btn-detail {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        .btn-detail:hover {
+            background: #0369a1;
+        }
+
+        /* MODAL FULLSCREEN */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.85);
+            z-index: 2000;
+        }
+        .modal-content-fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #0f172a;
+            overflow-y: auto;
+            transform: translateX(-100%);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            box-sizing: border-box;
+        }
+        .modal-overlay.active .modal-content-fullscreen {
+            transform: translateX(0);
+        }
+        .fullscreen-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .modal-grid-large {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 25px;
+        }
+        @media (max-width: 768px) {
+            .modal-grid-large {
+                grid-template-columns: 1fr;
+            }
         }
         .modal-main-img {
             width: 100%;
             height: 350px;
             object-fit: cover;
-            border-radius: 6px;
-            cursor: zoom-in;
-            border: 1px solid #ddd;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            background: #1e293b;
         }
-        .modal-right {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        .modal-price {
-            font-size: 1.3rem;
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-        
-        /* DESCRIPCIÓN CON SEPARACIONES Y SALTOS DE LÍNEA */
-        .product-description-box {
-            white-space: pre-line;
-            color: #555;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            background: #f8f9fa;
-            padding: 12px;
-            border-radius: 6px;
-            border-left: 3px solid var(--primary-color);
-        }
-
-        .btn-agregar-pedido {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            margin-top: 5px;
-        }
-        .btn-agregar-pedido:hover {
-            opacity: 0.9;
-        }
-
-        /* MINIATURAS COLOCADAS DEBAJO DEL BOTÓN DE AGREGAR PEDIDO */
         .modal-thumbnails {
             display: flex;
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 15px;
             overflow-x: auto;
             padding-bottom: 5px;
         }
-        .modal-thumbnails img {
-            width: 70px;
-            height: 70px;
+        .modal-thumb {
+            width: 60px;
+            height: 60px;
             object-fit: cover;
-            border-radius: 4px;
+            border-radius: 6px;
+            border: 2px solid #334155;
             cursor: pointer;
-            border: 2px solid transparent;
-            transition: border-color 0.2s;
+            background: #1e293b;
         }
-        .modal-thumbnails img:hover, .modal-thumbnails img.active {
-            border-color: var(--primary-color);
+        .modal-thumb.active {
+            border-color: #38bdf8;
+        }
+        .product-description-box {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            color: #cbd5e1;
+            font-size: 15px;
+            line-height: 1.6;
+            white-space: pre-line;
         }
 
-        /* ZOOM LIGHTBOX EN PANTALLA COMPLETA */
-        .zoom-lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            cursor: zoom-out;
-        }
-        .zoom-lightbox img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border-radius: 4px;
-        }
-        .zoom-close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: white;
-            font-size: 2.5rem;
-            cursor: pointer;
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+            font-size: 14px;
+            border-top: 1px solid #1e293b;
+            background: #020617;
+            margin-top: 50px;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Peque Elektro</h1>
-        <p>Materiales eléctricos y tecnología</p>
+    <!-- BANNER HEADER -->
+    <header class="banner-header">
+        <img src="banner.jpg" alt="Peque Elektro Banner" class="banner-img" onerror="this.src='https://via.placeholder.com/1200x250/0f172a/38bdf8?text=Peque+Elektro'">
     </header>
 
-    <div class="container">
-        <div class="catalog" id="catalog">
-            <!-- Producto de Ejemplo -->
-            <div class="product-card" onclick="abrirModal('Kit de Herramientas Eléctricas Pro', '$45.000', 'Incluye taladro percutor, atornillador inalámbrico\ny maletín de transporte reforzado.\n\nIdeal para profesionales y uso hogareño.\n\nVoltaje: 220V', ['https://images.unsplash.com/photo-1504148455328-c376907d081c?w=600', 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=600', 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600'])">
-                <img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=600" alt="Producto">
-                <div class="product-card-body">
+    <!-- SLOGAN -->
+    <section class="hero-slogan">
+        <div class="slogan-container">
+            <h2 id="slogan-titulo">Peque Elektro: Tu solución integral.</h2>
+            <p id="slogan-intro" class="slogan-intro">Encuentra herramientas, repuestos y componentes de la mejor calidad.</p>
+            <div>
+                <span id="slogan-badge-elem" class="slogan-badge">¡Envíos a todo el país!</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- LAYOUT PRINCIPAL: SIDEBAR + PRODUCTOS -->
+    <div class="shop-layout">
+        <!-- BARRA LATERAL DE CATEGORÍAS Y SUBCATEGORÍAS -->
+        <aside class="sidebar">
+            <h3><i class="fa-solid fa-list"></i> Categorías</h3>
+            <ul class="cat-list" id="sidebar-categories">
+                <!-- Se cargan dinámicamente o por código -->
+                <li><a class="cat-link active" onclick="filtrarCategoria('todos')">Todas las Categorías</a></li>
+            </ul>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="content-area">
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="search-input" placeholder="Buscar productos por nombre...">
+            </div>
+
+            <h2 class="section-title" id="current-category-title">Catálogo de Productos</h2>
+            
+            <div class="products-grid" id="products-grid">
+                <!-- Renderizado dinámico desde Firebase -->
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL DE DETALLE -->
+    <div class="modal-overlay" id="product-modal">
+        <div class="modal-content-fullscreen">
+            <div class="fullscreen-container">
+                <div style="display: flex; justify-content: flex-end;">
+                    <button onclick="cerrarModal()" style="background: #ef4444; color: white; border: none; font-size: 18px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <div class="modal-grid-large">
                     <div>
-                        <div class="product-card-title">Kit de Herramientas Eléctricas Pro</div>
-                        <div class="product-card-price">$45.000</div>
+                        <img id="modal-img" src="" alt="Producto" class="modal-main-img">
+                        <div class="modal-thumbnails" id="modal-thumbnails"></div>
                     </div>
-                    <button class="btn-ver">Ver Producto</button>
+                    <div>
+                        <h2 id="modal-title" style="color: #f8fafc; margin-top: 0;"></h2>
+                        <div id="modal-price" style="font-size: 26px; font-weight: bold; color: #38bdf8; margin-bottom: 20px;"></div>
+                        
+                        <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 20px;">
+                            <button onclick="cambiarCantidad(-1)" style="background: #1e293b; color: white; border: 1px solid #334155; padding: 8px 16px; border-radius: 6px; cursor: pointer;">-</button>
+                            <span id="modal-qty" style="font-size: 18px; font-weight: bold; color: white;">1</span>
+                            <button onclick="cambiarCantidad(1)" style="background: #1e293b; color: white; border: 1px solid #334155; padding: 8px 16px; border-radius: 6px; cursor: pointer;">+</button>
+                        </div>
+
+                        <button style="background: #22c55e; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 16px;">
+                            <i class="fa-solid fa-cart-shopping"></i> Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+
+                <div class="product-description-box">
+                    <h3 style="color: #38bdf8; margin-top: 0;">Descripción:</h3>
+                    <div id="modal-description">Cargando descripción...</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal de Detalle -->
-    <div class="modal" id="productModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="cerrarModal()">&times;</span>
-            
-            <!-- Columna Izquierda: Imagen Principal -->
-            <div class="modal-left">
-                <img id="modalMainImg" class="modal-main-img" src="" alt="Imagen Principal" onclick="abrirZoom(this.src)">
-            </div>
+    <footer>
+        <p>&copy; 2026 Peque Elektro - Todos los derechos reservados.</p>
+    </footer>
 
-            <!-- Columna Derecha: Información, Descripción, Botón y Miniaturas -->
-            <div class="modal-right">
-                <div class="modal-title" id="modalTitle">Título del Producto</div>
-                <div class="modal-price" id="modalPrice">$0</div>
-                
-                <!-- Descripción con separación -->
-                <div class="product-description-box" id="modalDesc">
-                    Descripción del producto.
-                </div>
+    <!-- FIREBASE & LOGICA -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-                <!-- Botón Agregar Pedido -->
-                <button class="btn-agregar-pedido" onclick="agregarPedido()">Agregar Pedido</button>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
+            authDomain: "peque-elektro.firebaseapp.com",
+            projectId: "peque-elektro",
+            storageBucket: "peque-elektro.firebasestorage.app",
+            messagingSenderId: "873169424486",
+            appId: "1:873169424486:web:e9f77cb2052aa06b3b9da7"
+        };
 
-                <!-- Miniaturas (Ubicadas DEBAJO del botón de agregar pedido) -->
-                <div class="modal-thumbnails" id="modalThumbnails"></div>
-            </div>
-        </div>
-    </div>
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-    <!-- Lightbox de Pantalla Completa -->
-    <div class="zoom-lightbox" id="zoomLightbox" onclick="cerrarZoom()">
-        <span class="zoom-close">&times;</span>
-        <img id="zoomImg" src="" alt="Zoom Imagen">
-    </div>
+        let productosGlobal = [];
+        let categoriaSeleccionada = "todos";
+        let subcategoriaSeleccionada = "";
 
-    <script>
-        function abrirModal(titulo, precio, descripcion, imagenes) {
-            document.getElementById('modalTitle').innerText = titulo;
-            document.getElementById('modalPrice').innerText = precio;
-            document.getElementById('modalDesc').innerText = descripcion;
-
-            const mainImg = document.getElementById('modalMainImg');
-            const thumbnailsContainer = document.getElementById('modalThumbnails');
-            
-            thumbnailsContainer.innerHTML = '';
-
-            if (imagenes && imagenes.length > 0) {
-                mainImg.src = imagenes[0];
-                
-                imagenes.forEach((imgSrc, index) => {
-                    const thumb = document.createElement('img');
-                    thumb.src = imgSrc;
-                    if (index === 0) thumb.classList.add('active');
-                    
-                    thumb.onclick = function() {
-                        mainImg.src = imgSrc;
-                        document.querySelectorAll('.modal-thumbnails img').forEach(t => t.classList.remove('active'));
-                        thumb.classList.add('active');
-                    };
-                    
-                    thumbnailsContainer.appendChild(thumb);
+        async function cargarDatos() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "productos"));
+                productosGlobal = [];
+                querySnapshot.forEach((docSnap) => {
+                    productosGlobal.push({ id: docSnap.id, ...docSnap.data() });
                 });
-            }
-
-            document.getElementById('productModal').style.display = 'flex';
-        }
-
-        function cerrarModal() {
-            document.getElementById('productModal').style.display = 'none';
-        }
-
-        function abrirZoom(src) {
-            const zoomLightbox = document.getElementById('zoomLightbox');
-            const zoomImg = document.getElementById('zoomImg');
-            zoomImg.src = src;
-            zoomLightbox.style.display = 'flex';
-        }
-
-        function cerrarZoom() {
-            document.getElementById('zoomLightbox').style.display = 'none';
-        }
-
-        function agregarPedido() {
-            alert('¡Pedido agregado con éxito!');
-            cerrarModal();
-        }
-
-        window.onclick = function(event) {
-            const modal = document.getElementById('productModal');
-            if (event.target === modal) {
-                cerrarModal();
+                generarMenuLateral();
+                renderizarProductos(productosGlobal);
+            } catch (err) {
+                console.error("Error al cargar productos:", err);
             }
         }
+
+        function generarMenuLateral() {
+            const sidebarList = document.getElementById("sidebar-categories");
+            // Estructurar categorías y subcategorías únicas desde los productos
+            const categoriasMap = {};
+            productosGlobal.forEach(p => {
+                const cat = p.categoria || "Sin categoría";
+                const subcat = p.subcategoria || null;
+                if (!categoriasMap[cat]) categoriasMap[cat] = new Set();
+                if (subcat) categoriasMap[cat].add(subcat);
+            });
+
+            let html = `<li><a class="cat-link ${categoriaSeleccionada === 'todos' ? 'active' : ''}" onclick="filtrarCategoria('todos')"><span>Todas las Categorías</span></a></li>`;
+            
+            for (const [cat, subcats] of Object.entries(categoriasMap)) {
+                html += `
+                    <li class="cat-item">
+                        <a class="cat-link ${categoriaSeleccionada === cat ? 'active' : ''}" onclick="filtrarCategoria('${cat}')">
+                            <span>${cat}</span>
+                        </a>
+                `;
+                if (subcats.size > 0) {
+                    html += `<ul class="subcat-list">`;
+                    subcats.forEach(sub => {
+                        html += `<li class="subcat-item"><a class="subcat-link" onclick="filtrarSubcategoria('${cat}', '${sub}')">${sub}</a></li>`;
+                    });
+                    html += `</ul>`;
+                }
+                html += `</li>`;
+            }
+            sidebarList.innerHTML = html;
+        }
+
+        window.filtrarCategoria = function(cat) {
+            categoriaSeleccionada = cat;
+            subcategoriaSeleccionada = "";
+            document.getElementById("current-category-title").innerText = cat === 'todos' ? 'Catálogo de Productos' : cat;
+            
+            let filtrados = cat === 'todos' ? productosGlobal : productosGlobal.filter(p => p.categoria === cat);
+            renderizarProductos(filtrados);
+            generarMenuLateral();
+        };
+
+        window.filtrarSubcategoria = function(cat, sub) {
+            categoriaSeleccionada = cat;
+            subcategoriaSeleccionada = sub;
+            document.getElementById("current-category-title").innerText = `${cat} > ${sub}`;
+            
+            let filtrados = productosGlobal.filter(p => p.categoria === cat && p.subcategoria === sub);
+            renderizarProductos(filtrados);
+        };
+
+        function renderizarProductos(productos) {
+            const grid = document.getElementById("products-grid");
+            grid.innerHTML = "";
+            if (productos.length === 0) {
+                grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #94a3b8;'>No se encontraron productos en esta sección.</p>";
+                return;
+            }
+            productos.forEach(prod => {
+                const imgUrl = (prod.imagenes && prod.imagenes.length > 0) ? prod.imagenes[0] : 'https://via.placeholder.com/200';
+                const card = document.createElement("div");
+                card.className = "product-card";
+                card.innerHTML = `
+                    <img src="${imgUrl}" alt="${prod.nombre || 'Producto'}">
+                    <h3>${prod.nombre || 'Sin nombre'}</h3>
+                    <p class="price">$${prod.precio || 0}</p>
+                    <button class="btn-detail" onclick="verDetalleProducto('${prod.id}')">Ver Detalle</button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        window.verDetalleProducto = function(id) {
+            const prod = productosGlobal.find(p => p.id === id);
+            if (!prod) return;
+            document.getElementById("modal-title").innerText = prod.nombre || '';
+            document.getElementById("modal-price").innerText = `$${prod.precio || 0}`;
+            document.getElementById("modal-description").innerText = prod.descripcion || 'Sin descripción disponible.';
+
+            const imagenes = (prod.imagenes && prod.imagenes.length > 0) ? prod.imagenes : ['https://via.placeholder.com/400'];
+            document.getElementById("modal-img").src = imagenes[0];
+
+            const thumbs = document.getElementById("modal-thumbnails");
+            thumbs.innerHTML = "";
+            imagenes.forEach((img, idx) => {
+                thumbs.innerHTML += `<img src="${img}" class="modal-thumb ${idx === 0 ? 'active' : ''}" onclick="document.getElementById('modal-img').src='${img}'">`;
+            });
+
+            const modal = document.getElementById("product-modal");
+            modal.style.display = "block";
+            setTimeout(() => modal.classList.add("active"), 10);
+        };
+
+        window.cerrarModal = function() {
+            const modal = document.getElementById("product-modal");
+            modal.classList.remove("active");
+            setTimeout(() => modal.style.display = "none", 350);
+        };
+
+        // Buscador en tiempo real
+        document.getElementById("search-input").addEventListener("input", (e) => {
+            const texto = e.target.value.toLowerCase();
+            const filtrados = productosGlobal.filter(p => (p.nombre && p.nombre.toLowerCase().includes(texto)) || (p.descripcion && p.descripcion.toLowerCase().includes(texto)));
+            renderizarProductos(filtrados);
+        });
+
+        cargarDatos();
     </script>
 </body>
 </html>
