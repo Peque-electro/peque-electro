@@ -11,38 +11,54 @@
     body { margin: 0; font-family: Arial, sans-serif; background-color: #0f172a; color: white; }
     * { box-sizing: border-box; }
 
-    /* Barra Superior Fija (Logo + Info de Envíos Compartida) */
+    /* Barra Superior Fija (Altura aproximada de 10cm / 100px+, logo, slogan e info de envíos compartidos) */
     .top-bar {
       position: sticky;
       top: 0;
       z-index: 1000;
       background: #1e293b;
       border-bottom: 2px solid #0284c7;
-      padding: 8px 20px;
+      padding: 12px 25px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-      gap: 20px;
+      min-height: 95px;
     }
     .top-brand-area {
       display: flex;
       align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
+      gap: 25px;
     }
     .banner-mini {
-      height: 50px;
+      height: 70px;
       object-fit: contain;
+    }
+    .top-center-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .top-center-title {
+      font-size: 17px;
+      font-weight: bold;
+      color: #38bdf8;
+      margin: 0 0 2px 0;
+      text-transform: lowercase;
+    }
+    .top-center-subtitle {
+      font-size: 12px;
+      color: #94a3b8;
+      margin: 0;
     }
     .top-envios-info {
       font-size: 12px;
       color: #94a3b8;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 3px;
       border-left: 1px solid #334155;
-      padding-left: 15px;
+      padding-left: 20px;
     }
     .top-envios-info span {
       color: #cbd5e1;
@@ -67,25 +83,25 @@
     .btn-verde { background: #22c55e; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
     .btn-verde:hover { background: #16a34a; }
 
-    /* Layout Estilo Mercado Libre */
+    /* Layout Pantalla Completa (Sin espacios negros sobrantes) */
     .shop-container {
       display: flex;
       gap: 20px;
-      padding: 20px;
-      max-width: 1600px;
-      margin: 0 auto;
+      padding: 15px 20px;
+      width: 100%;
+      max-width: 100%;
     }
     
     /* Barra Lateral Izquierda */
     .sidebar-left {
-      width: 300px;
+      width: 280px;
       flex-shrink: 0;
       background: #1e293b;
       padding: 20px;
       border-radius: 12px;
       height: fit-content;
       position: sticky;
-      top: 90px;
+      top: 115px;
       border: 1px solid #334155;
     }
 
@@ -106,9 +122,9 @@
     .subcategory-list li { color: #94a3b8; padding: 6px 0; cursor: pointer; font-size: 14px; }
     .subcategory-list li:hover { color: white; }
 
-    /* Resumen de Pedido Lateral con controles de cantidad */
+    /* Resumen de Pedido Lateral */
     .resumen-pedido { margin-top: 30px; padding-top: 20px; border-top: 1px solid #334155; }
-    .lista-carrito { list-style: none; padding: 0; max-height: 250px; overflow-y: auto; font-size: 13px; }
+    .lista-carrito { list-style: none; padding: 0; max-height: 200px; overflow-y: auto; font-size: 13px; }
     .lista-carrito li { 
       display: flex; 
       justify-content: space-between; 
@@ -137,29 +153,51 @@
       font-size: 12px;
     }
 
-    /* Grilla de Productos */
-    .main-content { flex-grow: 1; }
+    /* Grilla de Productos (5 de ancho por 6 de largo) */
+    .main-content { flex-grow: 1; min-width: 0; }
     .products-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(6, auto);
       gap: 15px;
     }
     .product-card {
       background: #1e293b;
       border: 1px solid #334155;
       border-radius: 10px;
-      padding: 15px;
+      padding: 12px;
       text-align: center;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
-    .product-card img { width: 100%; height: 180px; object-fit: contain; border-radius: 8px; background: white; margin-bottom: 10px; }
-    .product-card h3 { font-size: 14px; margin: 5px 0; color: #e2e8f0; height: 40px; overflow: hidden; }
-    .product-card .price { font-size: 18px; color: #22c55e; font-weight: bold; margin-bottom: 10px; }
+    .product-card img { width: 100%; height: 150px; object-fit: contain; border-radius: 8px; background: white; margin-bottom: 8px; }
+    .product-card h3 { font-size: 13px; margin: 4px 0; color: #e2e8f0; height: 36px; overflow: hidden; }
+    .product-card .price { font-size: 16px; color: #22c55e; font-weight: bold; margin-bottom: 8px; }
     
     .product-actions { display: flex; gap: 5px; }
-    .product-actions button { flex: 1; padding: 8px; font-size: 13px; }
+    .product-actions button { flex: 1; padding: 6px; font-size: 12px; }
+
+    /* Paginación */
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin: 25px 0;
+    }
+    .pagination-container button {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #334155;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .pagination-container button:hover:not(:disabled) { background: #0284c7; color: white; }
+    .pagination-container button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .pagination-container span { color: #cbd5e1; font-weight: bold; }
 
     /* Toast Flotante */
     #toast-cart {
@@ -231,7 +269,6 @@
       .modal-grid-top { grid-template-columns: 1fr; }
     }
 
-    /* Contenedor con Zoom para la Foto */
     .modal-img-container {
       width: 100%;
       max-height: 380px;
@@ -319,7 +356,6 @@
     }
     .btn-add-carrito-modal:hover { background: #16a34a; }
 
-    /* Descripción ocupando todo el ancho inferior */
     .modal-descripcion-full {
       margin-top: 25px;
       border-top: 1px solid #334155;
@@ -337,28 +373,31 @@
       border: 1px solid #334155;
     }
 
-    /* Diseño Adaptativo (Responsive) */
     @media (max-width: 1400px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
     @media (max-width: 1100px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 850px) {
       .shop-container { flex-direction: column; }
       .sidebar-left { width: 100%; position: static; }
       .products-grid { grid-template-columns: repeat(2, 1fr); }
-      .top-envios-info { display: none; } /* Ocultar info de envíos en barra si es muy chico en celu */
+      .top-envios-info { display: none; }
     }
     @media (max-width: 500px) { .products-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
-  <!-- BARRA FIJA SUPERIOR CON LOGO E INFO DE ENVÍOS -->
+  <!-- BARRA FIJA SUPERIOR AMPLIADA (LOGO, SLOGAN E INFO DE ENVÍOS) -->
   <header class="top-bar">
     <div class="top-brand-area">
       <img src="logo.jpg" alt="Peque Elektro" class="banner-mini">
-      <div class="top-envios-info" id="top-envios-container">
-        <span>📍 <strong style="color:#38bdf8;">Zonales:</strong> <span id="top-envio-local">Cargando...</span></span>
-        <span>📦 <strong style="color:#38bdf8;">País:</strong> <span id="top-envio-pais">Cargando...</span></span>
+      <div class="top-center-info">
+        <h1 class="top-center-title">peque elektro: tu solución integral.</h1>
+        <p class="top-center-subtitle">Simplificamos tu búsqueda ofreciéndote variedad y calidad en un solo lugar.</p>
       </div>
+    </div>
+    <div class="top-envios-info" id="top-envios-container">
+      <span>📍 <strong style="color:#38bdf8;">Zonales:</strong> <span id="top-envio-local">Cargando...</span></span>
+      <span>📦 <strong style="color:#38bdf8;">País:</strong> <span id="top-envio-pais">Cargando...</span></span>
     </div>
     <div class="header-actions">
       <div class="cart-indicator">
@@ -378,9 +417,7 @@
     <!-- BARRA LATERAL IZQUIERDA -->
     <aside class="sidebar-left">
       <h3 style="color: white; margin-top: 0;"><i class="fa-solid fa-list"></i> Categorías</h3>
-      <div id="categories-tree">
-        <!-- Generado dinámicamente -->
-      </div>
+      <div id="categories-tree"></div>
 
       <!-- RESUMEN DE TU PEDIDO -->
       <div class="resumen-pedido">
@@ -399,18 +436,15 @@
 
     <!-- ÁREA PRINCIPAL DE PRODUCTOS -->
     <main class="main-content">
-      
-      <!-- SECCIÓN SLOGAN / PRESENTACIÓN -->
-      <section id="seccion-slogan" style="background: #1e293b; border: 1px solid #334155; padding: 20px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
-        <h2 id="slogan-titulo" style="color: #38bdf8; margin: 0 0 8px 0; font-size: 20px;">Cargando...</h2>
-        <p id="slogan-intro" style="color: #94a3b8; margin: 0 0 10px 0; font-size: 14px;"></p>
-        <div id="slogan-items" style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; font-size: 13px; color: #cbd5e1;"></div>
-      </section>
+      <input type="text" id="buscar-input" placeholder="Buscar productos..." style="width: 100%; padding: 14px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: white; margin-bottom: 20px; font-size: 15px;">
 
-      <input type="text" id="buscar-input" placeholder="Buscar productos..." style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: white; margin-bottom: 20px; font-size: 16px;">
+      <div id="grid-productos" class="products-grid"></div>
 
-      <div id="grid-productos" class="products-grid">
-        <!-- Productos generados dinámicamente -->
+      <!-- CONTROLES DE PAGINACIÓN -->
+      <div class="pagination-container" id="pagination-controls">
+        <button id="btn-prev" onclick="cambiarPagina(-1)"><i class="fa-solid fa-chevron-left"></i> Anterior</button>
+        <span id="page-indicator">Página 1 de 1</span>
+        <button id="btn-next" onclick="cambiarPagina(1)">Siguiente <i class="fa-solid fa-chevron-right"></i></button>
       </div>
 
       <!-- SECCIÓN DE COMENTARIOS (ANTI-BOT) -->
@@ -421,7 +455,6 @@
           <input type="text" id="resena-nombre" placeholder="Tu nombre" required style="padding: 12px; border-radius: 6px; background: #0f172a; color: white; border: 1px solid #334155;">
           <textarea id="resena-texto" placeholder="Escribe tu consulta..." required style="padding: 12px; border-radius: 6px; background: #0f172a; color: white; border: 1px solid #334155; height: 80px;"></textarea>
           
-          <!-- ANTI-BOT -->
           <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 6px; display: flex; align-items: center; gap: 10px;">
             <input type="checkbox" id="chk-captcha" style="width: 22px; height: 22px; cursor: pointer;">
             <label for="chk-captcha" style="color: white; cursor: pointer; font-weight: bold;">No soy un robot 🤖</label>
@@ -441,7 +474,6 @@
       <button class="btn-cerrar-modal" onclick="cerrarModal()"><i class="fa-solid fa-xmark"></i></button>
       
       <div class="modal-grid-top">
-        <!-- COLUMNA IZQUIERDA: IMAGEN CON ZOOM Y MINIATURAS -->
         <div>
           <div class="modal-img-container" id="zoom-container">
             <img id="modal-img" class="modal-imagen-principal" src="" alt="Imagen principal">
@@ -449,7 +481,6 @@
           <div id="modal-miniaturas-container" class="modal-miniaturas"></div>
         </div>
 
-        <!-- COLUMNA DERECHA: TÍTULO, PRECIO Y BOTÓN DE CANTIDAD/CARRITO -->
         <div>
           <h2 id="modal-titulo" style="color: #38bdf8; margin-top: 0; font-size: 24px;"></h2>
           <div id="modal-precio" style="color: #22c55e; font-size: 28px; font-weight: bold; margin-bottom: 20px;"></div>
@@ -467,7 +498,6 @@
         </div>
       </div>
 
-      <!-- DESCRIPCIÓN Y FICHA TÉCNICA A ANCHO COMPLETO DEBAJO -->
       <div class="modal-descripcion-full">
         <strong style="color: #38bdf8; display: block; margin-bottom: 8px; font-size: 16px;">Descripción y Ficha Técnica:</strong>
         <div id="modal-descripcion" class="modal-descripcion-texto"></div>
@@ -492,7 +522,10 @@
     const db = getFirestore(app);
 
     let productos = [];
+    let productosFiltrados = [];
     let carrito = [];
+    let paginaActual = 1;
+    const productosPorPagina = 30; // 5 de ancho x 6 de largo
     let productoActualModalId = null;
     let cantidadModalActual = 1;
     const numeroWhatsapp = "5491134970171";
@@ -501,25 +534,14 @@
       cargarConfiguracion();
       const snap = await getDocs(collection(db, "productos"));
       snap.forEach(d => productos.push({ id: d.id, ...d.data() }));
-      renderProductos(productos);
+      productosFiltrados = [...productos];
+      renderizarPagina();
       renderCategorias();
       cargarResenas();
     }
 
     async function cargarConfiguracion() {
       try {
-        const snapSlogan = await getDoc(doc(db, "configuracion", "slogan"));
-        if (snapSlogan.exists()) {
-          const d = snapSlogan.data();
-          document.getElementById("slogan-titulo").textContent = d.titulo || "";
-          document.getElementById("slogan-intro").textContent = d.intro || "";
-          let itemsHtml = "";
-          if (d.item1) itemsHtml += `<span><i class="fa-solid fa-check" style="color:#38bdf8;"></i> ${d.item1}</span>`;
-          if (d.item2) itemsHtml += `<span><i class="fa-solid fa-check" style="color:#38bdf8;"></i> ${d.item2}</span>`;
-          if (d.item3) itemsHtml += `<span><i class="fa-solid fa-check" style="color:#38bdf8;"></i> ${d.item3}</span>`;
-          document.getElementById("slogan-items").innerHTML = itemsHtml;
-        }
-
         const snapEnvios = await getDoc(doc(db, "configuracion", "envios"));
         if (snapEnvios.exists()) {
           const d = snapEnvios.data();
@@ -529,9 +551,13 @@
       } catch (err) { console.error(err); }
     }
 
-    function renderProductos(lista) {
+    function renderizarPagina() {
       const grid = document.getElementById("grid-productos");
-      grid.innerHTML = lista.map(p => {
+      const inicio = (paginaActual - 1) * productosPorPagina;
+      const fin = inicio + productosPorPagina;
+      const productosPagina = productosFiltrados.slice(inicio, fin);
+
+      grid.innerHTML = productosPagina.map(p => {
         const img = (p.imagenes && p.imagenes[0]) || p.imagen || 'https://via.placeholder.com/200';
         return `
           <div class="product-card">
@@ -545,7 +571,25 @@
           </div>
         `;
       }).join('');
+
+      actualizarPaginacionUI();
     }
+
+    function actualizarPaginacionUI() {
+      const totalPaginas = Math.ceil(productosFiltrados.length / productosPorPagina) || 1;
+      document.getElementById("page-indicator").textContent = `Página ${paginaActual} de ${totalPaginas}`;
+      document.getElementById("btn-prev").disabled = paginaActual === 1;
+      document.getElementById("btn-next").disabled = paginaActual >= totalPaginas;
+    }
+
+    window.cambiarPagina = (dir) => {
+      const totalPaginas = Math.ceil(productosFiltrados.length / productosPorPagina);
+      paginaActual += dir;
+      if (paginaActual < 1) paginaActual = 1;
+      if (paginaActual > totalPaginas) paginaActual = totalPaginas;
+      renderizarPagina();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     function renderCategorias() {
       const container = document.getElementById("categories-tree");
@@ -582,12 +626,19 @@
     };
 
     window.filtrarCat = (cat) => {
-      if (!cat) return renderProductos(productos);
-      renderProductos(productos.filter(p => p.categoria === cat));
+      paginaActual = 1;
+      if (!cat) {
+        productosFiltrados = [...productos];
+      } else {
+        productosFiltrados = productos.filter(p => p.categoria === cat);
+      }
+      renderizarPagina();
     };
 
     window.filtrarSubcat = (cat, sub) => {
-      renderProductos(productos.filter(p => p.categoria === cat && p.subcategoria === sub));
+      paginaActual = 1;
+      productosFiltrados = productos.filter(p => p.categoria === cat && p.subcategoria === sub);
+      renderizarPagina();
     };
 
     window.agregarAlCarrito = (id, cantidad = 1) => {
@@ -716,7 +767,6 @@
       elementoMiniatura.classList.add("activa");
     };
 
-    // Funcionalidad de Zoom interactivo en la foto principal del modal
     const zoomContainer = document.getElementById("zoom-container");
     const modalImg = document.getElementById("modal-img");
 
@@ -788,8 +838,9 @@
 
     document.getElementById("buscar-input").addEventListener("input", (e) => {
       const txt = e.target.value.toLowerCase();
-      const filtrados = productos.filter(p => p.nombre.toLowerCase().includes(txt));
-      renderProductos(filtrados);
+      paginaActual = 1;
+      productosFiltrados = productos.filter(p => p.nombre.toLowerCase().includes(txt));
+      renderizarPagina();
     });
 
     init();
