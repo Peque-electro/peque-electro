@@ -309,7 +309,7 @@
     }
 
     // ==============================================
-    // GESTIÓN DE PEDIDOS - CORREGIDO PARA LEER AMBAS ESTRUCTURAS
+    // GESTIÓN DE PEDIDOS - LEE LA ESTRUCTURA DE LA TIENDA
     // ==============================================
     window.cargarPedidos = async () => {
       const contenedor = document.getElementById("lista-pedidos");
@@ -332,13 +332,13 @@
           const estadoActual = ped.estado || "Pendiente";
           const claseBadge = estadoActual === "En Proceso" ? "estado-Proceso" : `estado-${estadoActual}`;
           
-          // ✅ LEE TANTO LA ESTRUCTURA ANTIGUA COMO LA NUEVA
+          // ✅ LEE LA ESTRUCTURA QUE GUARDA LA TIENDA
           const nombreCliente = ped.nombre || (ped.cliente?.nombre) || "No especificado";
           const telCliente = ped.telefono || (ped.cliente?.telefono) || "No especificado";
           const dirCliente = ped.direccion || (ped.cliente?.direccion) || "No especificada";
           const notasCliente = ped.notas || (ped.cliente?.notas) || "";
           
-          // ✅ LEE TANTO "productos" COMO "items"
+          // ✅ LEE "productos" (que es lo que guarda la tienda)
           const itemsPedido = ped.productos || ped.items || [];
           
           let itemsList = itemsPedido.map((item, idx) => `
