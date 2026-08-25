@@ -6,7 +6,6 @@
   <title>Admin - Peque Elektro</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* VARIABLES Y RESETEO */
     :root {
       --bg-dark: #1e293b;
       --sidebar: #0f172a;
@@ -20,14 +19,9 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { display: flex; height: 100vh; background-color: #f1f5f9; color: #334155; }
 
-    /* SIDEBAR */
     .sidebar {
-      width: 260px;
-      background-color: var(--sidebar);
-      color: var(--text-light);
-      display: flex;
-      flex-direction: column;
-      padding: 20px 0;
+      width: 260px; background-color: var(--sidebar); color: var(--text-light);
+      display: flex; flex-direction: column; padding: 20px 0;
     }
     .logo-area { text-align: center; padding-bottom: 20px; border-bottom: 1px solid #334155; margin-bottom: 20px; }
     .logo-area h2 { color: #fff; font-size: 1.5rem; }
@@ -46,7 +40,6 @@
     .btn-logout { background-color: var(--danger); color: white; }
     .btn-pass { background-color: #475569; color: white; }
 
-    /* ÁREA PRINCIPAL */
     .main-content { flex-grow: 1; padding: 30px; overflow-y: auto; background-color: #f8fafc; }
     .section-content { display: none; animation: fadeIn 0.3s ease-in; }
     .section-content.active { display: block; }
@@ -59,26 +52,22 @@
       border-radius: 8px; font-size: 1rem; cursor: pointer; transition: 0.3s; font-weight: bold;
     }
     .btn-primary:hover { background-color: var(--accent-hover); }
-
     .btn-danger {
       background-color: var(--danger); color: white; padding: 8px 14px; border: none;
       border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.3s;
     }
     .btn-danger:hover { background-color: var(--danger-hover); }
 
-    /* TARJETAS Y TABLAS */
     .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 20px; }
     table { width: 100%; border-collapse: collapse; }
     th, td { padding: 15px; text-align: left; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
     th { background-color: #f1f5f9; color: #475569; font-weight: 600; }
     
-    /* ESTADO PEDIDOS */
     .select-estado { padding: 8px; border-radius: 5px; border: 1px solid #ccc; font-weight: bold; margin-bottom: 8px; display: block; }
     .select-estado.pendiente { background: #fef08a; color: #854d0e; }
     .select-estado.proceso { background: #bae6fd; color: #0369a1; }
     .select-estado.enviado { background: #bbf7d0; color: #166534; }
 
-    /* GRID PRODUCTOS */
     .search-bar { width: 100%; padding: 15px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 20px; font-size: 1rem; }
     .productos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
     .prod-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
@@ -88,36 +77,28 @@
     .btn-edit { background: var(--accent); color: white; padding: 8px; border: none; border-radius: 5px; cursor: pointer; flex: 1; }
     .btn-delete { background: var(--danger); color: white; padding: 8px; border: none; border-radius: 5px; cursor: pointer; flex: 1; }
 
-    /* FORMULARIOS CONFIGURACIÓN */
     .form-group { margin-bottom: 20px; }
     .form-group label { display: block; font-weight: bold; margin-bottom: 8px; color: #475569; }
     .form-group input, .form-group textarea, .form-group select {
       width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; background: #fff;
     }
-    .form-group textarea { resize: vertical; min-height: 100px; }
     .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
 
-    /* MODAL GENERAL A PANTALLA COMPLETA */
     .modal { display: none; position: fixed; inset: 0; background: white; z-index: 1000; overflow-y: auto; }
     .modal-content { background: white; width: 100vw; min-height: 100vh; padding: 40px; }
     .modal-inner-container { max-width: 1200px; margin: 0 auto; }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f1f5f9; padding-bottom: 20px; }
     .modal-header h2 { font-size: 2rem; color: var(--sidebar); }
-    .btn-close { background: none; border: none; font-size: 2.5rem; cursor: pointer; color: #64748b; transition: 0.2s; }
+    .btn-close { background: none; border: none; font-size: 2.5rem; cursor: pointer; color: #64748b; }
     .btn-close:hover { color: var(--danger); }
     
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
     .full-width { grid-column: 1 / -1; }
-    .full-width textarea { min-height: 200px; font-size: 1.1rem; }
-    .btn-guardar-prod { padding: 15px; font-size: 1.2rem; margin-top: 20px; }
-
-    /* TABLA DE ITEMS DENTRO DE EDICIÓN DE ORDEN */
     .ord-item-row { display: flex; gap: 15px; align-items: center; background: #f8fafc; padding: 12px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #e2e8f0; }
   </style>
 </head>
 <body>
 
-  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="logo-area">
       <h2>Peque <span>Elektro</span></h2>
@@ -131,15 +112,12 @@
     </nav>
 
     <div class="auth-area">
-      <button class="btn-auth btn-pass"><i class="fa-solid fa-key"></i> Cambiar Contraseña</button>
-      <button class="btn-auth btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</button>
+      <button class="btn-auth btn-pass" id="btn-cambiar-pass"><i class="fa-solid fa-key"></i> Cambiar Contraseña</button>
+      <button class="btn-auth btn-logout" id="btn-cerrar-sesion"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</button>
     </div>
   </aside>
 
-  <!-- CONTENIDO PRINCIPAL -->
   <main class="main-content">
-    
-    <!-- SECCIÓN ÓRDENES -->
     <section id="sec-ordenes" class="section-content active">
       <div class="header-section">
         <h1>Gestión de Órdenes</h1>
@@ -162,17 +140,15 @@
       </div>
     </section>
 
-    <!-- SECCIÓN PRODUCTOS -->
     <section id="sec-productos" class="section-content">
       <div class="header-section">
         <h1>Catálogo de Productos</h1>
         <button class="btn-primary" id="btn-nuevo-producto"><i class="fa-solid fa-plus"></i> Agregar Producto</button>
       </div>
-      <input type="text" id="buscar-admin" class="search-bar" placeholder="🔍 Buscar producto por nombre o categoría...">
+      <input type="text" id="buscar-admin" class="search-bar" placeholder="🔍 Buscar producto...">
       <div class="productos-grid" id="grid-productos-admin"></div>
     </section>
 
-    <!-- SECCIÓN CONFIGURACIÓN -->
     <section id="sec-config" class="section-content">
       <div class="header-section">
         <h1>Configuración de la Tienda</h1>
@@ -182,30 +158,28 @@
           <h3><i class="fa-solid fa-bullhorn"></i> Texto de Presentación</h3>
           <form id="form-slogan">
             <div class="form-group"><label>Título Principal</label><input type="text" id="slog-titulo"></div>
-            <div class="form-group"><label>Subtítulo / Introducción</label><textarea id="slog-intro" rows="2"></textarea></div>
+            <div class="form-group"><label>Subtítulo</label><textarea id="slog-intro" rows="2"></textarea></div>
             <div class="form-group"><label>Item Lista 1</label><input type="text" id="slog-item1"></div>
             <div class="form-group"><label>Item Lista 2</label><input type="text" id="slog-item2"></div>
             <div class="form-group"><label>Item Lista 3</label><input type="text" id="slog-item3"></div>
             <div class="form-group"><label>Texto del Botón/Badge</label><input type="text" id="slog-badge"></div>
-            <button type="submit" class="btn-primary"><i class="fa-solid fa-save"></i> Guardar Presentación</button>
+            <button type="submit" class="btn-primary"><i class="fa-solid fa-save"></i> Guardar</button>
           </form>
         </div>
 
         <div class="card">
-          <h3><i class="fa-solid fa-truck"></i> Configuración de Envíos</h3>
+          <h3><i class="fa-solid fa-truck"></i> Envíos</h3>
           <form id="form-envios">
-            <div class="form-group"><label>Puntos de Entrega / Zonas</label><input type="text" id="env-puntos"></div>
-            <div class="form-group"><label>Condiciones Correo / Interior</label><input type="text" id="env-correo"></div>
-            <div class="form-group"><label>Aclaraciones / Pagos</label><textarea id="env-condicion" rows="3"></textarea></div>
-            <button type="submit" class="btn-primary"><i class="fa-solid fa-save"></i> Guardar Envíos</button>
+            <div class="form-group"><label>Puntos de Entrega</label><input type="text" id="env-puntos"></div>
+            <div class="form-group"><label>Correo / Interior</label><input type="text" id="env-correo"></div>
+            <div class="form-group"><label>Condiciones</label><textarea id="env-condicion" rows="3"></textarea></div>
+            <button type="submit" class="btn-primary"><i class="fa-solid fa-save"></i> Guardar</button>
           </form>
         </div>
       </div>
     </section>
-
   </main>
 
-  <!-- MODAL DE PRODUCTO (PANTALLA COMPLETA) -->
   <div id="modal-producto" class="modal">
     <div class="modal-content">
       <div class="modal-inner-container">
@@ -216,60 +190,55 @@
         <form id="form-producto">
           <input type="hidden" id="prod-id">
           <div class="form-grid">
-            <div class="form-group"><label>Nombre del Producto</label><input type="text" id="prod-nombre" required></div>
+            <div class="form-group"><label>Nombre</label><input type="text" id="prod-nombre" required></div>
             <div class="form-group"><label>Precio ($)</label><input type="number" id="prod-precio" required></div>
             <div class="form-group"><label>Categoría</label><input type="text" id="prod-categoria" required></div>
-            <div class="form-group"><label>URL de la Imagen Principal</label><input type="text" id="prod-imagen" required></div>
-            <div class="form-group full-width"><label>Colores Disponibles (Separados por coma)</label><input type="text" id="prod-colores" placeholder="Ej: Negro, Blanco, Rojo"></div>
-            <div class="form-group full-width"><label>Descripción Completa</label><textarea id="prod-descripcion"></textarea></div>
+            <div class="form-group"><label>URL Imagen</label><input type="text" id="prod-imagen" required></div>
+            <div class="form-group full-width"><label>Colores (separados por coma)</label><input type="text" id="prod-colores"></div>
+            <div class="form-group full-width"><label>Descripción</label><textarea id="prod-descripcion"></textarea></div>
           </div>
-          <button type="submit" class="btn-primary full-width btn-guardar-prod"><i class="fa-solid fa-save"></i> Guardar Producto</button>
+          <button type="submit" class="btn-primary full-width" style="margin-top:20px;">Guardar</button>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- MODAL DE EDITAR ORDEN (PANTALLA COMPLETA) -->
   <div id="modal-orden" class="modal">
     <div class="modal-content">
       <div class="modal-inner-container">
         <div class="modal-header">
-          <h2 id="modal-orden-titulo">Editar Orden</h2>
+          <h2>Editar Orden</h2>
           <button class="btn-close" id="cerrar-modal-orden">&times;</button>
         </div>
         <form id="form-editar-orden">
           <input type="hidden" id="ord-id">
           <div class="form-grid">
-            <div class="form-group"><label>Nombre del Cliente</label><input type="text" id="ord-nombre"></div>
+            <div class="form-group"><label>Cliente</label><input type="text" id="ord-nombre"></div>
             <div class="form-group"><label>Teléfono</label><input type="text" id="ord-telefono"></div>
-            <div class="form-group"><label>Dirección / Zona</label><input type="text" id="ord-direccion"></div>
-            <div class="form-group"><label>Notas del Pedido</label><input type="text" id="ord-notas"></div>
+            <div class="form-group"><label>Dirección</label><input type="text" id="ord-direccion"></div>
+            <div class="form-group"><label>Notas</label><input type="text" id="ord-notas"></div>
           </div>
 
-          <h3 style="margin: 25px 0 15px; color: var(--sidebar);"><i class="fa-solid fa-cart-shopping"></i> Productos en la Orden</h3>
+          <h3 style="margin: 25px 0 15px;">Productos</h3>
           <div id="ord-productos-lista"></div>
 
-          <!-- Selector para agregar un nuevo producto existente al pedido -->
           <div style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 15px; display: flex; gap: 10px; align-items: flex-end;">
             <div style="flex-grow: 1;" class="form-group" style="margin-bottom:0;">
-              <label style="font-size: 0.9rem;">Agregar producto del catálogo:</label>
-              <select id="select-agregar-prod">
-                <option value="">Seleccionar producto...</option>
-              </select>
+              <label>Añadir del catálogo:</label>
+              <select id="select-agregar-prod"><option value="">Seleccionar...</option></select>
             </div>
-            <button type="button" id="btn-add-prod-orden" class="btn-primary" style="height: 48px;"><i class="fa-solid fa-plus"></i> Añadir</button>
+            <button type="button" id="btn-add-prod-orden" class="btn-primary" style="height: 48px;"><i class="fa-solid fa-plus"></i></button>
           </div>
 
           <div style="display: flex; gap: 15px; margin-top: 30px;">
-            <button type="submit" class="btn-primary" style="flex: 2; padding: 15px; font-size: 1.1rem;"><i class="fa-solid fa-save"></i> Guardar Cambios</button>
-            <button type="button" id="btn-eliminar-orden" class="btn-danger" style="flex: 1; font-size: 1.1rem;"><i class="fa-solid fa-trash"></i> Eliminar Orden</button>
+            <button type="submit" class="btn-primary" style="flex: 2; padding: 15px;">Guardar Cambios</button>
+            <button type="button" id="btn-eliminar-orden" class="btn-danger" style="flex: 1;">Eliminar Orden</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- FIREBASE SCRIPTS -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, onSnapshot, doc, getDoc, updateDoc, deleteDoc, setDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -290,7 +259,19 @@
     let todasOrdenes = [];
     let ordenActualItems = [];
 
-    // --- NAVEGACIÓN TABS ---
+    // Botón Cerrar Sesión
+    document.getElementById('btn-cerrar-sesion').addEventListener('click', () => {
+      if(confirm("¿Estás seguro de cerrar sesión?")) {
+        localStorage.clear();
+        alert("🔒 Sesión cerrada.");
+        window.location.href = "index.html"; // O recargar la página actual
+      }
+    });
+
+    document.getElementById('btn-cambiar-pass').addEventListener('click', () => {
+      alert("Función de cambio de contraseña próximamente.");
+    });
+
     document.querySelectorAll('.nav-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -300,12 +281,10 @@
       });
     });
 
-    // --- CARGAR PRODUCTOS ---
     onSnapshot(collection(db, "productos"), (snapshot) => {
       todosProductos = [];
       const selectProd = document.getElementById('select-agregar-prod');
       selectProd.innerHTML = '<option value="">Seleccionar producto...</option>';
-      
       snapshot.forEach(d => {
         const prod = { id: d.id, ...d.data() };
         todosProductos.push(prod);
@@ -322,10 +301,10 @@
           <div class="prod-card">
             <img src="${img}" alt="${p.nombre}">
             <h3>${p.nombre}</h3>
-            <p><strong>$${parseFloat(p.precio).toLocaleString('es-AR')}</strong> | ${p.categoria}</p>
+            <p><strong>$${parseFloat(p.precio).toLocaleString('es-AR')}</strong></p>
             <div class="prod-actions">
-              <button class="btn-edit" data-id="${p.id}"><i class="fa-solid fa-pen"></i> Editar</button>
-              <button class="btn-delete" data-id="${p.id}"><i class="fa-solid fa-trash"></i> Eliminar</button>
+              <button class="btn-edit" data-id="${p.id}"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-delete" data-id="${p.id}"><i class="fa-solid fa-trash"></i></button>
             </div>
           </div>
         `;
@@ -334,21 +313,20 @@
       document.querySelectorAll('.btn-edit').forEach(btn => btn.addEventListener('click', () => abrirModalProd(btn.dataset.id)));
       document.querySelectorAll('.btn-delete').forEach(btn => {
         btn.addEventListener('click', async () => {
-          if(confirm("¿Seguro que deseas eliminar este producto?")) {
-            await deleteDoc(doc(db, "productos", btn.dataset.id));
+          if(confirm("¿Eliminar producto?")) {
+            try { await deleteDoc(doc(db, "productos", btn.dataset.id)); } catch(e) { alert("Error: " + e.message); }
           }
         });
       });
     }
 
-    // --- GESTIÓN DE ÓRDENES ---
     onSnapshot(collection(db, "pedidos"), (snapshot) => {
       todasOrdenes = [];
       const tbody = document.getElementById("tabla-ordenes");
       tbody.innerHTML = "";
       
       if (snapshot.empty) {
-        tbody.innerHTML = "<tr><td colspan='5'>No hay órdenes pendientes.</td></tr>";
+        tbody.innerHTML = "<tr><td colspan='5'>No hay órdenes.</td></tr>";
         return;
       }
 
@@ -357,8 +335,8 @@
         const id = docSnap.id;
         todasOrdenes.push({ id, ...data });
 
-        const fecha = data.fecha ? new Date(data.fecha.toDate()).toLocaleString() : "Sin fecha";
-        const clienteNom = data.cliente?.nombre || data.nombre || "Cliente Web";
+        const fecha = data.fecha?.toDate ? new Date(data.fecha.toDate()).toLocaleString() : "Reciente";
+        const clienteNom = data.cliente?.nombre || data.nombre || "Cliente";
         const clienteTel = data.cliente?.telefono || data.telefono || "";
         const clienteDir = data.cliente?.direccion || data.direccion || "";
         const clienteNotas = data.cliente?.notas || data.notas || "";
@@ -366,8 +344,7 @@
         let prodsHtml = "<ul style='padding-left: 15px;'>";
         const items = data.productos || data.items || [];
         items.forEach(p => {
-          const colorTxt = p.color ? ` <span style="color:#64748b;">(Color: ${p.color})</span>` : "";
-          prodsHtml += `<li><b>${p.cantidad}x</b> ${p.nombre}${colorTxt} - $${(p.precio * p.cantidad).toLocaleString('es-AR')}</li>`;
+          prodsHtml += `<li><b>${p.cantidad}x</b> ${p.nombre} - $${(p.precio * p.cantidad).toLocaleString('es-AR')}</li>`;
         });
         prodsHtml += "</ul>";
 
@@ -380,14 +357,12 @@
             <td><strong>${data.numeroOrden || data.orden || id.substring(0,6)}</strong></td>
             <td>${fecha}</td>
             <td>
-              <strong>${clienteNom}</strong><br>
-              📱 ${clienteTel}<br>
-              📍 ${clienteDir}
+              <strong>${clienteNom}</strong><br>📱 ${clienteTel}<br>📍 ${clienteDir}
               ${clienteNotas ? `<br><small style="color: #d97706;"><b>Nota:</b> ${clienteNotas}</small>` : ""}
             </td>
             <td>
               ${prodsHtml}
-              <div style="margin-top: 8px; font-size: 1.1rem;"><strong>Total: $${parseFloat(data.total || 0).toLocaleString('es-AR')}</strong></div>
+              <div style="margin-top: 8px;"><strong>Total: $${parseFloat(data.total || 0).toLocaleString('es-AR')}</strong></div>
             </td>
             <td>
               <select class="select-estado ${colorEstado}" data-id="${id}">
@@ -396,7 +371,7 @@
                 <option value="Enviado" ${data.estado === 'Enviado' ? 'selected' : ''}>Enviado</option>
               </select>
               <div style="display: flex; gap: 8px; margin-top: 5px;">
-                <button class="btn-edit-orden btn-primary" data-id="${id}" style="padding: 6px 12px; font-size: 0.9rem;"><i class="fa-solid fa-pen-to-square"></i> Editar / Ver</button>
+                <button class="btn-edit-orden btn-primary" data-id="${id}" style="padding: 6px 12px; font-size: 0.9rem;"><i class="fa-solid fa-pen"></i></button>
                 <button class="btn-del-orden btn-danger" data-id="${id}" style="padding: 6px 12px; font-size: 0.9rem;"><i class="fa-solid fa-trash"></i></button>
               </div>
             </td>
@@ -404,31 +379,32 @@
         `;
       });
 
-      // Cambiar estado en vivo
       document.querySelectorAll('.select-estado').forEach(select => {
         select.addEventListener('change', async (e) => {
-          const nuevaClase = e.target.value === 'Pendiente' ? 'pendiente' : e.target.value === 'En Proceso' ? 'proceso' : 'enviado';
-          e.target.className = `select-estado ${nuevaClase}`;
-          await updateDoc(doc(db, "pedidos", e.target.dataset.id), { estado: e.target.value });
+          try {
+            await updateDoc(doc(db, "pedidos", e.target.dataset.id), { estado: e.target.value });
+          } catch(err) { alert("Error al cambiar estado: " + err.message); }
         });
       });
 
-      // Botón editar orden
       document.querySelectorAll('.btn-edit-orden').forEach(btn => {
         btn.addEventListener('click', () => abrirModalOrden(btn.dataset.id));
       });
 
-      // Botón eliminar orden directo desde la tabla
       document.querySelectorAll('.btn-del-orden').forEach(btn => {
         btn.addEventListener('click', async () => {
-          if(confirm("¿Estás seguro de eliminar esta orden por completo?")) {
-            await deleteDoc(doc(db, "pedidos", btn.dataset.id));
+          if(confirm("¿Estás seguro de eliminar esta orden?")) {
+            try {
+              await deleteDoc(doc(db, "pedidos", btn.dataset.id));
+              alert("🗑️ Orden eliminada correctamente.");
+            } catch (err) {
+              alert("❌ Error al eliminar (revisa las reglas de Firebase): " + err.message);
+            }
           }
         });
       });
     });
 
-    // --- MODAL EDITAR ORDEN ---
     const modalOrden = document.getElementById('modal-orden');
     document.getElementById('cerrar-modal-orden').addEventListener('click', () => modalOrden.style.display = 'none');
 
@@ -444,134 +420,96 @@
 
       ordenActualItems = JSON.parse(JSON.stringify(orden.productos || orden.items || []));
       renderizarItemsOrdenModal();
-
       modalOrden.style.display = 'block';
     }
 
     function renderizarItemsOrdenModal() {
       const contenedor = document.getElementById('ord-productos-lista');
       if(ordenActualItems.length === 0) {
-        contenedor.innerHTML = "<p style='color: #64748b;'>No hay productos en este pedido.</p>";
+        contenedor.innerHTML = "<p>No hay productos.</p>";
         return;
       }
-
       contenedor.innerHTML = ordenActualItems.map((item, index) => `
         <div class="ord-item-row">
-          <div style="flex-grow: 2;"><strong>${item.nombre}</strong><br><small>Color: ${item.color || 'Ninguno'}</small></div>
-          <div style="flex-grow: 1;">Precio: <strong>$${parseFloat(item.precio).toLocaleString('es-AR')}</strong></div>
-          <div style="width: 90px;">
-            <label style="font-size:0.8rem;">Cant:</label>
-            <input type="number" min="1" value="${item.cantidad}" class="input-cant-item" data-index="${index}" style="padding: 5px;">
-          </div>
-          <button type="button" class="btn-danger btn-quitar-item" data-index="${index}" style="padding: 6px 10px;"><i class="fa-solid xmark fa-trash"></i></button>
+          <div style="flex-grow: 2;"><strong>${item.nombre}</strong></div>
+          <div style="flex-grow: 1;">$${parseFloat(item.precio).toLocaleString('es-AR')}</div>
+          <div style="width: 80px;"><input type="number" min="1" value="${item.cantidad}" class="input-cant-item" data-index="${index}"></div>
+          <button type="button" class="btn-danger btn-quitar-item" data-index="${index}" style="padding: 6px;"><i class="fa-solid fa-trash"></i></button>
         </div>
       `).join('');
 
-      // Eventos para cambiar cantidades
       document.querySelectorAll('.input-cant-item').forEach(input => {
         input.addEventListener('change', (e) => {
-          const idx = e.target.dataset.index;
-          ordenActualItems[idx].cantidad = parseInt(e.target.value) || 1;
+          ordenActualItems[e.target.dataset.index].cantidad = parseInt(e.target.value) || 1;
         });
       });
 
-      // Eventos para quitar producto del pedido
       document.querySelectorAll('.btn-quitar-item').forEach(btn => {
         btn.addEventListener('click', (e) => {
-          const idx = e.currentTarget.dataset.index;
-          ordenActualItems.splice(idx, 1);
+          ordenActualItems.splice(e.currentTarget.dataset.index, 1);
           renderizarItemsOrdenModal();
         });
       });
     }
 
-    // Agregar producto desde el selector al modal de orden
     document.getElementById('btn-add-prod-orden').addEventListener('click', () => {
       const prodId = document.getElementById('select-agregar-prod').value;
-      if(!prodId) return alert("Selecciona un producto del catálogo primero.");
-      
-      const productoOriginal = todosProductos.find(p => p.id === prodId);
-      if(productoOriginal) {
+      if(!prodId) return alert("Selecciona un producto.");
+      const pOriginal = todosProductos.find(p => p.id === prodId);
+      if(pOriginal) {
         ordenActualItems.push({
-          nombre: productoOriginal.nombre,
-          precio: parseFloat(productoOriginal.precio),
+          nombre: pOriginal.nombre,
+          precio: parseFloat(pOriginal.precio),
           cantidad: 1,
-          color: productoOriginal.colores?.[0] || "Único"
+          color: pOriginal.colores?.[0] || "Único"
         });
         renderizarItemsOrdenModal();
       }
     });
 
-    // Guardar cambios de la orden editada
     document.getElementById('form-editar-orden').addEventListener('submit', async (e) => {
       e.preventDefault();
       const id = document.getElementById('ord-id').value;
-      
       const nuevoTotal = ordenActualItems.reduce((acc, item) => acc + (parseFloat(item.precio) * parseInt(item.cantidad)), 0);
 
-      const datosActualizados = {
-        "cliente.nombre": document.getElementById('ord-nombre').value,
-        "cliente.telefono": document.getElementById('ord-telefono').value,
-        "cliente.direccion": document.getElementById('ord-direccion').value,
-        "cliente.notas": document.getElementById('ord-notas').value,
-        productos: ordenActualItems,
-        items: ordenActualItems,
-        total: nuevoTotal
-      };
-
       try {
-        await updateDoc(doc(db, "pedidos", id), datosActualizados);
+        await updateDoc(doc(db, "pedidos", id), {
+          "cliente.nombre": document.getElementById('ord-nombre').value,
+          "cliente.telefono": document.getElementById('ord-telefono').value,
+          "cliente.direccion": document.getElementById('ord-direccion').value,
+          "cliente.notas": document.getElementById('ord-notas').value,
+          productos: ordenActualItems,
+          items: ordenActualItems,
+          total: nuevoTotal
+        });
         modalOrden.style.display = 'none';
-        alert("✅ Orden actualizada exitosamente.");
-      } catch (err) {
-        alert("❌ Error al actualizar la orden: " + err);
-      }
+        alert("✅ Orden actualizada.");
+      } catch (err) { alert("❌ Error: " + err.message); }
     });
 
-    // Eliminar orden desde el modal
     document.getElementById('btn-eliminar-orden').addEventListener('click', async () => {
       const id = document.getElementById('ord-id').value;
-      if(confirm("¿Estás 100% seguro de eliminar esta orden por completo?")) {
+      if(confirm("¿Eliminar esta orden por completo?")) {
         try {
           await deleteDoc(doc(db, "pedidos", id));
           modalOrden.style.display = 'none';
           alert("🗑️ Orden eliminada.");
-        } catch (err) {
-          alert("❌ Error al eliminar: " + err);
-        }
+        } catch (err) { alert("❌ Error: " + err.message); }
       }
     });
 
-    // --- GESTIÓN DE PRODUCTOS (MODAL) ---
     const modalProd = document.getElementById('modal-producto');
-    document.getElementById('btn-nuevo-producto').addEventListener('click', () => abrirModalProd(null));
-    document.getElementById('cerrar-modal').addEventListener('click', () => modalProd.style.display = 'none');
-
-    function abrirModalProd(id) {
+    document.getElementById('btn-nuevo-producto').addEventListener('click', () => {
       document.getElementById('form-producto').reset();
       document.getElementById('prod-id').value = "";
-      document.getElementById('modal-titulo').innerText = "Agregar Nuevo Producto";
-      
-      if(id) {
-        document.getElementById('modal-titulo').innerText = "Editar Producto";
-        const p = todosProductos.find(x => x.id === id);
-        document.getElementById('prod-id').value = p.id;
-        document.getElementById('prod-nombre').value = p.nombre || '';
-        document.getElementById('prod-precio').value = p.precio || '';
-        document.getElementById('prod-categoria').value = p.categoria || '';
-        document.getElementById('prod-imagen').value = p.imagenes?.[0] || p.imagen || '';
-        document.getElementById('prod-descripcion').value = p.descripcion || '';
-        document.getElementById('prod-colores').value = p.colores ? p.colores.join(', ') : '';
-      }
+      document.getElementById('modal-titulo').innerText = "Agregar Producto";
       modalProd.style.display = 'block';
-    }
+    });
+    document.getElementById('cerrar-modal').addEventListener('click', () => modalProd.style.display = 'none');
 
     document.getElementById('form-producto').addEventListener('submit', async (e) => {
       e.preventDefault();
       const id = document.getElementById('prod-id').value;
-      const textoColores = document.getElementById('prod-colores').value;
-      const arrayColores = textoColores ? textoColores.split(',').map(c => c.trim()).filter(c => c !== "") : [];
-
       const data = {
         nombre: document.getElementById('prod-nombre').value,
         precio: document.getElementById('prod-precio').value,
@@ -579,22 +517,20 @@
         imagen: document.getElementById('prod-imagen').value,
         imagenes: [document.getElementById('prod-imagen').value],
         descripcion: document.getElementById('prod-descripcion').value,
-        colores: arrayColores
+        colores: document.getElementById('prod-colores').value.split(',').map(c => c.trim()).filter(c => c)
       };
-
       try {
         if(id) await updateDoc(doc(db, "productos", id), data);
         else await addDoc(collection(db, "productos"), data);
         modalProd.style.display = 'none';
-        alert("✅ Producto guardado exitosamente");
-      } catch (err) { alert("❌ Error: " + err); }
+        alert("✅ Guardado correctamente.");
+      } catch (err) { alert("❌ Error: " + err.message); }
     });
 
-    // --- CONFIGURACIÓN ---
-    async function cargarConfiguracion() {
-      const snapSlogan = await getDoc(doc(db, "configuracion", "slogan"));
-      if(snapSlogan.exists()) {
-        const d = snapSlogan.data();
+    async function cargarConfig() {
+      const s = await getDoc(doc(db, "configuracion", "slogan"));
+      if(s.exists()) {
+        const d = s.data();
         document.getElementById('slog-titulo').value = d.titulo || '';
         document.getElementById('slog-intro').value = d.intro || '';
         document.getElementById('slog-item1').value = d.item1 || '';
@@ -602,15 +538,15 @@
         document.getElementById('slog-item3').value = d.item3 || '';
         document.getElementById('slog-badge').value = d.badge || '';
       }
-      const snapEnvios = await getDoc(doc(db, "configuracion", "envios"));
-      if(snapEnvios.exists()) {
-        const d = snapEnvios.data();
+      const e = await getDoc(doc(db, "configuracion", "envios"));
+      if(e.exists()) {
+        const d = e.data();
         document.getElementById('env-puntos').value = d.puntos || '';
         document.getElementById('env-correo').value = d.correo || '';
         document.getElementById('env-condicion').value = d.condicion || '';
       }
     }
-    cargarConfiguracion();
+    cargarConfig();
 
     document.getElementById('form-slogan').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -622,7 +558,7 @@
         item3: document.getElementById('slog-item3').value,
         badge: document.getElementById('slog-badge').value
       }, { merge: true });
-      alert("✅ Textos de presentación guardados.");
+      alert("✅ Presentación guardada.");
     });
 
     document.getElementById('form-envios').addEventListener('submit', async (e) => {
@@ -632,7 +568,7 @@
         correo: document.getElementById('env-correo').value,
         condicion: document.getElementById('env-condicion').value
       }, { merge: true });
-      alert("✅ Configuración de envíos guardada.");
+      alert("✅ Envíos guardados.");
     });
   </script>
 </body>
