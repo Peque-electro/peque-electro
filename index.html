@@ -9,7 +9,6 @@
 </head>
 <body>
 
-  <!-- ENCABEZADO / PRESENTACIÓN DINÁMICA -->
   <header class="hero-section">
     <div class="hero-container">
       <div class="hero-logo">
@@ -29,14 +28,12 @@
   </header>
 
   <main class="main-container">
-    <!-- BARRA LATERAL: CATEGORÍAS + CARRITO -->
     <aside class="sidebar">
       <div class="category-box">
         <h3><i class="fa-solid fa-list"></i> Categorías</h3>
         <div id="categorias-lista"></div>
       </div>
 
-      <!-- CARRITO DE COMPRAS -->
       <div class="cart-box">
         <h3><i class="fa-solid fa-cart-shopping"></i> Tu Pedido</h3>
         <div id="carrito-vacio">Tu carrito está vacío.</div>
@@ -49,7 +46,6 @@
         </button>
       </div>
 
-      <!-- INFO DE ENVÍOS (cargada desde Firestore) -->
       <div class="info-envios">
         <h3><i class="fa-solid fa-truck"></i> Información de Envíos</h3>
         <p id="info-puntos"></p>
@@ -58,7 +54,6 @@
       </div>
     </aside>
 
-    <!-- CATÁLOGO DE PRODUCTOS -->
     <section class="catalogo">
       <div class="search-bar">
         <i class="fa-solid fa-search"></i>
@@ -69,7 +64,7 @@
     </section>
   </main>
 
-  <!-- MODAL DETALLE PRODUCTO -->
+  <!-- MODAL DETALLES - DISEÑO COMPLETO -->
   <div id="modal-detalle" class="modal">
     <div class="modal-content">
       <span class="cerrar-modal">&times;</span>
@@ -97,7 +92,6 @@
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
     let categorias = new Set();
 
-    // --- CARGAR INFORMACIÓN DE ENVÍOS ---
     async function cargarInfoEnviosTienda() {
       try {
         const docSnap = await getDoc(doc(db, "configuracion", "envios"));
@@ -110,7 +104,6 @@
       } catch (e) { console.error(e); }
     }
 
-    // --- CARGAR ESLOGAN DINÁMICO ---
     async function cargarSloganDinamico() {
       try {
         const snap = await getDoc(doc(db, "configuracion", "slogan"));
@@ -127,7 +120,6 @@
       } catch (e) { console.error(e); }
     }
 
-    // --- CARGAR PRODUCTOS ---
     async function cargarProductos() {
       const snap = await getDocs(collection(db, "productos"));
       todosLosProductos = [];
@@ -141,7 +133,6 @@
       renderizarProductos(todosLosProductos);
     }
 
-    // --- RENDERIZAR CATEGORÍAS ---
     function renderizarCategorias() {
       const cont = document.getElementById("categorias-lista");
       let html = `<div class="cat-item activa" data-cat="todas">Todas las Categorías</div>`;
@@ -160,7 +151,6 @@
       });
     }
 
-    // --- RENDERIZAR PRODUCTOS ---
     function renderizarProductos(lista) {
       const grid = document.getElementById("productos-grid");
       grid.innerHTML = lista.map(p => {
@@ -186,50 +176,110 @@
       });
     }
 
-    // --- VER DETALLE EN MODAL ---
+    // ==================================================
+    // MODAL DE DETALLES - DISEÑO COMPLETO
+    // ==================================================
     function verDetalle(id) {
       const prod = todosLosProductos.find(p => p.id === id);
       if (!prod) return;
       const imgs = prod.imagenes || [prod.imagen];
-      const colores = prod.colores?.join(", ") || "No especificados";
+      const colores = prod.colores || [];
+      
       document.getElementById("cuerpo-modal").innerHTML = `
-        <div class="detalle-grid">
+        <div class="detalle-superior">
+          <!-- IMAGENES A LA IZQUIERDA -->
           <div class="detalle-imagenes">
-            <img src="${imgs[0]}" alt="${prod.nombre}" class="img-principal">
-            ${imgs.length > 1 ? `<div class="galeria">${imgs.slice(1).map(i => `<img src="${i}" alt="">`).join('')}</div>` : ''}
+            <img src="${imgs[0]}" alt="${prod.nombre}" class="img-principal" id="img-mostrada">
+            ${imgs.length > 1 ? `
+              <div class="galeria-miniaturas">
+                ${imgs.map((i, idx) => `<img src="${i}" alt="" class="miniatura" data-img="${i}">`).join('')}
+              </div>
+            ` : ''}
           </div>
-          <div class="detalle-info">
+
+          <!-- INFO A LA DERECHA -->
+          <div class="detalle-compra">
             <h2>${prod.nombre}</h2>
             <p class="precio-detalle">$${parseFloat(prod.precio).toLocaleString('es-AR')}</p>
-            <p><strong>Categoría:</strong> ${prod.categoria}${prod.subcategoria ? ` / ${prod.subcategoria}` : ''}</p>
-            <p><strong>Colores:</strong> ${colores}</p>
-            <div class="descripcion">${prod.descripcion || 'Sin descripción.'}</div>
-            <button class="btn-agregar-detalle" data-id="${prod.id}"><i class="fa-solid fa-cart-plus"></i> Agregar al Pedido</button>
+            <p class="cat-detalle"><strong>Categoría:</strong> ${prod.categoria}${prod.subcategoria ? ` / ${prod.subcategoria}` : ''}</p>
+            
+            ${colores.length > 0 ? `
+              <div class="selector-colores">
+                <label><strong>Colores:</strong></label>
+                <div class="opciones-colores">
+                  ${colores.map((c, i) => `<label class="color-opcion"><input type="radio" name="color" value="${c}" ${i===0?'checked':''}> ${c}</label>`).join('')}
+                </div>
+              </div>
+            ` : ''}
+
+            <div class="selector-cantidad">
+              <label><strong>Cantidad:</strong></label>
+              <div class="controles-cantidad">
+                <button type="button" id="btn-menos">-</button>
+                <input type="number" id="cantidad-prod" value="1" min="1">
+                <button type="button" id="btn-mas">+</button>
+              </div>
+            </div>
+
+            <button class="btn-agregar-detalle" data-id="${prod.id}">
+              <i class="fa-solid fa-cart-plus"></i> Agregar al Pedido
+            </button>
           </div>
         </div>
+
+        <!-- DESCRIPCIÓN DEBAJO DE TODO -->
+        <div class="descripcion-producto">
+          <h3>Descripción</h3>
+          <div>${(prod.descripcion || 'Sin descripción.').replace(/\n/g, '<br>')}</div>
+        </div>
       `;
+
+      // Mostrar modal
       document.getElementById("modal-detalle").style.display = "flex";
+
+      // Cerrar modal
       document.querySelector(".cerrar-modal").onclick = () => {
         document.getElementById("modal-detalle").style.display = "none";
       };
+
+      // Cambiar imagen al hacer clic en miniatura
+      document.querySelectorAll(".miniatura").forEach(mini => {
+        mini.addEventListener("click", () => {
+          document.getElementById("img-mostrada").src = mini.dataset.img;
+        });
+      });
+
+      // Controles de cantidad
+      const cantInput = document.getElementById("cantidad-prod");
+      document.getElementById("btn-menos").addEventListener("click", () => {
+        if (parseInt(cantInput.value) > 1) cantInput.value = parseInt(cantInput.value) - 1;
+      });
+      document.getElementById("btn-mas").addEventListener("click", () => {
+        cantInput.value = parseInt(cantInput.value) + 1;
+      });
+
+      // Agregar al carrito con cantidad seleccionada
       document.querySelector(".btn-agregar-detalle").addEventListener("click", () => {
-        agregarAlCarrito(prod.id);
+        const cant = parseInt(cantInput.value) || 1;
+        agregarAlCarrito(prod.id, cant);
         document.getElementById("modal-detalle").style.display = "none";
       });
     }
 
-    // --- CARRITO ---
+    // ==================================================
+    // CARRITO
+    // ==================================================
     function guardarCarrito() {
       localStorage.setItem('carrito', JSON.stringify(carrito));
       renderizarCarrito();
     }
 
-    function agregarAlCarrito(id) {
+    function agregarAlCarrito(id, cantidad = 1) {
       const prod = todosLosProductos.find(p => p.id === id);
       if (!prod) return;
       const existente = carrito.find(i => i.id === id);
-      if (existente) existente.cantidad++;
-      else carrito.push({ id: prod.id, nombre: prod.nombre, precio: prod.precio, cantidad: 1 });
+      if (existente) existente.cantidad += cantidad;
+      else carrito.push({ id: prod.id, nombre: prod.nombre, precio: prod.precio, cantidad: cantidad });
       guardarCarrito();
     }
 
@@ -280,30 +330,19 @@
     }
 
     // ==================================================
-    // ✅ ENVIAR PEDIDO: GUARDAR EN FIRESTORE + WHATSAPP
+    // ENVIAR PEDIDO SIN FORMULARIO → DIRECTO A WHATSAPP
     // ==================================================
     document.getElementById("btn-whatsapp").addEventListener("click", async () => {
       if (carrito.length === 0) return alert("⚠️ Tu carrito está vacío.");
 
-      const nombreCliente = prompt("📝 Tu nombre:") || "Cliente Web";
-      const telefonoCliente = prompt("📱 Tu teléfono:") || "No especificado";
-      const direccionCliente = prompt("📍 Tu dirección / zona de entrega:") || "No especificada";
-      const notasCliente = prompt("✏️ Notas adicionales (opcional):") || "";
-
       let total = carrito.reduce((sum, i) => sum + (parseFloat(i.precio) * i.cantidad), 0);
       const numeroOrden = 'PEQ-' + Math.floor(100000 + Math.random() * 900000);
 
-      // ✅ GUARDAR PEDIDO EN FIRESTORE (aparece en tu panel de admin)
+      // ✅ GUARDAR PEDIDO EN FIRESTORE (SOLO AGREGA, NO MODIFICA TU ADMIN)
       const nuevoPedido = {
         orden: numeroOrden,
         numeroOrden: numeroOrden,
-        cliente: {
-          nombre: nombreCliente,
-          telefono: telefonoCliente,
-          direccion: direccionCliente,
-          notas: notasCliente,
-          metodoPago: "Efectivo"
-        },
+        cliente: { nombre: "Pedido Web", telefono: "", direccion: "", notas: "", metodoPago: "Efectivo" },
         items: carrito,
         productos: carrito,
         total: total,
@@ -317,33 +356,24 @@
         console.log("✅ Pedido guardado en Firestore");
       } catch (err) {
         console.error("❌ Error al guardar:", err);
-        alert("⚠️ No se pudo registrar el pedido. Intenta de nuevo.");
-        return;
       }
 
-      // ✅ ARMAR MENSAJE DE WHATSAPP A TU NÚMERO
+      // ✅ MENSAJE DIRECTO A WHATSAPP SIN PREGUNTAR NADA
       let mensaje = `*¡Nuevo Pedido - Peque Elektro!* 🛒\n`;
       mensaje += `*Nro de Orden:* ${numeroOrden}\n\n`;
-      mensaje += `*Cliente:* ${nombreCliente}\n`;
-      mensaje += `*Teléfono:* ${telefonoCliente}\n`;
-      mensaje += `*Dirección:* ${direccionCliente}\n\n`;
       mensaje += `*Detalle de Productos:*\n`;
       carrito.forEach(i => {
         mensaje += `- ${i.nombre} x${i.cantidad} - $${(parseFloat(i.precio) * i.cantidad).toLocaleString('es-AR')}\n`;
       });
       mensaje += `\n*Total a Pagar:* $${total.toLocaleString('es-AR')}`;
-      if (notasCliente) mensaje += `\n*Notas:* ${notasCliente}`;
 
-      // ✅ TU NÚMERO CORRECTO: 54 + 9 + 11 + 3497-0171
       const numeroWhatsApp = "5491134970171";
       const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
 
-      // ✅ ABRIR WHATSAPP
       localStorage.removeItem("carrito");
       carrito = [];
       renderizarCarrito();
       window.open(url, "_blank");
-      alert("✅ ¡Pedido enviado! Se abrirá WhatsApp para continuar.");
     });
 
     // BUSCADOR
