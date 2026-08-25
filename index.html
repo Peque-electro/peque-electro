@@ -3,279 +3,222 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Peque Elektro - Tienda</title>
+  <title>Peque Elektro - Tienda Online</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- ESTILOS AGREGADOS PARA GRILLA, PAGINACIÓN Y RESEÑAS -->
   <style>
-    /* ==== ESTILOS DE PAGINACIÓN ==== */
-    .paginacion {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      margin: 30px 0;
-      padding: 15px;
-      background: #1e293b;
-      border-radius: 12px;
-      border: 1px solid #334155;
-    }
-    .paginacion button {
-      background: #0284c7;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background 0.2s;
-    }
-    .paginacion button:hover {
-      background: #0369a1;
-    }
-    .paginacion button:disabled {
-      background: #475569;
-      cursor: not-allowed;
-    }
-    .paginacion .pagina-activa {
-      background: #22c55e;
-    }
-    .paginacion span {
-      color: #f1f5f9;
-      font-weight: bold;
-    }
-
-    /* ==== ESTILOS DE RESEÑAS ==== */
-    .review-section {
-      background: #1e293b;
-      padding: 25px;
-      border-radius: 12px;
-      border: 2px solid #22c55e;
-      margin: 40px 0;
-    }
-    .review-section h3 {
-      color: #4ade80;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .review-inputs {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 15px;
-      margin-bottom: 15px;
-    }
-    .review-group label {
-      color: #38bdf8;
-      font-weight: bold;
-      display: block;
-      margin-bottom: 6px;
-      font-size: 14px;
-    }
-    .stars {
-      display: flex;
-      gap: 5px;
-      font-size: 26px;
-      cursor: pointer;
-    }
-    .stars i { color: #475569; transition: color 0.2s; }
-    .stars i.activa { color: #facc15; }
-    .review-textarea {
-      width: 100%;
-      min-height: 100px;
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      padding: 12px;
-      color: white;
-      font-size: 14px;
-      margin-bottom: 15px;
-      resize: vertical;
-    }
-    .captcha-box {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      background: #0f172a;
-      padding: 12px 15px;
-      border-radius: 8px;
-      border: 1px solid #334155;
-      margin-bottom: 15px;
-    }
-    .captcha-muestra {
-      background: #334155;
-      padding: 8px 15px;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 18px;
-      color: #facc15;
-      letter-spacing: 3px;
-      user-select: none;
-    }
-    .captcha-box input {
-      flex: 1;
-      padding: 8px 12px;
-      border-radius: 6px;
-      border: 1px solid #334155;
-      background: #1e293b;
-      color: white;
-      font-size: 16px;
-    }
-    .btn-submit-review {
-      background: #22c55e;
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      width: 100%;
-      font-size: 16px;
-      transition: background 0.2s;
-    }
-    .btn-submit-review:hover {
-      background: #16a34a;
-    }
-    .mensaje-exito {
-      color: #4ade80;
-      text-align: center;
-      margin-top: 12px;
-      display: none;
-    }
-
-    /* ==== GRID DE PRODUCTOS: 5 por fila ==== */
+    /* Asegurar 5 productos a lo ancho */
     .products-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+    }
+    
+    /* Responsividad básica para pantallas más chicas */
+    @media (max-width: 1200px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 900px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 600px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
+    
+    /* Paginación */
+    .paginacion-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       gap: 20px;
+      margin-top: 40px;
+      padding: 20px 0;
     }
-    @media (max-width: 1200px) {
-      .products-grid { grid-template-columns: repeat(4, 1fr); }
+    .btn-paginacion {
+      padding: 10px 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
     }
-    @media (max-width: 900px) {
-      .products-grid { grid-template-columns: repeat(3, 1fr); }
+    .btn-paginacion:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
     }
-    @media (max-width: 600px) {
-      .products-grid { grid-template-columns: repeat(2, 1fr); }
+    .info-pagina {
+      font-weight: bold;
+      font-size: 1.1rem;
     }
-    @media (max-width: 400px) {
-      .products-grid { grid-template-columns: 1fr; }
+
+    /* Sección de Reseñas */
+    .seccion-resenas {
+      margin-top: 50px;
+      padding: 30px;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     }
+    .resenas-header { margin-bottom: 20px; }
+    .lista-resenas {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-bottom: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .item-resena {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #333;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .item-resena h4 { margin: 0 0 5px 0; font-size: 1.1rem; }
+    .item-resena p { margin: 0; color: #555; }
+    
+    /* Formulario de Reseñas */
+    .form-resenas {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #eee;
+    }
+    .form-resenas input[type="text"], .form-resenas textarea {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family: inherit;
+    }
+    .antibot-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px;
+      background: #eef2f5;
+      border-radius: 5px;
+      width: fit-content;
+      border: 1px solid #d1d9e0;
+    }
+    .antibot-box input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
+    .btn-enviar-resena {
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+    .btn-enviar-resena:disabled { background-color: #a5d8b0; cursor: not-allowed; }
+    .btn-enviar-resena:not(:disabled):hover { background-color: #218838; }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="banner-header">
-    <img src="logo.jpg" alt="Peque Elektro" class="banner-img">
+  <header class="hero-section">
+    <div class="hero-container">
+      <div class="hero-logo">
+        <img src="logo.jpg" alt="Peque Elektro" class="logo-img">
+      </div>
+      <div class="hero-content">
+        <h2 class="hero-title">peque elektro: tu solución integral.</h2>
+        <p class="hero-intro">Simplificamos tu búsqueda ofreciéndote variedad y calidad en un solo lugar.</p>
+        <ul class="hero-items">
+          <li><i class="fa-solid fa-check"></i> Variedad de productos</li>
+          <li><i class="fa-solid fa-check"></i> Calidad garantizada</li>
+          <li><i class="fa-solid fa-check"></i> Atención personalizada</li>
+        </ul>
+        <span class="hero-badge">¡Envíos a todo el país!</span>
+      </div>
+    </div>
   </header>
 
-  <!-- BARRA DE BÚSQUEDA Y FILTROS -->
-  <div class="buscador-filtros">
-    <input type="text" id="buscar" placeholder="🔍 Buscar producto...">
-    <select id="filtro-categoria">
-      <option value="">Todas las Categorías</option>
-    </select>
-    <select id="filtro-subcategoria">
-      <option value="">Todas las Subcategorías</option>
-    </select>
-  </div>
-
-  <!-- SECCIÓN PRESENTACIÓN -->
-  <section id="seccion-presentacion" class="presentacion">
-    <h2 id="slogan-titulo"></h2>
-    <p id="slogan-intro"></p>
-    <div class="caracteristicas">
-      <span id="slogan-item1"></span>
-      <span id="slogan-item2"></span>
-      <span id="slogan-item3"></span>
-    </div>
-    <div class="badge-boton" id="slogan-badge"></div>
-  </section>
-
-  <!-- CATÁLOGO DE PRODUCTOS -->
   <main class="main-container">
-    <h2 class="titulo-seccion">Catálogo de Productos</h2>
-    <div id="grid-productos" class="products-grid"></div>
+    <aside class="sidebar">
+      <div class="category-box">
+        <h3><i class="fa-solid fa-list"></i> Categorías</h3>
+        <div id="categorias-lista"></div>
+      </div>
 
-    <!-- PAGINACIÓN: 5x6 = 30 por página -->
-    <div class="paginacion">
-      <button id="btn-anterior">&lt; Anterior</button>
-      <span id="info-pagina">Página 1 de 1</span>
-      <button id="btn-siguiente">Siguiente &gt;</button>
-    </div>
+      <div class="cart-box">
+        <h3><i class="fa-solid fa-cart-shopping"></i> Tu Pedido</h3>
+        <div id="carrito-vacio">Tu carrito está vacío.</div>
+        <div id="carrito-items"></div>
+        <div class="cart-total">
+          <strong>Total:</strong> <span id="total-carrito">$0</span>
+        </div>
+        <button id="btn-whatsapp" class="btn-whatsapp">
+          <i class="fa-brands fa-whatsapp"></i> Enviar Pedido por WhatsApp
+        </button>
+      </div>
+
+      <div class="info-envios">
+        <h3><i class="fa-solid fa-truck"></i> Información de Envíos</h3>
+        <p id="info-puntos"></p>
+        <p id="info-correo"></p>
+        <p id="info-condicion"></p>
+      </div>
+    </aside>
+
+    <section class="catalogo">
+      <div class="search-bar">
+        <i class="fa-solid fa-search"></i>
+        <input type="text" id="buscador" placeholder="Buscar productos por nombre...">
+      </div>
+      <h2 class="catalogo-titulo">Catálogo de Productos</h2>
+      
+      <div id="productos-grid" class="products-grid"></div>
+
+      <!-- CONTROLES DE PAGINACIÓN -->
+      <div class="paginacion-container">
+        <button id="btn-prev" class="btn-paginacion"><i class="fa-solid fa-chevron-left"></i> Anterior</button>
+        <span id="info-pagina" class="info-pagina">Página 1 de 1</span>
+        <button id="btn-next" class="btn-paginacion">Siguiente <i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+
+      <!-- SECCIÓN DE RESEÑAS -->
+      <div class="seccion-resenas">
+        <h3 class="resenas-header"><i class="fa-solid fa-comments"></i> Opiniones de nuestros clientes</h3>
+        
+        <div id="lista-resenas" class="lista-resenas">
+          <p>Cargando reseñas...</p>
+        </div>
+
+        <h4>Déjanos tu reseña</h4>
+        <form id="form-resena" class="form-resenas">
+          <input type="text" id="resena-nombre" placeholder="Tu Nombre o Apodo" required>
+          <textarea id="resena-texto" rows="4" placeholder="¿Qué te pareció tu experiencia con Peque Elektro?" required></textarea>
+          
+          <!-- BOTÓN ANTI-BOT -->
+          <div class="antibot-box">
+            <input type="checkbox" id="check-antibot" required>
+            <label for="check-antibot"><strong>Confirmar que soy humano (Anti-Bot)</strong></label>
+          </div>
+
+          <button type="submit" id="btn-enviar-resena" class="btn-enviar-resena" disabled>
+            <i class="fa-solid fa-paper-plane"></i> Publicar Reseña
+          </button>
+        </form>
+      </div>
+
+    </section>
   </main>
 
-  <!-- SECCIÓN ENVÍOS -->
-  <section class="envios-info">
-    <h3><i class="fa-solid fa-truck-fast"></i> Información de Envíos</h3>
-    <div class="envios-contenido">
-      <p><strong>Puntos de Encuentro:</strong> <span id="envio-puntos"></span></p>
-      <p><strong>Envíos por Correo:</strong> <span id="envio-correo"></span></p>
-      <p class="condicion-entrega"><strong>Condición de Entrega:</strong> <span id="envio-condicion"></span></p>
-    </div>
-  </section>
-
-  <!-- SECCIÓN RESEÑAS CON VERIFICACIÓN ANTI-ROBOT -->
-  <section class="review-section">
-    <h3><i class="fa-solid fa-star"></i> ¿Qué te pareció nuestra tienda?</h3>
-    <form id="form-reseña">
-      <div class="review-inputs">
-        <div class="review-group">
-          <label>Calificación del Producto:</label>
-          <div class="stars" id="estrellas-producto">
-            <i class="fa-solid fa-star" data-val="1"></i>
-            <i class="fa-solid fa-star" data-val="2"></i>
-            <i class="fa-solid fa-star" data-val="3"></i>
-            <i class="fa-solid fa-star" data-val="4"></i>
-            <i class="fa-solid fa-star" data-val="5"></i>
-          </div>
-          <input type="hidden" id="calificacion-producto" value="0">
-        </div>
-        <div class="review-group">
-          <label>Calificación de la Atención:</label>
-          <div class="stars" id="estrellas-atencion">
-            <i class="fa-solid fa-star" data-val="1"></i>
-            <i class="fa-solid fa-star" data-val="2"></i>
-            <i class="fa-solid fa-star" data-val="3"></i>
-            <i class="fa-solid fa-star" data-val="4"></i>
-            <i class="fa-solid fa-star" data-val="5"></i>
-          </div>
-          <input type="hidden" id="calificacion-atencion" value="0">
-        </div>
-      </div>
-      <label style="color: #38bdf8; font-weight: bold; display: block; margin-bottom: 6px;">Tu comentario:</label>
-      <textarea id="comentario" class="review-textarea" placeholder="Escribe aquí tu opinión..."></textarea>
-
-      <!-- VERIFICACIÓN ANTI-ROBOT (CAPTCHA SIMPLE) -->
-      <div class="captcha-box">
-        <label>Verifica que eres humano:</label>
-        <div class="captcha-muestra" id="captcha-texto"></div>
-        <input type="text" id="captcha-respuesta" placeholder="Escribe los números" autocomplete="off">
-      </div>
-
-      <button type="submit" class="btn-submit-review">✅ Enviar Reseña</button>
-      <div class="mensaje-exito" id="mensaje-exito">¡Gracias por tu opinión! ✅</div>
-    </form>
-  </section>
-
-  <!-- MODAL DEL CARRITO -->
-  <div id="modal-carrito" class="modal-carrito">
-    <div class="modal-contenido">
+  <!-- MODAL DETALLES -->
+  <div id="modal-detalle" class="modal">
+    <div class="modal-content">
       <span class="cerrar-modal">&times;</span>
-      <h2>Tu Pedido</h2>
-      <div id="lista-carrito"></div>
-      <div class="total-carrito">
-        <strong>Total: $<span id="total-pedido">0</span></strong>
-      </div>
-      <button id="btn-enviar-whatsapp" class="btn-whatsapp">
-        <i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp
-      </button>
+      <div id="cuerpo-modal"></div>
     </div>
   </div>
 
-  <!-- SCRIPT PRINCIPAL -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, addDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, collection, getDocs, addDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
@@ -289,316 +232,421 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    let productos = [];
+    let todosLosProductos = [];
+    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
     let categorias = new Set();
-    let subcategorias = new Set();
-    let carrito = [];
 
-    // ==== PAGINACIÓN: 5 columnas × 6 filas = 30 productos por página ====
-    const PRODUCTOS_POR_PAGINA = 30;
+    // VARIABLES PARA PAGINACIÓN
+    let listaActualFiltrada = [];
     let paginaActual = 1;
-    let productosFiltrados = [];
+    const PRODUCTOS_POR_PAGINA = 30; // 5 columnas x 6 filas
 
-    // ==== CARGAR TODO ====
-    document.addEventListener("DOMContentLoaded", async () => {
-      await Promise.all([
-        cargarProductos(),
-        cargarSlogan(),
-        cargarConfigEnvios()
-      ]);
-      configurarFiltros();
-      configurarPaginacion();
-      configurarEstrellas();
-      generarCaptcha();
-      configurarFormularioReseña();
-    });
+    async function cargarInfoEnviosTienda() {
+      try {
+        const docSnap = await getDoc(doc(db, "configuracion", "envios"));
+        if (docSnap.exists()) {
+          const d = docSnap.data();
+          if (d.puntos) document.getElementById("info-puntos").innerHTML = `<i class="fa-solid fa-location-dot"></i> ${d.puntos}`;
+          if (d.correo) document.getElementById("info-correo").innerHTML = `<i class="fa-solid fa-envelope"></i> ${d.correo}`;
+          if (d.condicion) document.getElementById("info-condicion").innerHTML = `<i class="fa-solid fa-circle-info"></i> ${d.condicion}`;
+        }
+      } catch (e) { console.error(e); }
+    }
 
-    // ==== CARGAR PRODUCTOS ====
+    async function cargarSloganDinamico() {
+      try {
+        const snap = await getDoc(doc(db, "configuracion", "slogan"));
+        if (snap.exists()) {
+          const d = snap.data();
+          if (d.titulo) document.querySelector(".hero-title").textContent = d.titulo;
+          if (d.intro) document.querySelector(".hero-intro").textContent = d.intro;
+          const items = document.querySelectorAll(".hero-items li");
+          if (d.item1 && items[0]) items[0].innerHTML = `<i class="fa-solid fa-check"></i> ${d.item1}`;
+          if (d.item2 && items[1]) items[1].innerHTML = `<i class="fa-solid fa-check"></i> ${d.item2}`;
+          if (d.item3 && items[2]) items[2].innerHTML = `<i class="fa-solid fa-check"></i> ${d.item3}`;
+          if (d.badge) document.querySelector(".hero-badge").textContent = d.badge;
+        }
+      } catch (e) { console.error(e); }
+    }
+
     async function cargarProductos() {
       const snap = await getDocs(collection(db, "productos"));
-      productos = [];
+      todosLosProductos = [];
+      categorias.clear();
       snap.forEach(d => {
-        const p = { id: d.id, ...d.data() };
-        productos.push(p);
-        if (p.categoria) categorias.add(p.categoria);
-        if (p.subcategoria) subcategorias.add(p.subcategoria);
+        const prod = { id: d.id, ...d.data() };
+        todosLosProductos.push(prod);
+        if (prod.categoria) categorias.add(prod.categoria);
       });
-      productosFiltrados = [...productos];
-      llenarSelectCategorias();
-      renderizarPagina();
+      renderizarCategorias();
+      
+      // Iniciamos con todos los productos
+      listaActualFiltrada = todosLosProductos;
+      renderizarProductosPaginados();
     }
 
-    // ==== LLENAR FILTROS ====
-    function llenarSelectCategorias() {
-      const catSel = document.getElementById("filtro-categoria");
-      const subSel = document.getElementById("filtro-subcategoria");
+    function renderizarCategorias() {
+      const cont = document.getElementById("categorias-lista");
+      let html = `<div class="cat-item activa" data-cat="todas">Todas las Categorías</div>`;
       categorias.forEach(c => {
-        const opt = document.createElement("option");
-        opt.value = c; opt.textContent = c;
-        catSel.appendChild(opt);
+        html += `<div class="cat-item" data-cat="${c}">${c}</div>`;
       });
-    }
-
-    function configurarFiltros() {
-      const buscar = document.getElementById("buscar");
-      const catSel = document.getElementById("filtro-categoria");
-      const subSel = document.getElementById("filtro-subcategoria");
-
-      const filtrar = () => {
-        const t = buscar.value.toLowerCase().trim();
-        const cat = catSel.value;
-        const sub = subSel.value;
-        productosFiltrados = productos.filter(p => {
-          const coincideBusqueda = p.nombre.toLowerCase().includes(t);
-          const coincideCat = !cat || p.categoria === cat;
-          const coincideSub = !sub || p.subcategoria === sub;
-          return coincideBusqueda && coincideCat && coincideSub;
-        });
-        paginaActual = 1;
-        renderizarPagina();
-      };
-
-      buscar.addEventListener("input", filtrar);
-      catSel.addEventListener("change", () => {
-        subSel.innerHTML = '<option value="">Todas las Subcategorías</option>';
-        productos.filter(p => !cat || p.categoria === cat).forEach(p => {
-          if (p.subcategoria) {
-            const opt = document.createElement("option");
-            opt.value = p.subcategoria; opt.textContent = p.subcategoria;
-            subSel.appendChild(opt);
+      cont.innerHTML = html;
+      document.querySelectorAll(".cat-item").forEach(item => {
+        item.addEventListener("click", () => {
+          document.querySelectorAll(".cat-item").forEach(i => i.classList.remove("activa"));
+          item.classList.add("activa");
+          const cat = item.dataset.cat;
+          
+          if (cat === "todas") {
+            listaActualFiltrada = todosLosProductos;
+          } else {
+            listaActualFiltrada = todosLosProductos.filter(p => p.categoria === cat);
           }
+          
+          // Al cambiar de categoría, volvemos a la página 1
+          paginaActual = 1;
+          renderizarProductosPaginados();
         });
-        filtrar();
       });
-      subSel.addEventListener("change", filtrar);
     }
 
-    // ==== RENDERIZAR PÁGINA ACTUAL ====
-    function renderizarPagina() {
-      const grid = document.getElementById("grid-productos");
-      const inicio = (paginaActual - 1) * PRODUCTOS_POR_PAGINA;
-      const fin = inicio + PRODUCTOS_POR_PAGINA;
-      const paginaProductos = productosFiltrados.slice(inicio, fin);
+    // NUEVA FUNCIÓN PARA RENDERIZAR CON PAGINACIÓN
+    function renderizarProductosPaginados() {
+      const totalPaginas = Math.ceil(listaActualFiltrada.length / PRODUCTOS_POR_PAGINA);
+      
+      // Ajuste por si el filtro deja menos páginas
+      if (paginaActual > totalPaginas) paginaActual = totalPaginas || 1;
 
-      if (paginaProductos.length === 0) {
-        grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:#94a3b8;">No se encontraron productos.</p>';
+      const indiceInicio = (paginaActual - 1) * PRODUCTOS_POR_PAGINA;
+      const productosMostrar = listaActualFiltrada.slice(indiceInicio, indiceInicio + PRODUCTOS_POR_PAGINA);
+
+      const grid = document.getElementById("productos-grid");
+      
+      if (productosMostrar.length === 0) {
+        grid.innerHTML = "<p style='grid-column: 1/-1;'>No se encontraron productos.</p>";
       } else {
-        grid.innerHTML = paginaProductos.map(p => {
-          const img = (p.imagenes && p.imagenes[0]) || p.imagen || 'https://via.placeholder.com/300';
-          const colores = p.colores?.length ? `<p class="colores-disponibles"><strong>Colores:</strong> ${p.colores.join(', ')}</p>` : '';
+        grid.innerHTML = productosMostrar.map(p => {
+          const img = p.imagenes?.[0] || p.imagen || "";
           return `
             <div class="product-card">
-              <img src="${img}" alt="${p.nombre}">
+              <img src="${img}" alt="${p.nombre}" loading="lazy">
               <h3>${p.nombre}</h3>
               <p class="price">$${parseFloat(p.precio).toLocaleString('es-AR')}</p>
-              ${colores}
-              <button class="agregar-carrito" data-id="${p.id}">Agregar al Pedido</button>
+              <div class="btn-group">
+                <button class="btn-ver" data-id="${p.id}"><i class="fa-solid fa-eye"></i> Ver Detalle</button>
+                <button class="btn-agregar" data-id="${p.id}"><i class="fa-solid fa-cart-plus"></i> Agregar</button>
+              </div>
             </div>
           `;
         }).join('');
       }
 
-      // Actualizar estado de paginación
-      const totalPaginas = Math.ceil(productosFiltrados.length / PRODUCTOS_POR_PAGINA);
-      document.getElementById("info-pagina").textContent = `Página ${paginaActual} de ${totalPaginas || 1}`;
-      document.getElementById("btn-anterior").disabled = paginaActual <= 1;
-      document.getElementById("btn-siguiente").disabled = paginaActual >= totalPaginas;
+      // Asignar eventos a los botones de los productos
+      document.querySelectorAll(".btn-ver").forEach(btn => {
+        btn.addEventListener("click", () => verDetalle(btn.dataset.id));
+      });
+      document.querySelectorAll(".btn-agregar").forEach(btn => {
+        btn.addEventListener("click", () => agregarAlCarrito(btn.dataset.id));
+      });
 
-      // Asignar eventos a botones "Agregar al Pedido"
-      document.querySelectorAll(".agregar-carrito").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const prod = productos.find(p => p.id === btn.dataset.id);
-          if (prod) agregarAlCarrito(prod);
+      // Actualizar interfaz de paginación
+      document.getElementById("info-pagina").textContent = `Página ${paginaActual} de ${totalPaginas || 1}`;
+      document.getElementById("btn-prev").disabled = paginaActual === 1;
+      document.getElementById("btn-next").disabled = paginaActual === totalPaginas || totalPaginas === 0;
+    }
+
+    // EVENTOS DE BOTONES DE PAGINACIÓN
+    document.getElementById("btn-prev").addEventListener("click", () => {
+      if (paginaActual > 1) {
+        paginaActual--;
+        renderizarProductosPaginados();
+        document.querySelector(".catalogo-titulo").scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    document.getElementById("btn-next").addEventListener("click", () => {
+      const totalPaginas = Math.ceil(listaActualFiltrada.length / PRODUCTOS_POR_PAGINA);
+      if (paginaActual < totalPaginas) {
+        paginaActual++;
+        renderizarProductosPaginados();
+        document.querySelector(".catalogo-titulo").scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    // BÚSQUEDA ADAPTADA A PAGINACIÓN
+    document.getElementById("buscador").addEventListener("input", e => {
+      const t = e.target.value.toLowerCase().trim();
+      listaActualFiltrada = todosLosProductos.filter(p => p.nombre.toLowerCase().includes(t));
+      paginaActual = 1; // Volver a la pag 1 al buscar
+      renderizarProductosPaginados();
+    });
+
+    // MODAL DE DETALLES
+    function verDetalle(id) {
+      const prod = todosLosProductos.find(p => p.id === id);
+      if (!prod) return;
+      const imgs = prod.imagenes || [prod.imagen];
+      const colores = prod.colores || [];
+      
+      document.getElementById("cuerpo-modal").innerHTML = `
+        <div class="detalle-superior">
+          <div class="detalle-imagenes">
+            <img src="${imgs[0]}" alt="${prod.nombre}" class="img-principal" id="img-mostrada">
+            ${imgs.length > 1 ? `
+              <div class="galeria-miniaturas">
+                ${imgs.map((i, idx) => `<img src="${i}" alt="" class="miniatura" data-img="${i}">`).join('')}
+              </div>
+            ` : ''}
+          </div>
+
+          <div class="detalle-compra">
+            <h2>${prod.nombre}</h2>
+            <p class="precio-detalle">$${parseFloat(prod.precio).toLocaleString('es-AR')}</p>
+            <p class="cat-detalle"><strong>Categoría:</strong> ${prod.categoria}${prod.subcategoria ? ` / ${prod.subcategoria}` : ''}</p>
+            
+            ${colores.length > 0 ? `
+              <div class="selector-colores">
+                <label><strong>Colores:</strong></label>
+                <div class="opciones-colores">
+                  ${colores.map((c, i) => `<label class="color-opcion"><input type="radio" name="color" value="${c}" ${i===0?'checked':''}> ${c}</label>`).join('')}
+                </div>
+              </div>
+            ` : ''}
+
+            <div class="selector-cantidad">
+              <label><strong>Cantidad:</strong></label>
+              <div class="controles-cantidad">
+                <button type="button" id="btn-menos">-</button>
+                <input type="number" id="cantidad-prod" value="1" min="1">
+                <button type="button" id="btn-mas">+</button>
+              </div>
+            </div>
+
+            <button class="btn-agregar-detalle" data-id="${prod.id}">
+              <i class="fa-solid fa-cart-plus"></i> Agregar al Pedido
+            </button>
+          </div>
+        </div>
+
+        <div class="descripcion-producto">
+          <h3>Descripción</h3>
+          <div>${(prod.descripcion || 'Sin descripción.').replace(/\n/g, '<br>')}</div>
+        </div>
+      `;
+
+      document.getElementById("modal-detalle").style.display = "flex";
+      document.querySelector(".cerrar-modal").onclick = () => {
+        document.getElementById("modal-detalle").style.display = "none";
+      };
+
+      document.querySelectorAll(".miniatura").forEach(mini => {
+        mini.addEventListener("click", () => {
+          document.getElementById("img-mostrada").src = mini.dataset.img;
         });
       });
-    }
 
-    // ==== CONTROLES DE PAGINACIÓN ====
-    function configurarPaginacion() {
-      document.getElementById("btn-anterior").addEventListener("click", () => {
-        if (paginaActual > 1) { paginaActual--; renderizarPagina(); window.scrollTo({top: 300, behavior:'smooth'}); }
+      const cantInput = document.getElementById("cantidad-prod");
+      document.getElementById("btn-menos").addEventListener("click", () => {
+        if (parseInt(cantInput.value) > 1) cantInput.value = parseInt(cantInput.value) - 1;
       });
-      document.getElementById("btn-siguiente").addEventListener("click", () => {
-        const totalPaginas = Math.ceil(productosFiltrados.length / PRODUCTOS_POR_PAGINA);
-        if (paginaActual < totalPaginas) { paginaActual++; renderizarPagina(); window.scrollTo({top: 300, behavior:'smooth'}); }
+      document.getElementById("btn-mas").addEventListener("click", () => {
+        cantInput.value = parseInt(cantInput.value) + 1;
+      });
+
+      document.querySelector(".btn-agregar-detalle").addEventListener("click", () => {
+        const cant = parseInt(cantInput.value) || 1;
+        agregarAlCarrito(prod.id, cant);
+        document.getElementById("modal-detalle").style.display = "none";
       });
     }
 
-    // ==== CARRITO DE COMPRAS ====
-    function agregarAlCarrito(producto) {
-      const existe = carrito.find(i => i.id === producto.id);
-      if (existe) existe.cantidad++;
-      else carrito.push({ ...producto, cantidad: 1 });
-      actualizarCarrito();
-      document.getElementById("modal-carrito").classList.add("abierto");
+    // CARRITO
+    function guardarCarrito() {
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+      renderizarCarrito();
     }
 
-    function actualizarCarrito() {
-      const lista = document.getElementById("lista-carrito");
+    function agregarAlCarrito(id, cantidad = 1) {
+      const prod = todosLosProductos.find(p => p.id === id);
+      if (!prod) return;
+      const existente = carrito.find(i => i.id === id);
+      if (existente) existente.cantidad += cantidad;
+      else carrito.push({ id: prod.id, nombre: prod.nombre, precio: prod.precio, cantidad: cantidad });
+      guardarCarrito();
+    }
+
+    function renderizarCarrito() {
+      const vacio = document.getElementById("carrito-vacio");
+      const items = document.getElementById("carrito-items");
+      const totalEl = document.getElementById("total-carrito");
       if (carrito.length === 0) {
-        lista.innerHTML = "<p>Tu pedido está vacío.</p>";
-        document.getElementById("total-pedido").textContent = "0";
+        vacio.style.display = "block";
+        items.innerHTML = "";
+        totalEl.textContent = "$0";
         return;
       }
+      vacio.style.display = "none";
       let total = 0;
-      lista.innerHTML = carrito.map(item => {
-        const subtotal = parseFloat(item.precio) * item.cantidad;
-        total += subtotal;
+      items.innerHTML = carrito.map(i => {
+        const subt = parseFloat(i.precio) * i.cantidad;
+        total += subt;
         return `
           <div class="item-carrito">
-            <span>${item.nombre}</span>
-            <div class="cantidad-control">
-              <button class="menos" data-id="${item.id}">-</button>
-              <span>${item.cantidad}</span>
-              <button class="mas" data-id="${item.id}">+</button>
+            <span>${i.nombre}</span>
+            <div class="controles">
+              <button data-id="${i.id}" data-accion="menos">-</button>
+              <span>${i.cantidad}</span>
+              <button data-id="${i.id}" data-accion="mas">+</button>
+              <button data-id="${i.id}" data-accion="quitar" class="btn-quitar">×</button>
             </div>
-            <span>$${subtotal.toLocaleString('es-AR')}</span>
+            <span class="subtotal">$${subt.toLocaleString('es-AR')}</span>
           </div>
         `;
       }).join('');
-      document.getElementById("total-pedido").textContent = total.toLocaleString('es-AR');
+      totalEl.textContent = "$" + total.toLocaleString('es-AR');
 
-      document.querySelectorAll(".menos").forEach(b => b.addEventListener("click", () => cambiarCantidad(b.dataset.id, -1)));
-      document.querySelectorAll(".mas").forEach(b => b.addEventListener("click", () => cambiarCantidad(b.dataset.id, 1)));
-    }
-
-    function cambiarCantidad(id, delta) {
-      const item = carrito.find(i => i.id === id);
-      if (!item) return;
-      item.cantidad += delta;
-      if (item.cantidad <= 0) carrito = carrito.filter(i => i.id !== id);
-      actualizarCarrito();
-    }
-
-    // Enviar por WhatsApp + Guardar Pedido en Firestore
-    document.getElementById("btn-enviar-whatsapp").addEventListener("click", async () => {
-      if (carrito.length === 0) return alert("Tu pedido está vacío.");
-
-      const numeroOrden = `ORD-${Date.now()}`;
-      const total = carrito.reduce((sum, i) => sum + parseFloat(i.precio) * i.cantidad, 0);
-      const items = carrito.map(i => ({
-        nombre: i.nombre,
-        cantidad: i.cantidad,
-        precio: parseFloat(i.precio)
-      }));
-
-      // Guardar en Firestore
-      await addDoc(collection(db, "pedidos"), {
-        numeroOrden,
-        productos: items,
-        total,
-        fecha: new Date(),
-        estado: "Pendiente"
-      });
-
-      // Mensaje WhatsApp
-      const texto = `🛒 *NUEVO PEDIDO - Peque Elektro*
-
-📝 *Orden:* ${numeroOrden}
-
-${items.map(i => `✅ ${i.nombre} × ${i.cantidad} → $${(i.precio * i.cantidad).toLocaleString('es-AR')}`).join('\n')}
-
-💰 *TOTAL: $${total.toLocaleString('es-AR')}*
-
-Por favor, avísame cómo continuamos con la compra. ¡Gracias!`;
-
-      window.open(`https://wa.me/5491158144927?text=${encodeURIComponent(texto)}`, "_blank");
-      carrito = [];
-      actualizarCarrito();
-      document.getElementById("modal-carrito").classList.remove("abierto");
-    });
-
-    // Cerrar modal
-    document.querySelector(".cerrar-modal").addEventListener("click", () => {
-      document.getElementById("modal-carrito").classList.remove("abierto");
-    });
-
-    // ==== CARGAR PRESENTACIÓN ====
-    async function cargarSlogan() {
-      const snap = await getDoc(doc(db, "configuracion", "slogan")).catch(() => null);
-      if (snap?.exists()) {
-        const d = snap.data();
-        document.getElementById("slogan-titulo").textContent = d.titulo || "";
-        document.getElementById("slogan-intro").textContent = d.intro || "";
-        document.getElementById("slogan-item1").textContent = d.item1 || "";
-        document.getElementById("slogan-item2").textContent = d.item2 || "";
-        document.getElementById("slogan-item3").textContent = d.item3 || "";
-        document.getElementById("slogan-badge").textContent = d.badge || "";
-      }
-    }
-
-    // ==== CARGAR ENVÍOS ====
-    async function cargarConfigEnvios() {
-      const snap = await getDoc(doc(db, "configuracion", "envios")).catch(() => null);
-      if (snap?.exists()) {
-        const d = snap.data();
-        document.getElementById("envio-puntos").textContent = d.puntos || "";
-        document.getElementById("envio-correo").textContent = d.correo || "";
-        document.getElementById("envio-condicion").textContent = d.condicion || "";
-      }
-    }
-
-    // ==== SISTEMA DE ESTRELLAS PARA RESEÑAS ====
-    function configurarEstrellas() {
-      configurarGrupoEstrellas("estrellas-producto", "calificacion-producto");
-      configurarGrupoEstrellas("estrellas-atencion", "calificacion-atencion");
-    }
-    function configurarGrupoEstrellas(contId, inputId) {
-      const cont = document.getElementById(contId);
-      const input = document.getElementById(inputId);
-      const estrellas = cont.querySelectorAll("i");
-      estrellas.forEach(est => {
-        est.addEventListener("click", () => {
-          const val = parseInt(est.dataset.val);
-          input.value = val;
-          estrellas.forEach((e, idx) => {
-            e.classList.toggle("activa", idx < val);
-          });
+      document.querySelectorAll(".controles button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = carrito.find(i => i.id === btn.dataset.id);
+          if (!item) return;
+          if (btn.dataset.accion === "mas") item.cantidad++;
+          else if (btn.dataset.accion === "menos") {
+            item.cantidad--;
+            if (item.cantidad <= 0) carrito = carrito.filter(i => i.id !== btn.dataset.id);
+          } else if (btn.dataset.accion === "quitar") {
+            carrito = carrito.filter(i => i.id !== btn.dataset.id);
+          }
+          guardarCarrito();
         });
       });
     }
 
-    // ==== CAPTCHA ANTI-ROBOT ====
-    let captchaCorrecto = "";
-    function generarCaptcha() {
-      const a = Math.floor(Math.random() * 9) + 1;
-      const b = Math.floor(Math.random() * 9) + 1;
-      captchaCorrecto = `${a + b}`;
-      document.getElementById("captcha-texto").textContent = `${a} + ${b} = ?`;
-      document.getElementById("captcha-respuesta").value = "";
-    }
+    // ENVIAR PEDIDO
+    document.getElementById("btn-whatsapp").addEventListener("click", async () => {
+      if (carrito.length === 0) return alert("⚠️ Tu carrito está vacío.");
 
-    // ==== ENVIAR RESEÑA ====
-    function configurarFormularioReseña() {
-      document.getElementById("form-reseña").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const resp = document.getElementById("captcha-respuesta").value.trim();
-        if (resp !== captchaCorrecto) {
-          alert("❌ Verificación incorrecta. Intenta nuevamente.");
-          generarCaptcha();
+      let total = carrito.reduce((sum, i) => sum + (parseFloat(i.precio) * i.cantidad), 0);
+      const numeroOrden = 'PEQ-' + Math.floor(100000 + Math.random() * 900000);
+
+      const nuevoPedido = {
+        numeroOrden: numeroOrden,
+        nombre: "Pedido Web",
+        telefono: "",
+        direccion: "",
+        productos: carrito,
+        total: total,
+        estado: "Pendiente",
+        fecha: serverTimestamp()
+      };
+
+      try {
+        await addDoc(collection(db, "pedidos"), nuevoPedido);
+        console.log("✅ Pedido guardado:", numeroOrden);
+      } catch (err) {
+        console.error("❌ Error:", err);
+        alert("⚠️ No se pudo registrar el pedido.");
+        return;
+      }
+
+      let mensaje = `*¡Nuevo Pedido - Peque Elektro!* 🛒\n`;
+      mensaje += `*Número de Orden:* ${numeroOrden}\n\n`;
+      mensaje += `*Productos:*\n`;
+      carrito.forEach(i => {
+        mensaje += `- ${i.nombre} x${i.cantidad} - $${(parseFloat(i.precio) * i.cantidad).toLocaleString('es-AR')}\n`;
+      });
+      mensaje += `\n*Total:* $${total.toLocaleString('es-AR')}`;
+
+      const numeroWhatsApp = "5491134970171";
+      const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+
+      localStorage.removeItem("carrito");
+      carrito = [];
+      renderizarCarrito();
+      window.open(url, "_blank");
+    });
+
+    // ==========================================
+    // LÓGICA DE RESEÑAS Y ANTI-BOT
+    // ==========================================
+
+    async function cargarResenas() {
+      const contenedor = document.getElementById("lista-resenas");
+      try {
+        const q = query(collection(db, "resenas"), orderBy("fecha", "desc"));
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+          contenedor.innerHTML = "<p>Aún no hay opiniones. ¡Anímate a ser el primero!</p>";
           return;
         }
-        const calProd = document.getElementById("calificacion-producto").value;
-        const calAten = document.getElementById("calificacion-atencion").value;
-        const coment = document.getElementById("comentario").value.trim();
-        if (calProd == 0 || calAten == 0) {
-          return alert("Por favor califica con estrellas.");
-        }
-        await addDoc(collection(db, "resenias"), {
-          calificacionProducto: parseInt(calProd),
-          calificacionAtencion: parseInt(calAten),
-          comentario: coment,
-          fecha: new Date()
+
+        let html = "";
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          html += `
+            <div class="item-resena">
+              <h4><i class="fa-solid fa-user"></i> ${data.nombre}</h4>
+              <p>${data.texto}</p>
+            </div>
+          `;
         });
-        document.getElementById("mensaje-exito").style.display = "block";
-        document.getElementById("form-reseña").reset();
-        document.querySelectorAll(".stars i").forEach(e => e.classList.remove("activa"));
-        setTimeout(() => {
-          document.getElementById("mensaje-exito").style.display = "none";
-        }, 4000);
-        generarCaptcha();
-      });
+        contenedor.innerHTML = html;
+
+      } catch (error) {
+        console.error("Error cargando reseñas: ", error);
+        contenedor.innerHTML = "<p>No se pudieron cargar las reseñas en este momento.</p>";
+      }
     }
+
+    // Activar/Desactivar botón según el Checkbox Anti-bot
+    document.getElementById("check-antibot").addEventListener("change", (e) => {
+      document.getElementById("btn-enviar-resena").disabled = !e.target.checked;
+    });
+
+    // Enviar Reseña
+    document.getElementById("form-resena").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const btn = document.getElementById("btn-enviar-resena");
+      const nombreInput = document.getElementById("resena-nombre");
+      const textoInput = document.getElementById("resena-texto");
+      const checkAntibot = document.getElementById("check-antibot");
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+
+      try {
+        await addDoc(collection(db, "resenas"), {
+          nombre: nombreInput.value.trim(),
+          texto: textoInput.value.trim(),
+          fecha: serverTimestamp()
+        });
+        
+        // Limpiar formulario
+        nombreInput.value = "";
+        textoInput.value = "";
+        checkAntibot.checked = false;
+        
+        alert("¡Muchas gracias por tu reseña!");
+        cargarResenas(); // Recargar la lista
+
+      } catch (error) {
+        console.error("Error al guardar reseña: ", error);
+        alert("Hubo un error al enviar tu reseña. Por favor intenta más tarde.");
+      } finally {
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publicar Reseña';
+        btn.disabled = true; // Se mantiene deshabilitado hasta que vuelva a marcar el anti-bot
+      }
+    });
+
+    // INICIALIZACIÓN
+    cargarInfoEnviosTienda();
+    cargarSloganDinamico();
+    cargarProductos();
+    renderizarCarrito();
+    cargarResenas(); // Cargar opiniones al iniciar
+
   </script>
 </body>
 </html>
