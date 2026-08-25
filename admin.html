@@ -264,7 +264,7 @@
       if(confirm("¿Estás seguro de cerrar sesión?")) {
         localStorage.clear();
         alert("🔒 Sesión cerrada.");
-        window.location.href = "index.html"; // O recargar la página actual
+        window.location.href = "index.html"; 
       }
     });
 
@@ -291,6 +291,16 @@
         selectProd.innerHTML += `<option value="${prod.id}">${prod.nombre} - $${prod.precio}</option>`;
       });
       renderizarProductos(todosProductos);
+    });
+
+    // Filtro de búsqueda de productos
+    document.getElementById('buscar-admin').addEventListener('input', (e) => {
+      const texto = e.target.value.toLowerCase();
+      const filtrados = todosProductos.filter(p => 
+        p.nombre.toLowerCase().includes(texto) || 
+        (p.categoria && p.categoria.toLowerCase().includes(texto))
+      );
+      renderizarProductos(filtrados);
     });
 
     function renderizarProductos(lista) {
@@ -499,12 +509,31 @@
     });
 
     const modalProd = document.getElementById('modal-producto');
+    
     document.getElementById('btn-nuevo-producto').addEventListener('click', () => {
       document.getElementById('form-producto').reset();
       document.getElementById('prod-id').value = "";
       document.getElementById('modal-titulo').innerText = "Agregar Producto";
       modalProd.style.display = 'block';
     });
+
+    // Función para abrir el modal al editar un producto (¡ESTA FALTABA!)
+    function abrirModalProd(id) {
+      const prod = todosProductos.find(p => p.id === id);
+      if(!prod) return;
+
+      document.getElementById('prod-id').value = prod.id;
+      document.getElementById('prod-nombre').value = prod.nombre || '';
+      document.getElementById('prod-precio').value = prod.precio || '';
+      document.getElementById('prod-categoria').value = prod.categoria || '';
+      document.getElementById('prod-imagen').value = prod.imagen || prod.imagenes?.[0] || '';
+      document.getElementById('prod-colores').value = (prod.colores || []).join(', ');
+      document.getElementById('prod-descripcion').value = prod.descripcion || '';
+      
+      document.getElementById('modal-titulo').innerText = "Editar Producto";
+      modalProd.style.display = 'block';
+    }
+
     document.getElementById('cerrar-modal').addEventListener('click', () => modalProd.style.display = 'none');
 
     document.getElementById('form-producto').addEventListener('submit', async (e) => {
