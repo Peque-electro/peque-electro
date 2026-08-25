@@ -14,8 +14,8 @@
       --accent: #3b82f6;
       --accent-hover: #2563eb;
       --danger: #ef4444;
+      --danger-hover: #dc2626;
       --success: #10b981;
-      --card-bg: #2dd4bf12;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { display: flex; height: 100vh; background-color: #f1f5f9; color: #334155; }
@@ -42,16 +42,12 @@
     .nav-btn:hover, .nav-btn.active { background-color: var(--bg-dark); color: #fff; }
     
     .auth-area { padding: 20px 15px; border-top: 1px solid #334155; display: flex; flex-direction: column; gap: 10px; }
-    .btn-auth {
-      padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%;
-    }
+    .btn-auth { padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; }
     .btn-logout { background-color: var(--danger); color: white; }
     .btn-pass { background-color: #475569; color: white; }
 
     /* ÁREA PRINCIPAL */
-    .main-content {
-      flex-grow: 1; padding: 30px; overflow-y: auto; background-color: #f8fafc;
-    }
+    .main-content { flex-grow: 1; padding: 30px; overflow-y: auto; background-color: #f8fafc; }
     .section-content { display: none; animation: fadeIn 0.3s ease-in; }
     .section-content.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -64,15 +60,20 @@
     }
     .btn-primary:hover { background-color: var(--accent-hover); }
 
+    .btn-danger {
+      background-color: var(--danger); color: white; padding: 8px 14px; border: none;
+      border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.3s;
+    }
+    .btn-danger:hover { background-color: var(--danger-hover); }
+
     /* TARJETAS Y TABLAS */
     .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 20px; }
-    
     table { width: 100%; border-collapse: collapse; }
-    th, td { padding: 15px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+    th, td { padding: 15px; text-align: left; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
     th { background-color: #f1f5f9; color: #475569; font-weight: 600; }
     
     /* ESTADO PEDIDOS */
-    .select-estado { padding: 8px; border-radius: 5px; border: 1px solid #ccc; font-weight: bold; }
+    .select-estado { padding: 8px; border-radius: 5px; border: 1px solid #ccc; font-weight: bold; margin-bottom: 8px; display: block; }
     .select-estado.pendiente { background: #fef08a; color: #854d0e; }
     .select-estado.proceso { background: #bae6fd; color: #0369a1; }
     .select-estado.enviado { background: #bbf7d0; color: #166534; }
@@ -90,27 +91,16 @@
     /* FORMULARIOS CONFIGURACIÓN */
     .form-group { margin-bottom: 20px; }
     .form-group label { display: block; font-weight: bold; margin-bottom: 8px; color: #475569; }
-    .form-group input, .form-group textarea {
-      width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem;
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; background: #fff;
     }
     .form-group textarea { resize: vertical; min-height: 100px; }
     .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
 
-    /* MODAL DE PRODUCTO (PANTALLA COMPLETA 100%) */
+    /* MODAL GENERAL A PANTALLA COMPLETA */
     .modal { display: none; position: fixed; inset: 0; background: white; z-index: 1000; overflow-y: auto; }
-    .modal-content { 
-      background: white; 
-      width: 100vw; 
-      min-height: 100vh; 
-      padding: 40px; 
-    }
-    
-    /* Contenedor interno del modal para que no se estire de forma fea en monitores gigantes */
-    .modal-inner-container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
+    .modal-content { background: white; width: 100vw; min-height: 100vh; padding: 40px; }
+    .modal-inner-container { max-width: 1200px; margin: 0 auto; }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f1f5f9; padding-bottom: 20px; }
     .modal-header h2 { font-size: 2rem; color: var(--sidebar); }
     .btn-close { background: none; border: none; font-size: 2.5rem; cursor: pointer; color: #64748b; transition: 0.2s; }
@@ -118,8 +108,11 @@
     
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
     .full-width { grid-column: 1 / -1; }
-    .full-width textarea { min-height: 250px; font-size: 1.1rem; } /* ESPACIO AÚN MÁS GRANDE */
+    .full-width textarea { min-height: 200px; font-size: 1.1rem; }
     .btn-guardar-prod { padding: 15px; font-size: 1.2rem; margin-top: 20px; }
+
+    /* TABLA DE ITEMS DENTRO DE EDICIÓN DE ORDEN */
+    .ord-item-row { display: flex; gap: 15px; align-items: center; background: #f8fafc; padding: 12px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #e2e8f0; }
   </style>
 </head>
 <body>
@@ -158,8 +151,8 @@
               <th>Nº Orden</th>
               <th>Fecha</th>
               <th>Cliente / Datos</th>
-              <th>Total</th>
-              <th>Estado</th>
+              <th>Productos & Total</th>
+              <th>Estado & Acciones</th>
             </tr>
           </thead>
           <tbody id="tabla-ordenes">
@@ -176,9 +169,7 @@
         <button class="btn-primary" id="btn-nuevo-producto"><i class="fa-solid fa-plus"></i> Agregar Producto</button>
       </div>
       <input type="text" id="buscar-admin" class="search-bar" placeholder="🔍 Buscar producto por nombre o categoría...">
-      <div class="productos-grid" id="grid-productos-admin">
-        <!-- Los productos cargarán aquí -->
-      </div>
+      <div class="productos-grid" id="grid-productos-admin"></div>
     </section>
 
     <!-- SECCIÓN CONFIGURACIÓN -->
@@ -186,9 +177,7 @@
       <div class="header-section">
         <h1>Configuración de la Tienda</h1>
       </div>
-      
       <div class="config-grid">
-        <!-- Textos de Presentación -->
         <div class="card">
           <h3><i class="fa-solid fa-bullhorn"></i> Texto de Presentación</h3>
           <form id="form-slogan">
@@ -202,7 +191,6 @@
           </form>
         </div>
 
-        <!-- Envíos -->
         <div class="card">
           <h3><i class="fa-solid fa-truck"></i> Configuración de Envíos</h3>
           <form id="form-envios">
@@ -221,50 +209,61 @@
   <div id="modal-producto" class="modal">
     <div class="modal-content">
       <div class="modal-inner-container">
-        
         <div class="modal-header">
           <h2 id="modal-titulo">Agregar Producto</h2>
           <button class="btn-close" id="cerrar-modal">&times;</button>
         </div>
-        
         <form id="form-producto">
           <input type="hidden" id="prod-id">
-          
           <div class="form-grid">
-            <div class="form-group">
-              <label>Nombre del Producto</label>
-              <input type="text" id="prod-nombre" required>
-            </div>
-            
-            <div class="form-group">
-              <label>Precio ($)</label>
-              <input type="number" id="prod-precio" required>
-            </div>
-            
-            <div class="form-group">
-              <label>Categoría</label>
-              <input type="text" id="prod-categoria" required>
-            </div>
-            
-            <div class="form-group">
-              <label>URL de la Imagen Principal</label>
-              <input type="text" id="prod-imagen" placeholder="https://..." required>
-            </div>
-
-            <!-- NUEVO CAMPO DE COLORES -->
-            <div class="form-group full-width">
-              <label>Colores Disponibles (Separados por coma)</label>
-              <input type="text" id="prod-colores" placeholder="Ejemplo: Negro, Blanco, Rojo, Azul (Dejar en blanco si no tiene opciones)">
-            </div>
-            
-            <div class="form-group full-width">
-              <label>Descripción Completa del Producto</label>
-              <textarea id="prod-descripcion" placeholder="Escribe aquí todas las características..."></textarea>
-            </div>
+            <div class="form-group"><label>Nombre del Producto</label><input type="text" id="prod-nombre" required></div>
+            <div class="form-group"><label>Precio ($)</label><input type="number" id="prod-precio" required></div>
+            <div class="form-group"><label>Categoría</label><input type="text" id="prod-categoria" required></div>
+            <div class="form-group"><label>URL de la Imagen Principal</label><input type="text" id="prod-imagen" required></div>
+            <div class="form-group full-width"><label>Colores Disponibles (Separados por coma)</label><input type="text" id="prod-colores" placeholder="Ej: Negro, Blanco, Rojo"></div>
+            <div class="form-group full-width"><label>Descripción Completa</label><textarea id="prod-descripcion"></textarea></div>
           </div>
-          
           <button type="submit" class="btn-primary full-width btn-guardar-prod"><i class="fa-solid fa-save"></i> Guardar Producto</button>
-        
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE EDITAR ORDEN (PANTALLA COMPLETA) -->
+  <div id="modal-orden" class="modal">
+    <div class="modal-content">
+      <div class="modal-inner-container">
+        <div class="modal-header">
+          <h2 id="modal-orden-titulo">Editar Orden</h2>
+          <button class="btn-close" id="cerrar-modal-orden">&times;</button>
+        </div>
+        <form id="form-editar-orden">
+          <input type="hidden" id="ord-id">
+          <div class="form-grid">
+            <div class="form-group"><label>Nombre del Cliente</label><input type="text" id="ord-nombre"></div>
+            <div class="form-group"><label>Teléfono</label><input type="text" id="ord-telefono"></div>
+            <div class="form-group"><label>Dirección / Zona</label><input type="text" id="ord-direccion"></div>
+            <div class="form-group"><label>Notas del Pedido</label><input type="text" id="ord-notas"></div>
+          </div>
+
+          <h3 style="margin: 25px 0 15px; color: var(--sidebar);"><i class="fa-solid fa-cart-shopping"></i> Productos en la Orden</h3>
+          <div id="ord-productos-lista"></div>
+
+          <!-- Selector para agregar un nuevo producto existente al pedido -->
+          <div style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 15px; display: flex; gap: 10px; align-items: flex-end;">
+            <div style="flex-grow: 1;" class="form-group" style="margin-bottom:0;">
+              <label style="font-size: 0.9rem;">Agregar producto del catálogo:</label>
+              <select id="select-agregar-prod">
+                <option value="">Seleccionar producto...</option>
+              </select>
+            </div>
+            <button type="button" id="btn-add-prod-orden" class="btn-primary" style="height: 48px;"><i class="fa-solid fa-plus"></i> Añadir</button>
+          </div>
+
+          <div style="display: flex; gap: 15px; margin-top: 30px;">
+            <button type="submit" class="btn-primary" style="flex: 2; padding: 15px; font-size: 1.1rem;"><i class="fa-solid fa-save"></i> Guardar Cambios</button>
+            <button type="button" id="btn-eliminar-orden" class="btn-danger" style="flex: 1; font-size: 1.1rem;"><i class="fa-solid fa-trash"></i> Eliminar Orden</button>
+          </div>
         </form>
       </div>
     </div>
@@ -287,6 +286,10 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    let todosProductos = [];
+    let todasOrdenes = [];
+    let ordenActualItems = [];
+
     // --- NAVEGACIÓN TABS ---
     document.querySelectorAll('.nav-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -297,68 +300,17 @@
       });
     });
 
-    // --- ÓRDENES EN TIEMPO REAL ---
-    onSnapshot(collection(db, "pedidos"), (snapshot) => {
-      const tbody = document.getElementById("tabla-ordenes");
-      tbody.innerHTML = "";
-      if (snapshot.empty) {
-        tbody.innerHTML = "<tr><td colspan='5'>No hay órdenes pendientes.</td></tr>";
-        return;
-      }
-
-      snapshot.forEach(docSnap => {
-        const data = docSnap.data();
-        const id = docSnap.id;
-        const fecha = data.fecha ? new Date(data.fecha.toDate()).toLocaleString() : "Sin fecha";
-        
-        let prodsHtml = "<ul>";
-        if(data.productos) data.productos.forEach(p => {
-            // Mostrar si el cliente eligió color
-            const colorTxt = p.color ? ` (Color: ${p.color})` : "";
-            prodsHtml += `<li>${p.cantidad}x ${p.nombre}${colorTxt}</li>`;
-        });
-        prodsHtml += "</ul>";
-
-        let colorEstado = "pendiente";
-        if(data.estado === "En Proceso") colorEstado = "proceso";
-        if(data.estado === "Enviado") colorEstado = "enviado";
-
-        tbody.innerHTML += `
-          <tr>
-            <td><strong>${data.numeroOrden || id.substring(0,6)}</strong></td>
-            <td>${fecha}</td>
-            <td>${data.nombre || 'Web'}<br><small>${prodsHtml}</small></td>
-            <td><strong>$${parseFloat(data.total || 0).toLocaleString('es-AR')}</strong></td>
-            <td>
-              <select class="select-estado ${colorEstado}" data-id="${id}">
-                <option value="Pendiente" ${data.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
-                <option value="En Proceso" ${data.estado === 'En Proceso' ? 'selected' : ''}>En Proceso</option>
-                <option value="Enviado" ${data.estado === 'Enviado' ? 'selected' : ''}>Enviado</option>
-              </select>
-            </td>
-          </tr>
-        `;
-      });
-
-      document.querySelectorAll('.select-estado').forEach(select => {
-        select.addEventListener('change', async (e) => {
-          const nuevaClase = e.target.value === 'Pendiente' ? 'pendiente' : e.target.value === 'En Proceso' ? 'proceso' : 'enviado';
-          e.target.className = `select-estado ${nuevaClase}`;
-          
-          try {
-            await updateDoc(doc(db, "pedidos", e.target.dataset.id), { estado: e.target.value });
-          } catch (err) { alert("Error al actualizar estado"); }
-        });
-      });
-    });
-
-    // --- GESTIÓN DE PRODUCTOS ---
-    let todosProductos = [];
-    const modal = document.getElementById('modal-producto');
-    
+    // --- CARGAR PRODUCTOS ---
     onSnapshot(collection(db, "productos"), (snapshot) => {
       todosProductos = [];
-      snapshot.forEach(d => todosProductos.push({ id: d.id, ...d.data() }));
+      const selectProd = document.getElementById('select-agregar-prod');
+      selectProd.innerHTML = '<option value="">Seleccionar producto...</option>';
+      
+      snapshot.forEach(d => {
+        const prod = { id: d.id, ...d.data() };
+        todosProductos.push(prod);
+        selectProd.innerHTML += `<option value="${prod.id}">${prod.nombre} - $${prod.precio}</option>`;
+      });
       renderizarProductos(todosProductos);
     });
 
@@ -379,7 +331,7 @@
         `;
       }).join('');
 
-      document.querySelectorAll('.btn-edit').forEach(btn => btn.addEventListener('click', () => abrirModal(btn.dataset.id)));
+      document.querySelectorAll('.btn-edit').forEach(btn => btn.addEventListener('click', () => abrirModalProd(btn.dataset.id)));
       document.querySelectorAll('.btn-delete').forEach(btn => {
         btn.addEventListener('click', async () => {
           if(confirm("¿Seguro que deseas eliminar este producto?")) {
@@ -389,16 +341,213 @@
       });
     }
 
-    document.getElementById('buscar-admin').addEventListener('input', e => {
-      const txt = e.target.value.toLowerCase();
-      renderizarProductos(todosProductos.filter(p => p.nombre.toLowerCase().includes(txt) || p.categoria.toLowerCase().includes(txt)));
+    // --- GESTIÓN DE ÓRDENES ---
+    onSnapshot(collection(db, "pedidos"), (snapshot) => {
+      todasOrdenes = [];
+      const tbody = document.getElementById("tabla-ordenes");
+      tbody.innerHTML = "";
+      
+      if (snapshot.empty) {
+        tbody.innerHTML = "<tr><td colspan='5'>No hay órdenes pendientes.</td></tr>";
+        return;
+      }
+
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        const id = docSnap.id;
+        todasOrdenes.push({ id, ...data });
+
+        const fecha = data.fecha ? new Date(data.fecha.toDate()).toLocaleString() : "Sin fecha";
+        const clienteNom = data.cliente?.nombre || data.nombre || "Cliente Web";
+        const clienteTel = data.cliente?.telefono || data.telefono || "";
+        const clienteDir = data.cliente?.direccion || data.direccion || "";
+        const clienteNotas = data.cliente?.notas || data.notas || "";
+
+        let prodsHtml = "<ul style='padding-left: 15px;'>";
+        const items = data.productos || data.items || [];
+        items.forEach(p => {
+          const colorTxt = p.color ? ` <span style="color:#64748b;">(Color: ${p.color})</span>` : "";
+          prodsHtml += `<li><b>${p.cantidad}x</b> ${p.nombre}${colorTxt} - $${(p.precio * p.cantidad).toLocaleString('es-AR')}</li>`;
+        });
+        prodsHtml += "</ul>";
+
+        let colorEstado = "pendiente";
+        if(data.estado === "En Proceso") colorEstado = "proceso";
+        if(data.estado === "Enviado") colorEstado = "enviado";
+
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${data.numeroOrden || data.orden || id.substring(0,6)}</strong></td>
+            <td>${fecha}</td>
+            <td>
+              <strong>${clienteNom}</strong><br>
+              📱 ${clienteTel}<br>
+              📍 ${clienteDir}
+              ${clienteNotas ? `<br><small style="color: #d97706;"><b>Nota:</b> ${clienteNotas}</small>` : ""}
+            </td>
+            <td>
+              ${prodsHtml}
+              <div style="margin-top: 8px; font-size: 1.1rem;"><strong>Total: $${parseFloat(data.total || 0).toLocaleString('es-AR')}</strong></div>
+            </td>
+            <td>
+              <select class="select-estado ${colorEstado}" data-id="${id}">
+                <option value="Pendiente" ${data.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+                <option value="En Proceso" ${data.estado === 'En Proceso' ? 'selected' : ''}>En Proceso</option>
+                <option value="Enviado" ${data.estado === 'Enviado' ? 'selected' : ''}>Enviado</option>
+              </select>
+              <div style="display: flex; gap: 8px; margin-top: 5px;">
+                <button class="btn-edit-orden btn-primary" data-id="${id}" style="padding: 6px 12px; font-size: 0.9rem;"><i class="fa-solid fa-pen-to-square"></i> Editar / Ver</button>
+                <button class="btn-del-orden btn-danger" data-id="${id}" style="padding: 6px 12px; font-size: 0.9rem;"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+
+      // Cambiar estado en vivo
+      document.querySelectorAll('.select-estado').forEach(select => {
+        select.addEventListener('change', async (e) => {
+          const nuevaClase = e.target.value === 'Pendiente' ? 'pendiente' : e.target.value === 'En Proceso' ? 'proceso' : 'enviado';
+          e.target.className = `select-estado ${nuevaClase}`;
+          await updateDoc(doc(db, "pedidos", e.target.dataset.id), { estado: e.target.value });
+        });
+      });
+
+      // Botón editar orden
+      document.querySelectorAll('.btn-edit-orden').forEach(btn => {
+        btn.addEventListener('click', () => abrirModalOrden(btn.dataset.id));
+      });
+
+      // Botón eliminar orden directo desde la tabla
+      document.querySelectorAll('.btn-del-orden').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if(confirm("¿Estás seguro de eliminar esta orden por completo?")) {
+            await deleteDoc(doc(db, "pedidos", btn.dataset.id));
+          }
+        });
+      });
     });
 
-    // --- LÓGICA DEL MODAL ---
-    document.getElementById('btn-nuevo-producto').addEventListener('click', () => abrirModal(null));
-    document.getElementById('cerrar-modal').addEventListener('click', () => modal.style.display = 'none');
+    // --- MODAL EDITAR ORDEN ---
+    const modalOrden = document.getElementById('modal-orden');
+    document.getElementById('cerrar-modal-orden').addEventListener('click', () => modalOrden.style.display = 'none');
 
-    function abrirModal(id) {
+    function abrirModalOrden(id) {
+      const orden = todasOrdenes.find(o => o.id === id);
+      if(!orden) return;
+
+      document.getElementById('ord-id').value = orden.id;
+      document.getElementById('ord-nombre').value = orden.cliente?.nombre || orden.nombre || '';
+      document.getElementById('ord-telefono').value = orden.cliente?.telefono || orden.telefono || '';
+      document.getElementById('ord-direccion').value = orden.cliente?.direccion || orden.direccion || '';
+      document.getElementById('ord-notas').value = orden.cliente?.notas || orden.notas || '';
+
+      ordenActualItems = JSON.parse(JSON.stringify(orden.productos || orden.items || []));
+      renderizarItemsOrdenModal();
+
+      modalOrden.style.display = 'block';
+    }
+
+    function renderizarItemsOrdenModal() {
+      const contenedor = document.getElementById('ord-productos-lista');
+      if(ordenActualItems.length === 0) {
+        contenedor.innerHTML = "<p style='color: #64748b;'>No hay productos en este pedido.</p>";
+        return;
+      }
+
+      contenedor.innerHTML = ordenActualItems.map((item, index) => `
+        <div class="ord-item-row">
+          <div style="flex-grow: 2;"><strong>${item.nombre}</strong><br><small>Color: ${item.color || 'Ninguno'}</small></div>
+          <div style="flex-grow: 1;">Precio: <strong>$${parseFloat(item.precio).toLocaleString('es-AR')}</strong></div>
+          <div style="width: 90px;">
+            <label style="font-size:0.8rem;">Cant:</label>
+            <input type="number" min="1" value="${item.cantidad}" class="input-cant-item" data-index="${index}" style="padding: 5px;">
+          </div>
+          <button type="button" class="btn-danger btn-quitar-item" data-index="${index}" style="padding: 6px 10px;"><i class="fa-solid xmark fa-trash"></i></button>
+        </div>
+      `).join('');
+
+      // Eventos para cambiar cantidades
+      document.querySelectorAll('.input-cant-item').forEach(input => {
+        input.addEventListener('change', (e) => {
+          const idx = e.target.dataset.index;
+          ordenActualItems[idx].cantidad = parseInt(e.target.value) || 1;
+        });
+      });
+
+      // Eventos para quitar producto del pedido
+      document.querySelectorAll('.btn-quitar-item').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = e.currentTarget.dataset.index;
+          ordenActualItems.splice(idx, 1);
+          renderizarItemsOrdenModal();
+        });
+      });
+    }
+
+    // Agregar producto desde el selector al modal de orden
+    document.getElementById('btn-add-prod-orden').addEventListener('click', () => {
+      const prodId = document.getElementById('select-agregar-prod').value;
+      if(!prodId) return alert("Selecciona un producto del catálogo primero.");
+      
+      const productoOriginal = todosProductos.find(p => p.id === prodId);
+      if(productoOriginal) {
+        ordenActualItems.push({
+          nombre: productoOriginal.nombre,
+          precio: parseFloat(productoOriginal.precio),
+          cantidad: 1,
+          color: productoOriginal.colores?.[0] || "Único"
+        });
+        renderizarItemsOrdenModal();
+      }
+    });
+
+    // Guardar cambios de la orden editada
+    document.getElementById('form-editar-orden').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('ord-id').value;
+      
+      const nuevoTotal = ordenActualItems.reduce((acc, item) => acc + (parseFloat(item.precio) * parseInt(item.cantidad)), 0);
+
+      const datosActualizados = {
+        "cliente.nombre": document.getElementById('ord-nombre').value,
+        "cliente.telefono": document.getElementById('ord-telefono').value,
+        "cliente.direccion": document.getElementById('ord-direccion').value,
+        "cliente.notas": document.getElementById('ord-notas').value,
+        productos: ordenActualItems,
+        items: ordenActualItems,
+        total: nuevoTotal
+      };
+
+      try {
+        await updateDoc(doc(db, "pedidos", id), datosActualizados);
+        modalOrden.style.display = 'none';
+        alert("✅ Orden actualizada exitosamente.");
+      } catch (err) {
+        alert("❌ Error al actualizar la orden: " + err);
+      }
+    });
+
+    // Eliminar orden desde el modal
+    document.getElementById('btn-eliminar-orden').addEventListener('click', async () => {
+      const id = document.getElementById('ord-id').value;
+      if(confirm("¿Estás 100% seguro de eliminar esta orden por completo?")) {
+        try {
+          await deleteDoc(doc(db, "pedidos", id));
+          modalOrden.style.display = 'none';
+          alert("🗑️ Orden eliminada.");
+        } catch (err) {
+          alert("❌ Error al eliminar: " + err);
+        }
+      }
+    });
+
+    // --- GESTIÓN DE PRODUCTOS (MODAL) ---
+    const modalProd = document.getElementById('modal-producto');
+    document.getElementById('btn-nuevo-producto').addEventListener('click', () => abrirModalProd(null));
+    document.getElementById('cerrar-modal').addEventListener('click', () => modalProd.style.display = 'none');
+
+    function abrirModalProd(id) {
       document.getElementById('form-producto').reset();
       document.getElementById('prod-id').value = "";
       document.getElementById('modal-titulo').innerText = "Agregar Nuevo Producto";
@@ -412,45 +561,33 @@
         document.getElementById('prod-categoria').value = p.categoria || '';
         document.getElementById('prod-imagen').value = p.imagenes?.[0] || p.imagen || '';
         document.getElementById('prod-descripcion').value = p.descripcion || '';
-        
-        // Cargar colores si existen
-        if (p.colores && Array.isArray(p.colores)) {
-            document.getElementById('prod-colores').value = p.colores.join(', ');
-        } else {
-            document.getElementById('prod-colores').value = '';
-        }
+        document.getElementById('prod-colores').value = p.colores ? p.colores.join(', ') : '';
       }
-      modal.style.display = 'block'; // Muestra el modal full screen
+      modalProd.style.display = 'block';
     }
 
     document.getElementById('form-producto').addEventListener('submit', async (e) => {
       e.preventDefault();
-      
       const id = document.getElementById('prod-id').value;
       const textoColores = document.getElementById('prod-colores').value;
-      
-      // Convertir el texto de colores separado por comas en una lista (array)
-      const arrayColores = textoColores 
-          ? textoColores.split(',').map(c => c.trim()).filter(c => c !== "") 
-          : [];
+      const arrayColores = textoColores ? textoColores.split(',').map(c => c.trim()).filter(c => c !== "") : [];
 
       const data = {
         nombre: document.getElementById('prod-nombre').value,
         precio: document.getElementById('prod-precio').value,
         categoria: document.getElementById('prod-categoria').value,
         imagen: document.getElementById('prod-imagen').value,
-        imagenes: [document.getElementById('prod-imagen').value], 
+        imagenes: [document.getElementById('prod-imagen').value],
         descripcion: document.getElementById('prod-descripcion').value,
-        colores: arrayColores // Guardamos los colores
+        colores: arrayColores
       };
 
       try {
         if(id) await updateDoc(doc(db, "productos", id), data);
         else await addDoc(collection(db, "productos"), data);
-        
-        modal.style.display = 'none';
-        alert("Producto guardado exitosamente");
-      } catch (err) { alert("Error al guardar: " + err); }
+        modalProd.style.display = 'none';
+        alert("✅ Producto guardado exitosamente");
+      } catch (err) { alert("❌ Error: " + err); }
     });
 
     // --- CONFIGURACIÓN ---
@@ -485,7 +622,7 @@
         item3: document.getElementById('slog-item3').value,
         badge: document.getElementById('slog-badge').value
       }, { merge: true });
-      alert("Textos de presentación guardados.");
+      alert("✅ Textos de presentación guardados.");
     });
 
     document.getElementById('form-envios').addEventListener('submit', async (e) => {
@@ -495,9 +632,8 @@
         correo: document.getElementById('env-correo').value,
         condicion: document.getElementById('env-condicion').value
       }, { merge: true });
-      alert("Configuración de envíos guardada.");
+      alert("✅ Configuración de envíos guardada.");
     });
-
   </script>
 </body>
 </html>
