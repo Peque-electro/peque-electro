@@ -49,7 +49,6 @@
       font-weight: bold;
       cursor: pointer;
     }
-
     /* Estilos del Panel */
     .admin-header-actions {
       display: flex;
@@ -83,11 +82,20 @@
     .estado-Proceso { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #0284c7; }
     .estado-Enviado { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid #9333ea; }
     .estado-Terminado { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
+    .datos-cliente {
+      background: #0f172a;
+      padding: 10px 12px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+    .datos-cliente strong { color: #38bdf8; }
   </style>
 </head>
 <body>
-
-  <!-- PANTALLA DE ACCESO/LOGIN DE SEGURIDAD -->
+  <!-- PANTALLA DE ACCESO/LOGIN -->
   <div id="login-overlay">
     <div class="login-card">
       <img src="logo.jpg" alt="Logo" style="max-width: 100px; margin-bottom: 15px; border-radius: 50%;">
@@ -97,14 +105,13 @@
         <input type="password" id="login-password" placeholder="Contraseña" required>
         <button type="submit"><i class="fa-solid fa-lock"></i> Iniciar Sesión</button>
       </form>
-      <!-- AQUÍ ESTÁ EL NUEVO BOTÓN DE RECUPERAR CONTRASEÑA -->
       <a href="#" id="btn-olvido-pass-login" style="color: #38bdf8; display: block; margin-top: 15px; font-size: 13px; text-decoration: underline; cursor: pointer; text-align: center;">
         ¿Olvidaste tu contraseña?
       </a>
     </div>
   </div>
 
-  <!-- CONTENIDO PROTEGIDO DEL PANEL (Oculto hasta autenticarse) -->
+  <!-- CONTENIDO PROTEGIDO -->
   <div id="admin-content" style="display: none;">
     <header class="banner-header">
       <img src="logo.jpg" alt="Peque Elektro" class="banner-img">
@@ -116,7 +123,7 @@
         <h1 style="color: #38bdf8; margin: 0; font-size: 24px;">
           <i class="fa-solid fa-user-gear"></i> Panel Administrador
         </h1>
-        <div style="display: flex; gap: 10px;">
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
           <button id="btn-cambiar-pass" class="btn-action" style="background: #eab308; color: #0f172a;">
             <i class="fa-solid fa-key"></i> Restablecer Clave
           </button>
@@ -163,13 +170,13 @@
           </div>
           <div style="margin-bottom: 15px;">
             <label style="color: #38bdf8; font-size: 13px; font-weight: bold;">Colores Disponibles:</label>
-            <input type="text" id="prod-colores" placeholder="Ej: Azul, Rosa, Negro" style="width: 100%;">
+            <input type="text" id="prod-colores" placeholder="Ej: Azul, Rosa, Negro" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box;">
           </div>
           <div style="margin-bottom: 15px;">
-            <label style="color: #38bdf8; font-size: 13px; font-weight: bold;">Descripción Completa y Ficha Técnica:</label>
-            <textarea id="prod-descripcion" placeholder="Escribe o pega las especificaciones..." style="height: 180px; width: 100%; font-family: inherit; white-space: pre-wrap; line-height: 1.5; padding: 10px; border-radius: 8px; background: #0f172a; color: white; border: 1px solid #334155;"></textarea>
+            <label style="color: #38bdf8; font-size: 13px; font-weight: bold;">Descripción Completa:</label>
+            <textarea id="prod-descripcion" placeholder="Escribe las especificaciones..." style="height: 180px; width: 100%; font-family: inherit; white-space: pre-wrap; line-height: 1.5; padding: 10px; border-radius: 8px; background: #0f172a; color: white; border: 1px solid #334155; box-sizing: border-box;"></textarea>
           </div>
-          <div style="display: flex; gap: 10px;">
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
             <button type="submit" class="btn-submit-review"><i class="fa-solid fa-save"></i> Guardar Producto</button>
             <button type="button" id="btn-cancelar-edit" class="btn-submit-review" style="background: #64748b; display: none;">Cancelar</button>
           </div>
@@ -180,7 +187,7 @@
       <section style="margin-bottom: 40px;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;">
           <h2 class="section-title" style="margin: 0;"><i class="fa-solid fa-list"></i> Productos en Catálogo</h2>
-          <input type="text" id="buscar-admin" placeholder="Buscar producto..." style="padding: 10px; border-radius: 20px; border: 1px solid #334155; background: #1e293b; color: white; min-width: 250px;">
+          <input type="text" id="buscar-admin" placeholder="Buscar producto..." style="padding: 10px 15px; border-radius: 20px; border: 1px solid #334155; background: #1e293b; color: white; min-width: 250px;">
         </div>
         <div id="grid-admin-productos" class="products-grid"></div>
       </section>
@@ -189,14 +196,14 @@
       <section class="add-review-box" style="margin-bottom: 30px;">
         <h3><i class="fa-solid fa-bullhorn"></i> Editar Texto de Presentación</h3>
         <form id="form-slogan">
-          <input type="text" id="slogan-titulo" placeholder="Título" required style="width: 100%; margin-bottom: 8px;">
-          <input type="text" id="slogan-intro" placeholder="Introducción" required style="width: 100%; margin-bottom: 8px;">
+          <input type="text" id="slogan-titulo" placeholder="Título" required style="width: 100%; margin-bottom: 8px; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box;">
+          <input type="text" id="slogan-intro" placeholder="Introducción" required style="width: 100%; margin-bottom: 8px; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box;">
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; margin-bottom: 8px;">
-            <input type="text" id="slogan-item1" placeholder="Item 1">
-            <input type="text" id="slogan-item2" placeholder="Item 2">
-            <input type="text" id="slogan-item3" placeholder="Item 3">
+            <input type="text" id="slogan-item1" placeholder="Item 1" style="padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box;">
+            <input type="text" id="slogan-item2" placeholder="Item 2" style="padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box;">
+            <input type="text" id="slogan-item3" placeholder="Item 3" style="padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box;">
           </div>
-          <input type="text" id="slogan-badge" placeholder="Badge/Botón" style="width: 100%; margin-bottom: 12px;">
+          <input type="text" id="slogan-badge" placeholder="Badge/Botón" style="width: 100%; margin-bottom: 12px; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box;">
           <button type="submit" class="btn-submit-review" style="background: #0284c7;">Guardar Presentación</button>
         </form>
       </section>
@@ -205,21 +212,21 @@
       <section class="add-review-box" style="margin-bottom: 30px;">
         <h3><i class="fa-solid fa-truck-fast"></i> Configuración de Envíos</h3>
         <form id="form-envios">
-          <input type="text" id="envio-puntos" placeholder="Puntos de Encuentro" required style="width: 100%; margin-bottom: 8px;">
-          <input type="text" id="envio-correo" placeholder="Envíos por Correo" required style="width: 100%; margin-bottom: 8px;">
-          <input type="text" id="envio-condicion" placeholder="Condición de Entrega" required style="width: 100%; margin-bottom: 12px;">
+          <input type="text" id="envio-puntos" placeholder="Puntos de Encuentro" required style="width: 100%; margin-bottom: 8px; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box;">
+          <input type="text" id="envio-correo" placeholder="Envíos por Correo" required style="width: 100%; margin-bottom: 8px; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box;">
+          <input type="text" id="envio-condicion" placeholder="Condición de Entrega" required style="width: 100%; margin-bottom: 12px; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box;">
           <button type="submit" class="btn-submit-review" style="background: #22c55e;">Guardar Envíos</button>
         </form>
       </section>
     </main>
   </div>
 
-  <!-- SCRIPT DE AUTENTICACIÓN Y LÓGICA -->
+  <!-- SCRIPT PRINCIPAL -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc, getDoc, setDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
+    
     const firebaseConfig = {
       apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
       authDomain: "peque-elektro.firebaseapp.com",
@@ -228,37 +235,33 @@
       messagingSenderId: "873169424486",
       appId: "1:873169424486:web:e9f77cb2052aa06b3b9da7"
     };
-
+    
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
-
     let productos = [];
     let pedidosGlobales = [];
 
-    // --- PROTECCIÓN Y MANEJO DE SESIÓN ---
+    // --- PROTECCIÓN DE SESIÓN ---
     const loginOverlay = document.getElementById("login-overlay");
     const adminContent = document.getElementById("admin-content");
-
+    
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // Usuario autenticado correctamente
         loginOverlay.style.display = "none";
         adminContent.style.display = "block";
         cargarDatosIniciales();
       } else {
-        // Usuario no autenticado: bloquea la pantalla
         loginOverlay.style.display = "flex";
         adminContent.style.display = "none";
       }
     });
 
-    // Formulario de Login
+    // LOGIN
     document.getElementById("form-login").addEventListener("submit", async (e) => {
       e.preventDefault();
       const email = document.getElementById("login-email").value.trim();
       const pass = document.getElementById("login-password").value.trim();
-
       try {
         await signInWithEmailAndPassword(auth, email, pass);
       } catch (err) {
@@ -266,100 +269,94 @@
       }
     });
 
-    // --- NUEVO: FUNCIÓN PARA RECUPERAR CONTRASEÑA DESDE EL LOGIN ---
+    // RECUPERAR CONTRASEÑA
     document.getElementById("btn-olvido-pass-login").addEventListener("click", async (e) => {
       e.preventDefault();
-      const email = prompt("Ingresa el correo del administrador para enviarte un enlace de recuperación:");
+      const email = prompt("Ingresa el correo del administrador:");
       if (email) {
         try {
           await sendPasswordResetEmail(auth, email.trim());
-          alert("✅ ¡Listo! Revisa tu bandeja de entrada o la carpeta de SPAM para restablecer tu contraseña.");
+          alert("✅ Revisa tu bandeja de entrada o SPAM.");
         } catch (err) {
           alert("❌ Error: " + err.message);
         }
       }
     });
 
-    // Cerrar Sesión
+    // CERRAR SESIÓN
     document.getElementById("btn-cerrar-sesion").addEventListener("click", () => {
       signOut(auth);
     });
 
-    // Restablecer Contraseña desde adentro del panel
+    // CAMBIAR CONTRASEÑA
     document.getElementById("btn-cambiar-pass").addEventListener("click", async () => {
-      const email = prompt("Ingresa tu correo para recibir el enlace de recuperación:");
+      const email = prompt("Ingresa tu correo:");
       if (email) {
         try {
           await sendPasswordResetEmail(auth, email.trim());
-          alert("✅ Correo enviado. Revisa tu bandeja de entrada o SPAM.");
+          alert("✅ Correo enviado. Revisa tu bandeja.");
         } catch (err) {
           alert("❌ Error: " + err.message);
         }
       }
     });
 
-    // FORMATO AL PEGAR EN DESCRIPCIÓN
-    const txtDescripcion = document.getElementById("prod-descripcion");
-    txtDescripcion.addEventListener("paste", (e) => {
-      e.preventDefault();
-      let text = (e.clipboardData || window.clipboardData).getData("text/plain");
-      text = text
-        .replace(/\[\d+(?:,\s*\d+)*\]/g, '')
-        .replace(/"\s*/g, '"')
-        .replace(/([.!?])(?=[A-ZÁÉÍÓÚÑ"📐\u25CF\u2022])/g, '$1\n\n')
-        .replace(/(FICHA TÉCNICA|ESPECIFICACIONES|Línea:)/gi, '\n\n$1')
-        .replace(/([a-zA-ZáéíóúñÁÉÍÓÚÑ0-9\)]):(?=[A-ZÁÉÍÓÚÑa-zA-z])/g, '$1:\n')
-        .replace(/(📐|\u2022|\u25CF)/g, '\n\n$1')
-        .replace(/\n{3,}/g, '\n\n')
-        .trim();
-
-      const start = txtDescripcion.selectionStart;
-      const end = txtDescripcion.selectionEnd;
-      txtDescripcion.value = txtDescripcion.value.substring(0, start) + text + txtDescripcion.value.substring(end);
-    });
-
+    // CARGAR DATOS INICIALES
     function cargarDatosIniciales() {
       cargarSlogan();
       cargarConfigEnvios();
       cargarProductos().then(() => window.cargarPedidos());
     }
 
-    // --- LÓGICA DEL PANEL DE ADMINISTRACIÓN ---
+    // ==============================================
+    // GESTIÓN DE PEDIDOS (CORREGIDO Y MEJORADO)
+    // ==============================================
     window.cargarPedidos = async () => {
       const contenedor = document.getElementById("lista-pedidos");
       try {
-        const q = query(collection(db, "pedidos"), orderBy("timestamp", "desc"));
+        // ✅ AHORA ORDENA POR "fecha" que es el campo que realmente se guarda
+        const q = query(collection(db, "pedidos"), orderBy("fecha", "desc"));
         const snap = await getDocs(q);
-
+        
         if (snap.empty) {
           contenedor.innerHTML = '<p style="text-align:center; color:#94a3b8;">No hay órdenes registradas.</p>';
           return;
         }
-
+        
         pedidosGlobales = [];
         let html = "";
         
         snap.forEach(d => {
           const ped = { id: d.id, ...d.data() };
           pedidosGlobales.push(ped);
+          
           const estadoActual = ped.estado || "Pendiente";
           const claseBadge = estadoActual === "En Proceso" ? "estado-Proceso" : `estado-${estadoActual}`;
-
-          let itemsList = (ped.items || []).map((item, idx) => `
+          
+          // ✅ Mostrar datos del cliente
+          const datosCliente = ped.cliente || {};
+          
+          // ✅ Usar "items" que es lo que se guarda
+          const itemsPedido = ped.items || ped.productos || [];
+          
+          let itemsList = itemsPedido.map((item, idx) => `
             <li style="display:flex; justify-content:space-between; margin-bottom:6px; background:#0f172a; padding:8px 12px; border-radius:6px;">
               <span><strong>${item.nombre}</strong> x${item.cantidad} - $${(parseFloat(item.precio) * item.cantidad).toLocaleString('es-AR')}</span>
               <button onclick="eliminarItemOrden('${ped.id}', ${idx})" style="background:#ef4444; color:white; border:none; padding:2px 6px; border-radius:4px; cursor:pointer;">Quitar</button>
             </li>
           `).join('');
-
+          
           let opcionesProductos = productos.map(p => `<option value="${p.id}">${p.nombre} - $${p.precio}</option>`).join('');
-
+          
+          // ✅ Fecha legible
+          const fechaLegible = ped.fecha ? new Date(ped.fecha.toDate()).toLocaleString('es-AR') : 'Sin fecha';
+          
           html += `
             <div style="background: #1e293b; border: 1px solid #334155; padding: 20px; border-radius: 12px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 12px; margin-bottom: 15px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 12px; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
                 <div>
-                  <span style="color: #38bdf8; font-weight: bold; font-size: 17px;"><i class="fa-solid fa-receipt"></i> ${ped.orden || 'Orden de Trabajo'}</span>
-                  <span style="color: #94a3b8; font-size: 13px; margin-left: 10px;">(${ped.fecha || ''})</span>
+                  <span style="color: #38bdf8; font-weight: bold; font-size: 17px;"><i class="fa-solid fa-receipt"></i> ${ped.orden || ped.numeroOrden || 'Orden de Trabajo'}</span>
+                  <span style="color: #94a3b8; font-size: 13px; margin-left: 10px;">(${fechaLegible})</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:10px;">
                   <span class="badge-estado ${claseBadge}">${estadoActual}</span>
@@ -371,15 +368,26 @@
                   </select>
                 </div>
               </div>
+              
+              <!-- ✅ DATOS DEL CLIENTE -->
+              <div class="datos-cliente">
+                <strong><i class="fa-solid fa-user"></i> Cliente:</strong> ${datosCliente.nombre || 'No especificado'} | 
+                <strong><i class="fa-solid fa-phone"></i> Tel:</strong> ${datosCliente.telefono || 'No especificado'}<br>
+                <strong><i class="fa-solid fa-location-dot"></i> Dirección:</strong> ${datosCliente.direccion || 'No especificada'}
+                ${datosCliente.notas ? `<br><strong><i class="fa-solid fa-note-sticky"></i> Notas:</strong> ${datosCliente.notas}` : ''}
+              </div>
+              
               <ul style="list-style:none; padding:0; margin-bottom:15px;">${itemsList}</ul>
-              <div style="display:flex; gap:10px; margin-bottom:15px; background:#0f172a; padding:10px; border-radius:8px;">
-                <select id="select-prod-${ped.id}" style="flex:1; padding:8px; border-radius:6px; background:#1e293b; color:white; border:1px solid #334155;">
+              
+              <div style="display:flex; gap:10px; margin-bottom:15px; background:#0f172a; padding:10px; border-radius:8px; flex-wrap: wrap;">
+                <select id="select-prod-${ped.id}" style="flex:1; min-width: 200px; padding:8px; border-radius:6px; background:#1e293b; color:white; border:1px solid #334155;">
                   <option value="">-- Seleccionar producto --</option>
                   ${opcionesProductos}
                 </select>
                 <button onclick="agregarProductoSeleccionado('${ped.id}')" style="background:#22c55e; color:white; border:none; padding:8px 15px; border-radius:6px; font-weight:bold; cursor:pointer;">Agregar</button>
               </div>
-              <div style="display:flex; justify-content:space-between; align-items:center;">
+              
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 10px;">
                 <div style="color: #22c55e; font-weight: bold; font-size: 18px;">Total: $${parseFloat(ped.total || 0).toLocaleString('es-AR')}</div>
                 <button onclick="eliminarOrden('${ped.id}')" style="background:#b91c1c; color:white; border:none; padding:7px 12px; border-radius:6px; cursor:pointer;">Eliminar Orden</button>
               </div>
@@ -387,9 +395,13 @@
           `;
         });
         contenedor.innerHTML = html;
-      } catch (err) { console.error(err); }
+      } catch (err) { 
+        console.error(err); 
+        contenedor.innerHTML = '<p style="text-align:center; color:#ef4444;">Error al cargar pedidos.</p>';
+      }
     };
 
+    // FUNCIONES DE GESTIÓN DE PEDIDOS
     window.agregarProductoSeleccionado = async (pedId) => {
       const select = document.getElementById(`select-prod-${pedId}`);
       const prodId = select.value;
@@ -407,7 +419,6 @@
 
     window.cambiarEstadoOrden = async (id, nuevoEstado) => {
       await updateDoc(doc(db, "pedidos", id), { estado: nuevoEstado });
-      window.cargarPedidos();
     };
 
     window.eliminarItemOrden = async (pedId, itemIdx) => {
@@ -426,6 +437,9 @@
       }
     };
 
+    // ==============================================
+    // GESTIÓN DE PRODUCTOS
+    // ==============================================
     async function cargarProductos() {
       const snap = await getDocs(collection(db, "productos"));
       productos = [];
@@ -477,7 +491,6 @@
           document.getElementById("prod-img4").value.trim()
         ].filter(Boolean)
       };
-
       if (id) {
         await updateDoc(doc(db, "productos", id), data);
       } else {
@@ -485,6 +498,7 @@
       }
       resetForm();
       cargarProductos();
+      alert("✅ Producto guardado correctamente.");
     });
 
     window.editarProducto = (id) => {
@@ -520,6 +534,9 @@
       document.getElementById("btn-cancelar-edit").style.display = "none";
     }
 
+    // ==============================================
+    // CONFIGURACIÓN (ESLOGAN Y ENVÍOS)
+    // ==============================================
     async function cargarSlogan() {
       const snap = await getDoc(doc(db, "configuracion", "slogan"));
       if (snap.exists()) {
