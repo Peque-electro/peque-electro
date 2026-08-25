@@ -329,8 +329,8 @@
       });
     }
 
-    // ==================================================
-    // ENVIAR PEDIDO SIN FORMULARIO → DIRECTO A WHATSAPP
+       // ==================================================
+    // ENVIAR PEDIDO - ESTRUCTURA ORIGINAL COMPATIBLE CON TU PANEL
     // ==================================================
     document.getElementById("btn-whatsapp").addEventListener("click", async () => {
       if (carrito.length === 0) return alert("⚠️ Tu carrito está vacío.");
@@ -338,34 +338,35 @@
       let total = carrito.reduce((sum, i) => sum + (parseFloat(i.precio) * i.cantidad), 0);
       const numeroOrden = 'PEQ-' + Math.floor(100000 + Math.random() * 900000);
 
-      // ✅ GUARDAR PEDIDO EN FIRESTORE (SOLO AGREGA, NO MODIFICA TU ADMIN)
+      // ✅ ESTRUCTURA ORIGINAL QUE TU PANEL DE ADMIN LEE SIN CAMBIOS
       const nuevoPedido = {
-        orden: numeroOrden,
         numeroOrden: numeroOrden,
-        cliente: { nombre: "Pedido Web", telefono: "", direccion: "", notas: "", metodoPago: "Efectivo" },
-        items: carrito,
+        nombre: "Pedido Web",
+        telefono: "",
+        direccion: "",
         productos: carrito,
         total: total,
         estado: "Pendiente",
-        fecha: serverTimestamp(),
-        createdAt: serverTimestamp()
+        fecha: serverTimestamp()
       };
 
       try {
         await addDoc(collection(db, "pedidos"), nuevoPedido);
-        console.log("✅ Pedido guardado en Firestore");
+        console.log("✅ Pedido guardado:", numeroOrden);
       } catch (err) {
-        console.error("❌ Error al guardar:", err);
+        console.error("❌ Error:", err);
+        alert("⚠️ No se pudo registrar el pedido.");
+        return;
       }
 
-      // ✅ MENSAJE DIRECTO A WHATSAPP SIN PREGUNTAR NADA
+      // ✅ MENSAJE A WHATSAPP CON NÚMERO DE ORDEN
       let mensaje = `*¡Nuevo Pedido - Peque Elektro!* 🛒\n`;
-      mensaje += `*Nro de Orden:* ${numeroOrden}\n\n`;
-      mensaje += `*Detalle de Productos:*\n`;
+      mensaje += `*Número de Orden:* ${numeroOrden}\n\n`;
+      mensaje += `*Productos:*\n`;
       carrito.forEach(i => {
         mensaje += `- ${i.nombre} x${i.cantidad} - $${(parseFloat(i.precio) * i.cantidad).toLocaleString('es-AR')}\n`;
       });
-      mensaje += `\n*Total a Pagar:* $${total.toLocaleString('es-AR')}`;
+      mensaje += `\n*Total:* $${total.toLocaleString('es-AR')}`;
 
       const numeroWhatsApp = "5491134970171";
       const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
@@ -375,18 +376,3 @@
       renderizarCarrito();
       window.open(url, "_blank");
     });
-
-    // BUSCADOR
-    document.getElementById("buscador").addEventListener("input", e => {
-      const t = e.target.value.toLowerCase().trim();
-      renderizarProductos(todosLosProductos.filter(p => p.nombre.toLowerCase().includes(t)));
-    });
-
-    // INICIO
-    cargarInfoEnviosTienda();
-    cargarSloganDinamico();
-    cargarProductos();
-    renderizarCarrito();
-  </script>
-</body>
-</html>
