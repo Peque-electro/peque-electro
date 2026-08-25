@@ -1,7 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, doc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// Tu configuración de Firebase
+
+// === CONFIGURACIÓN DE FIREBASE ===
 const firebaseConfig = {
     apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
     authDomain: "peque-elektro.firebaseapp.com",
@@ -14,7 +15,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// --- CARGAR INFORMACIÓN DE ENVÍOS DESDE FIREBASE ---
+
+// === CARGAR INFORMACIÓN DE ENVÍOS ===
 async function cargarInfoEnviosTienda() {
     try {
         const docRef = doc(db, "configuracion", "envios");
@@ -34,21 +36,22 @@ async function cargarInfoEnviosTienda() {
 }
 cargarInfoEnviosTienda();
 
-// --- CARGAR ESLOGAN DESDE FIREBASE ---
+
+// === CARGAR ESLOGAN DINÁMICO ===
 async function cargarSloganDinamico() {
     try {
         const snap = await getDoc(doc(db, "configuracion", "slogan"));
         if (snap.exists()) {
             const d = snap.data();
-            if (d.titulo) document.querySelector(".slogan-container h2").innerText = d.titulo;
-            if (d.intro) document.querySelector(".slogan-intro").innerText = d.intro;
-            
-            const items = document.querySelectorAll(".slogan-list li");
-            if (d.item1 && items[0]) items[0].innerHTML = `<i class="fa-solid fa-check"></i> ${d.item1}`;
-            if (d.item2 && items[1]) items[1].innerHTML = `<i class="fa-solid fa-check"></i> ${d.item2}`;
-            if (d.item3 && items[2]) items[2].innerHTML = `<i class="fa-solid fa-check"></i> ${d.item3}`;
-            
-            if (d.badge) document.querySelector(".slogan-badge").innerText = d.badge;
+            if (d.titulo) document.querySelector(".hero-title").innerText = d.titulo;
+            if (d.intro) document.querySelector(".hero-intro").innerText = d.intro;
+
+            const items = document.querySelectorAll(".hero-items");
+            if (d.item1 && items[0]) items[0].innerHTML = `<span class="hero-item-tag"><i class="fa-solid fa-check"></i> ${d.item1}</span>`;
+            if (d.item2 && items[1]) items[1].innerHTML = `<span class="hero-item-tag"><i class="fa-solid fa-check"></i> ${d.item2}</span>`;
+            if (d.item3 && items[2]) items[2].innerHTML = `<span class="hero-item-tag"><i class="fa-solid fa-check"></i> ${d.item3}</span>`;
+
+            if (d.badge) document.querySelector(".hero-badge").innerText = d.badge;
         }
     } catch (err) {
         console.error("Error al cargar eslogan:", err);
@@ -56,19 +59,18 @@ async function cargarSloganDinamico() {
 }
 cargarSloganDinamico();
 
-// =========================================================================
-// --- ENVIAR PEDIDO POR WHATSAPP Y GUARDAR EN FIRESTORE ---
-// =========================================================================
-window.enviarPedidoWhatsApp = async function() {
+
+// === ENVIAR PEDIDO POR WHATSAPP Y GUARDAR EN FIRESTORE ===
+window.enviarPedidoWhatsApp = async function () {
     try {
         const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-        
+
         if (carrito.length === 0) {
             alert("⚠️ Tu carrito está vacío. Agrega productos primero.");
             return;
         }
 
-        // Pedir datos al cliente (puedes agregar un formulario HTML si prefieres)
+        // Pedir datos al cliente
         const nombreCliente = prompt("📝 Ingresa tu nombre:") || "Cliente Web";
         const telefonoCliente = prompt("📱 Ingresa tu teléfono:") || "No especificado";
         const direccionCliente = prompt("📍 Ingresa tu dirección o zona de entrega:") || "No especificada";
@@ -80,7 +82,7 @@ window.enviarPedidoWhatsApp = async function() {
         // Generar número de orden
         const numeroOrden = 'PEQ-' + Math.floor(100000 + Math.random() * 900000);
 
-        // Guardar en Firestore (ESTRUCTURA ÚNICA que el admin lee perfectamente)
+        // Guardar en Firestore
         const nuevoPedido = {
             orden: numeroOrden,
             numeroOrden: numeroOrden,
@@ -110,16 +112,17 @@ window.enviarPedidoWhatsApp = async function() {
         mensaje += `*Dirección:* ${direccionCliente}\n\n`;
         mensaje += `*Detalle de Productos:*\n`;
         carrito.forEach(item => {
-            mensaje += `- ${item.nombre} (x${item.cantidad}) - $${(item.precio * item.cantidad).toLocaleString('es-AR')}\n`;
+            const subtotal = (item.precio * item.cantidad).toLocaleString('es-AR');
+            mensaje += `- ${item.nombre} (x${item.cantidad}) - $${subtotal}\n`;
         });
         mensaje += `\n*Total a Pagar:* $${total.toLocaleString('es-AR')}`;
         if (notasCliente) mensaje += `\n*Notas:* ${notasCliente}`;
 
-        // Tu número de WhatsApp (cámbialo si es necesario)
-        const numeroWhatsApp = "5491134970171"; 
+        // Abrir WhatsApp
+        const numeroWhatsApp = "5491134970171";
         const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
 
-        // Limpiar carrito y abrir WhatsApp
+        // Limpiar y recargar
         localStorage.removeItem('carrito');
         window.open(url, '_blank');
         alert("✅ ¡Pedido enviado! Se abrirá WhatsApp para continuar.");

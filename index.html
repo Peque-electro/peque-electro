@@ -3,708 +3,561 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peque Elektro: Tu solución integral</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #141a2b;
-            color: #ffffff;
-            padding: 20px;
-            line-height: 1.5;
-        }
-
-        /* ===== ENCABEZADO ===== */
-        .encabezado {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #2a334b;
-        }
-
-        .logo-titulo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo {
-            width: 100px;
-            height: auto;
-            background: #fff;
-            border-radius: 10px;
-            padding: 5px;
-        }
-
-        .titulo h1 {
-            font-size: 22px;
-            color: #60c5ff;
-        }
-
-        .titulo p {
-            color: #a0aec0;
-            font-size: 14px;
-            margin-top: 4px;
-        }
-
-        .btn-envio {
-            background: #2b6cb0;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            margin-top: 8px;
-            cursor: pointer;
-        }
-
-        .zonas {
-            background: #1e293b;
-            padding: 12px 18px;
-            border-radius: 8px;
-            font-size: 13px;
-            color: #cbd5e0;
-            line-height: 1.6;
-        }
-
-        /* ===== CONTENEDOR PRINCIPAL ===== */
-        .contenedor-principal {
-            display: flex;
-            gap: 25px;
-            align-items: flex-start;
-        }
-
-        /* ===== BARRA LATERAL ===== */
-        .barra-lateral {
-            width: 300px;
-            flex-shrink: 0;
-            background-color: #1e293b;
-            border-radius: 12px;
-            padding: 20px;
-
-            /* 🔑 LO QUE SOLUCIONA QUE NO SE CORTÉ */
-            height: auto !important;
-            overflow: visible !important;
-        }
-
-        .barra-lateral h3 {
-            color: #60c5ff;
-            font-size: 17px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-categoria {
-            width: 100%;
-            padding: 11px 14px;
-            margin: 5px 0;
-            background-color: #273043;
-            color: #ffffff;
-            border: none;
-            border-radius: 7px;
-            text-align: left;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-categoria.activo {
-            background-color: #0277bd;
-        }
-
-        .btn-categoria.seleccionado {
-            background-color: #035f92;
-            outline: 2px solid #60c5ff;
-        }
-
-        .sub-items {
-            margin-left: 18px;
-        }
-
-        hr {
-            border: none;
-            border-top: 1px solid #334155;
-            margin: 20px 0;
-        }
-
-        /* ===== TU PEDIDO — TODO VISIBLE SIN RECORTES ===== */
-        .pedido-seccion {
-            overflow: visible !important;
-        }
-
-        .pedido-seccion h3 {
-            color: #60c5ff;
-            font-size: 17px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .item-carrito {
-            padding: 10px 0;
-            border-bottom: 1px solid #334155;
-            font-size: 14px;
-        }
-
-        .sin-items {
-            color: #718096;
-            text-align: center;
-            padding: 15px;
-            font-size: 14px;
-        }
-
-        .controles-cantidad {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 6px;
-        }
-
-        .controles-cantidad button {
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
-            border: none;
-            background: #2b6cb0;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .btn-eliminar {
-            background: #c53030;
-            margin-left: auto;
-        }
-
-        .fila-total {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 15px 8px;
-        }
-
-        .precio-total {
-            color: #60c5ff;
-            font-size: 20px;
-        }
-
-        .btn-whatsapp {
-            width: 100%;
-            padding: 13px;
-            background-color: #22c55e;
-            color: #ffffff;
-            font-size: 15px;
-            font-weight: 500;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: background 0.25s;
-        }
-
-        .btn-whatsapp:hover {
-            background-color: #16a34a;
-        }
-
-        /* ===== SECCIÓN PRODUCTOS ===== */
-        .contenido-productos {
-            flex: 1;
-        }
-
-        .buscador {
-            width: 100%;
-            padding: 12px 16px;
-            background: #1e293b;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-
-        .ruta {
-            color: #60c5ff;
-            margin-bottom: 18px;
-            font-size: 15px;
-        }
-
-        .grilla-productos {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-        }
-
-        .tarjeta-producto {
-            background: #1e293b;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-        }
-
-        .tarjeta-producto img {
-            width: 100%;
-            height: 160px;
-            object-fit: contain;
-            background: #fff;
-            border-radius: 6px;
-            margin-bottom: 10px;
-        }
-
-        .tarjeta-producto h4 {
-            font-size: 14px;
-            margin-bottom: 6px;
-            color: #e2e8f0;
-        }
-
-        .precio-producto {
-            font-size: 18px;
-            font-weight: bold;
-            color: #60c5ff;
-            margin-bottom: 10px;
-        }
-
-        .btn-ver-detalle {
-            width: 100%;
-            padding: 8px;
-            background: #374151;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            margin-bottom: 6px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        .btn-agregar {
-            width: 100%;
-            padding: 9px;
-            background: #0277bd;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        /* ===== MODAL DETALLE PRODUCTO ===== */
-        .modal-detalle {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.85);
-            display: none;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 30px;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-
-        .contenido-modal {
-            background: #1e293b;
-            border-radius: 12px;
-            padding: 30px;
-            max-width: 800px;
-            width: 100%;
-            position: relative;
-        }
-
-        .btn-cerrar {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #c53030;
-            color: white;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        .cuerpo-modal {
-            display: flex;
-            gap: 30px;
-        }
-
-        .imagen-modal {
-            width: 350px;
-            height: auto;
-            background: #fff;
-            border-radius: 8px;
-            padding: 10px;
-        }
-
-        .info-modal h2 {
-            font-size: 22px;
-            color: #60c5ff;
-            margin-bottom: 10px;
-        }
-
-        .precio-modal {
-            font-size: 28px;
-            font-weight: bold;
-            color: #60c5ff;
-            margin-bottom: 20px;
-        }
-
-        .cantidad-modal {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .cantidad-modal button {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            border: none;
-            background: #2b6cb0;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .btn-agregar-carrito {
-            width: 100%;
-            padding: 14px;
-            background: #0277bd;
-            color: white;
-            font-size: 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .descripcion-modal {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid #334155;
-            color: #cbd5e0;
-            font-size: 14px;
-        }
-
-        /* ===== AVISO VERDE SIN ALERTA ===== */
-        .aviso-flotante {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #22c55e;
-            color: white;
-            padding: 12px 22px;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.35);
-            z-index: 9999;
-            animation: aparece 0.3s ease;
-        }
-
-        @keyframes aparece {
-            from { transform: translateY(-15px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-    </style>
+    <title>Peque Elektro - Tu solución integral</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-
-<!-- ===== ENCABEZADO ===== -->
-<div class="encabezado">
-    <div class="logo-titulo">
-        <div class="logo">📦</div>
-        <div class="titulo">
-            <h1>Peque Elektro: Tu solución integral.</h1>
-            <p>Simplificamos tu búsqueda ofreciéndote variedad y calidad en un solo lugar.</p>
-            <button class="btn-envio">¡Envíos a todo el país!</button>
-        </div>
-    </div>
-    <div class="zonas">
-        📍 Zonas: San Justo Centro | Ramos Mejía | Estación Morón | La Tablada<br>
-        📦 Al resto del país (costo a cargo del cliente).
-    </div>
-</div>
-
-<!-- ===== CONTENEDOR PRINCIPAL ===== -->
-<div class="contenedor-principal">
-
-    <!-- ===== BARRA LATERAL: CATEGORÍAS + PEDIDO ===== -->
-    <div class="barra-lateral">
-
-        <h3>☰ Categorías</h3>
-        <button class="btn-categoria">Todas las Categorías</button>
-        <button class="btn-categoria activo">pequeños electrodomésticos ⌃</button>
-        <div class="sub-items">
-            <button class="btn-categoria" onclick="seleccionarCategoria('Cafetera')">Cafetera</button>
-            <button class="btn-categoria seleccionado" onclick="seleccionarCategoria('Pavas')">Pavas</button>
-        </div>
-        <button class="btn-categoria">Hogar ⌄</button>
-
-        <hr>
-
-        <!-- ===== TU PEDIDO ===== -->
-        <div class="pedido-seccion">
-            <h3>🛒 Tu Pedido</h3>
-
-            <div id="lista-carrito"></div>
-            <p id="carrito-vacio" class="sin-items">Tu carrito está vacío.</p>
-
-            <div class="fila-total">
-                <span>Total:</span>
-                <span id="precio-total" class="precio-total">$0</span>
-            </div>
-
-            <button class="btn-whatsapp" onclick="enviarPedidoPorWhatsApp()">
-                💬 Enviar Pedido por WhatsApp
-            </button>
-        </div>
-
-    </div>
-
-    <!-- ===== SECCIÓN PRODUCTOS ===== -->
-    <div class="contenido-productos">
-        <input type="text" class="buscador" placeholder="🔍 Buscar productos por nombre...">
-        <div class="ruta">pequeños electrodomésticos &gt; pavas</div>
-
-        <div class="grilla-productos" id="grilla-productos">
-            <!-- Se cargan dinámicamente -->
-        </div>
-    </div>
-
-</div>
-
-<!-- ===== MODAL DETALLE PRODUCTO ===== -->
-<div class="modal-detalle" id="modal-detalle">
-    <div class="contenido-modal">
-        <button class="btn-cerrar" onclick="cerrarDetalle()">×</button>
-        <div class="cuerpo-modal">
-            <img id="modal-imagen" class="imagen-modal" src="" alt="">
-            <div class="info-modal">
-                <h2 id="modal-nombre"></h2>
-                <div class="precio-modal" id="modal-precio"></div>
-                <div class="cantidad-modal">
-                    <button onclick="cambiarCantidadModal(-1)">−</button>
-                    <span id="modal-cantidad">1</span>
-                    <button onclick="cambiarCantidadModal(1)">+</button>
+    <!-- SECCIÓN HERO: LOGO IZQUIERDA + CONTENIDO DERECHA -->
+    <section class="hero-slogan">
+        <div class="hero-container">
+            <div class="hero-grid">
+                <div class="hero-logo-box">
+                    <img src="logo.jpg" alt="Peque Elektro Logo" class="hero-logo-img">
                 </div>
-                <button class="btn-agregar-carrito" onclick="agregarDesdeModal()">🛒 Agregar al Carrito</button>
-                <div class="descripcion-modal">
-                    <h4>Descripción:</h4>
-                    <p id="modal-descripcion"></p>
+                <div class="hero-content">
+                    <h2 class="hero-title">peque elektro: tu solución integral.</h2>
+                    <p class="hero-intro">Simplificamos tu búsqueda ofreciéndote variedad y calidad en un solo lugar:</p>
+                    <div class="hero-items">
+                        <span class="hero-item-tag"><i class="fa-solid fa-check"></i> Variedad de productos</span>
+                        <span class="hero-item-tag"><i class="fa-solid fa-check"></i> Calidad garantizada</span>
+                        <span class="hero-item-tag"><i class="fa-solid fa-check"></i> Atención personalizada</span>
+                    </div>
+                    <div class="hero-bottom">
+                        <span class="hero-badge">¡Envíos a todo el país!</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 
-<script>
-// ===== BASE DE DATOS DE PRODUCTOS =====
-const productos = [
-    { id:1, nombre:'Pava Eléctrica Matecito', precio:21700, categoria:'Pavas', descripcion:'Ideal para cebar mate, calentamiento rápido y seguro.' },
-    { id:2, nombre:'Pava eléctrica Yelmo PE-3922', precio:63000, categoria:'Pavas', descripcion:'Selector de temperatura, corte automático, base giratoria 360°.' },
-    { id:3, nombre:'Pava eléctrica Kanji', precio:20000, categoria:'Pavas', descripcion:'Diseño clásico, capacidad 1.7L, corte automático.' },
-    { id:4, nombre:'Pava Eléctrica Yelmo 1.7Lts', precio:39900, categoria:'Pavas', descripcion:'Corte automático, indicador de nivel, base giratoria 360°.' },
-    { id:5, nombre:'Pava eléctrica color CREMA - LUSQTOFF', precio:60750, categoria:'Pavas', descripcion:'Diseño elegante, apagado automático, protección contra hervido seco.' },
-    { id:6, nombre:'Jarra Pava Eléctrica Kanji', precio:30000, categoria:'Pavas', descripcion:'Vidrio templado, iluminación LED, corte automático.' },
-    { id:7, nombre:'PAVA ELÉCTRICA YELMO PE-3909', precio:42500, categoria:'Pavas', descripcion:'Potencia 2200W, corte rápido en segundos, base giratoria.' },
-    { id:8, nombre:'PAVA ELÉCTRICA DIGITAL', precio:55000, categoria:'Pavas', descripcion:'Selector de temperatura 40°–100°, apagado automático, diseño moderno.' },
-];
 
-// ===== CARRITO =====
-let carrito = [];
-let productoModal = null;
-let cantidadModal = 1;
-
-// ===== CARGAR PRODUCTOS AL INICIAR =====
-document.addEventListener('DOMContentLoaded', () => {
-    renderizarProductos();
-});
-
-// ===== RENDERIZAR LISTA DE PRODUCTOS =====
-function renderizarProductos() {
-    const grilla = document.getElementById('grilla-productos');
-    grilla.innerHTML = '';
-
-    productos.forEach(prod => {
-        grilla.innerHTML += `
-            <div class="tarjeta-producto">
-                <div style="background:#fff; border-radius:6px; padding:8px; margin-bottom:10px;">📷</div>
-                <h4>${prod.nombre}</h4>
-                <div class="precio-producto">$${prod.precio.toLocaleString('es-AR')}</div>
-                <button class="btn-ver-detalle" onclick="abrirDetalle(${prod.id})">📋 Ver Detalle</button>
-                <button class="btn-agregar" onclick="agregarAlCarrito(${prod.id})">🛒 Agregar</button>
+    <div class="shop-layout">
+        <!-- ==============================================
+             BARRA LATERAL IZQUIERDA FIJA
+             ============================================== -->
+        <aside class="sidebar">
+            <!-- CATEGORÍAS CON DESPLEGABLES -->
+            <div class="sidebar-block">
+                <h3 class="sidebar-heading"><i class="fa-solid fa-bars"></i> Categorías</h3>
+                <ul class="category-menu" id="category-menu">
+                    <li>
+                        <a class="category-link active" data-filter="todos">
+                            Todas las Categorías
+                        </a>
+                    </li>
+                </ul>
             </div>
-        `;
-    });
-}
 
-// ===== AGREGAR AL CARRITO =====
-function agregarAlCarrito(id) {
-    const prod = productos.find(p => p.id === id);
-    if (!prod) return;
 
-    const existe = carrito.find(i => i.id === id);
-    if (existe) {
-        existe.cantidad++;
-    } else {
-        carrito.push({ id: prod.id, nombre: prod.nombre, precio: prod.precio, cantidad: 1 });
-    }
+            <!-- CARRITO DE COMPRAS -->
+            <div class="sidebar-block cart-block">
+                <h3 class="sidebar-heading"><i class="fa-solid fa-cart-shopping"></i> Tu Pedido</h3>
+                <div class="cart-list" id="cart-list">
+                    <p class="cart-empty">Tu carrito está vacío.</p>
+                </div>
+                <div class="cart-total-row">
+                    <strong>Total:</strong>
+                    <span id="cart-total">$0</span>
+                </div>
+                <button class="btn-whatsapp-full" id="btn-send-whatsapp">
+                    <i class="fa-brands fa-whatsapp"></i> Enviar Pedido por WhatsApp
+                </button>
+            </div>
+        </aside>
 
-    actualizarCarrito();
-    avisoSuave(`✅ ${prod.nombre} agregado al carrito`);
-}
 
-// ===== ACTUALIZAR VISTA DEL CARRITO =====
-function actualizarCarrito() {
-    const lista = document.getElementById('lista-carrito');
-    const vacio = document.getElementById('carrito-vacio');
-    const totalEl = document.getElementById('precio-total');
+        <!-- ==============================================
+             CONTENIDO PRINCIPAL
+             ============================================== -->
+        <main class="main-content">
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="search-input" placeholder="Buscar productos por nombre...">
+            </div>
 
-    if (carrito.length === 0) {
-        lista.innerHTML = '';
-        vacio.style.display = 'block';
-        totalEl.textContent = '$0';
-        return;
-    }
 
-    vacio.style.display = 'none';
-    lista.innerHTML = '';
-    let total = 0;
+            <h2 class="category-path" id="category-path">Catálogo de Productos</h2>
 
-    carrito.forEach(item => {
-        const subtotal = item.precio * item.cantidad;
-        total += subtotal;
-        lista.innerHTML += `
-            <div class="item-carrito">
-                <div>${item.nombre}</div>
-                <div>$${item.precio.toLocaleString('es-AR')} × ${item.cantidad} = $${subtotal.toLocaleString('es-AR')}</div>
-                <div class="controles-cantidad">
-                    <button onclick="cambiarCantidad(${item.id}, -1)">−</button>
-                    <span>${item.cantidad}</span>
-                    <button onclick="cambiarCantidad(${item.id}, 1)">+</button>
-                    <button class="btn-eliminar" onclick="eliminarItem(${item.id})">🗑</button>
+
+            <div class="products-grid" id="products-grid">
+                <p style="grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 40px;">Cargando productos...</p>
+            </div>
+
+
+            <div class="pagination" id="pagination" style="display: none;">
+                <button id="page-prev" class="page-btn" disabled><i class="fa-solid fa-chevron-left"></i> Anterior</button>
+                <span id="page-info">Página 1 de 1</span>
+                <button id="page-next" class="page-btn" disabled>Siguiente <i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </main>
+    </div>
+
+
+    <!-- ==============================================
+         MODAL DE DETALLE: SE DESLIZA DE IZQUIERDA A DERECHA
+         ============================================== -->
+    <div class="modal-backdrop" id="product-modal">
+        <div class="modal-drawer">
+            <div class="modal-inner">
+                <button class="modal-close-btn" id="modal-close">
+                    <i class="fa-solid fa-xmark"></i> Cerrar
+                </button>
+
+
+                <!-- ESTRUCTURA MODIFICADA: Arriba = Foto + Info | Abajo = Descripción -->
+                <div class="modal-top-row">
+                    <div class="modal-images-col">
+                        <img id="modal-main-img" src="" alt="Producto" class="modal-main-image" title="Clic para ampliar">
+                        <div class="modal-thumbs" id="modal-thumbs"></div>
+                        <button class="btn-add-cart-big" id="modal-add-btn">
+                            <i class="fa-solid fa-cart-plus"></i> Agregar al Carrito
+                        </button>
+                    </div>
+
+                    <div class="modal-info-col">
+                        <h1 id="modal-name" class="modal-product-name"></h1>
+                        <div id="modal-price-val" class="modal-price-tag"></div>
+
+                        <div class="modal-color-row" id="modal-color-row" style="display: none;">
+                            <label>Color:</label>
+                            <div class="color-buttons" id="color-buttons"></div>
+                            <input type="hidden" id="chosen-color">
+                        </div>
+
+                        <div class="modal-qty-row">
+                            <label>Cantidad:</label>
+                            <div class="qty-selector">
+                                <button id="qty-minus" class="qty-btn">-</button>
+                                <span id="qty-display" class="qty-num">1</span>
+                                <button id="qty-plus" class="qty-btn">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Descripción abajo a TODO EL ANCHO -->
+                <div class="modal-desc-full">
+                    <h3><i class="fa-solid fa-file-lines"></i> Descripción</h3>
+                    <p id="modal-desc-text"></p>
                 </div>
             </div>
-        `;
-    });
+        </div>
+    </div>
 
-    totalEl.textContent = `$${total.toLocaleString('es-AR')}`;
-}
 
-// ===== CAMBIAR CANTIDAD =====
-function cambiarCantidad(id, delta) {
-    const item = carrito.find(i => i.id === id);
-    if (!item) return;
-    item.cantidad += delta;
-    if (item.cantidad <= 0) {
-        carrito = carrito.filter(i => i.id !== id);
-    }
-    actualizarCarrito();
-}
+    <!-- ==============================================
+         LIGHTBOX: IMAGEN A PANTALLA COMPLETA
+         ============================================== -->
+    <div class="lightbox-wrap" id="lightbox">
+        <button class="lightbox-close" id="lightbox-close"><i class="fa-solid fa-xmark"></i></button>
+        <img id="lightbox-img" src="" alt="Ampliada">
+    </div>
 
-function eliminarItem(id) {
-    carrito = carrito.filter(i => i.id !== id);
-    actualizarCarrito();
-}
 
-// ===== ABRIR DETALLE DEL PRODUCTO (como tu imagen 3) =====
-function abrirDetalle(id) {
-    const prod = productos.find(p => p.id === id);
-    if (!prod) return;
+    <footer>
+        <p>&copy; 2026 Peque Elektro - Todos los derechos reservados.</p>
+    </footer>
 
-    productoModal = prod;
-    cantidadModal = 1;
 
-    document.getElementById('modal-nombre').textContent = prod.nombre;
-    document.getElementById('modal-precio').textContent = `$${prod.precio.toLocaleString('es-AR')}`;
-    document.getElementById('modal-cantidad').textContent = cantidadModal;
-    document.getElementById('modal-descripcion').textContent = prod.descripcion;
-    document.getElementById('modal-imagen').src = ''; // acá poné la ruta real de tu imagen
+    <!-- ==============================================
+         FIREBASE Y LÓGICA COMPLETA
+         ============================================== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, addDoc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    document.getElementById('modal-detalle').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-}
 
-function cerrarDetalle() {
-    document.getElementById('modal-detalle').style.display = 'none';
-    document.body.style.overflow = 'auto';
-}
+        const firebaseConfig = {
+            apiKey: "AIzaSyDTtYfbeNy7z15Pj3Suli68mVGioMFU21E",
+            authDomain: "peque-elektro.firebaseapp.com",
+            projectId: "peque-elektro",
+            storageBucket: "peque-elektro.firebasestorage.app",
+            messagingSenderId: "873169424486",
+            appId: "1:873169424486:web:e9f77cb2052aa06b3b9da7"
+        };
 
-function cambiarCantidadModal(delta) {
-    cantidadModal = Math.max(1, cantidadModal + delta);
-    document.getElementById('modal-cantidad').textContent = cantidadModal;
-}
 
-function agregarDesdeModal() {
-    if (!productoModal) return;
-    for (let i = 0; i < cantidadModal; i++) {
-        agregarAlCarrito(productoModal.id);
-    }
-    cerrarDetalle();
-}
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-// ===== SELECCIONAR CATEGORÍA =====
-function seleccionarCategoria(cat) {
-    avisoSuave(`✅ Categoría: ${cat}`);
-}
 
-// ===== ENVIAR PEDIDO POR WHATSAPP =====
-function enviarPedidoPorWhatsApp() {
-    const numero = "5491134970171"; // TU NÚMERO CON CÓDIGO ARGENTINA
+        const WHATSAPP_NUMBER = "5491134970171";
+        const PRODUCTS_PER_PAGE = 30;
 
-    if (carrito.length === 0) {
-        avisoSuave("⚠️ El carrito está vacío");
-        return;
-    }
 
-    let lista = "";
-    let totalGeneral = 0;
-    carrito.forEach(item => {
-        const subtotal = item.precio * item.cantidad;
-        totalGeneral += subtotal;
-        lista += `• ${item.nombre} ×${item.cantidad} — $${subtotal.toLocaleString('es-AR')}\n`;
-    });
+        let productos = [];
+        let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+        let paginaActual = 1;
+        let filtroCategoria = "todos";
+        let filtroSubcategoria = null;
+        let productoModal = null;
+        let cantidadModal = 1;
+        let colorElegido = "";
 
-    const mensaje = `
-🛒 NUEVO PEDIDO - Peque Elektro
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-📦 Productos:
-${lista}
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-💰 TOTAL: $${totalGeneral.toLocaleString('es-AR')}
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-¡Hola! Quisiera confirmar este pedido.
-    `.trim();
 
-    const enlace = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
-    window.open(enlace, '_blank');
-}
+        async function iniciar() {
+            try {
+                const snap = await getDocs(collection(db, "productos"));
+                productos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                armarMenuCategorias();
+                renderizarProductos();
+                actualizarVistaCarrito();
+            } catch (err) {
+                console.error("Error:", err);
+            }
+        }
 
-// ===== AVISO VERDE SIN ALERTA MOLESTA =====
-function avisoSuave(texto) {
-    const aviso = document.createElement('div');
-    aviso.className = 'aviso-flotante';
-    aviso.textContent = texto;
-    document.body.appendChild(aviso);
-    setTimeout(() => aviso.remove(), 3000);
-}
-</script>
 
+        function armarMenuCategorias() {
+            const menu = document.getElementById("category-menu");
+            const categorias = {};
+
+            productos.forEach(p => {
+                const cat = p.categoria || "Sin categoría";
+                const sub = p.subcategoria || null;
+                if (!categorias[cat]) categorias[cat] = new Set();
+                if (sub) categorias[cat].add(sub);
+            });
+
+            let html = `<li><a class="category-link ${filtroCategoria==='todos'?'active':''}" data-cat="todos">Todas las Categorías</a></li>`;
+
+            for (const [cat, subs] of Object.entries(categorias)) {
+                const abierta = filtroCategoria === cat;
+                html += `
+                    <li class="category-item ${abierta?'open':''}">
+                        <a class="category-link has-sub ${abierta?'active':''}" data-cat-main="${cat}">
+                            ${cat}
+                            ${subs.size>0?`<i class="fa-solid fa-chevron-down"></i>`:''}
+                        </a>
+                        ${subs.size>0?`<ul class="subcategory-list">${[...subs].map(s=>`<li><a class="subcategory-link" data-cat="${cat}" data-sub="${s}">${s}</a></li>`).join('')}</ul>`:''}
+                    </li>
+                `;
+            }
+            menu.innerHTML = html;
+        }
+
+
+        document.getElementById("category-menu").addEventListener("click", e => {
+            const subLink = e.target.closest(".subcategory-link");
+            const mainLink = e.target.closest("[data-cat-main]");
+            const allLink = e.target.closest("[data-cat='todos']");
+
+            if (subLink) {
+                filtroCategoria = subLink.dataset.cat;
+                filtroSubcategoria = subLink.dataset.sub;
+                paginaActual = 1;
+                actualizarTitulo();
+                armarMenuCategorias();
+                renderizarProductos();
+            } else if (mainLink) {
+                filtroCategoria = mainLink.dataset.catMain;
+                filtroSubcategoria = null;
+                paginaActual = 1;
+                actualizarTitulo();
+                armarMenuCategorias();
+                renderizarProductos();
+            } else if (allLink) {
+                filtroCategoria = "todos";
+                filtroSubcategoria = null;
+                paginaActual = 1;
+                document.getElementById("category-path").textContent = "Catálogo de Productos";
+                armarMenuCategorias();
+                renderizarProductos();
+            }
+        });
+
+
+        function actualizarTitulo() {
+            document.getElementById("category-path").textContent = filtroSubcategoria 
+                ? `${filtroCategoria} > ${filtroSubcategoria}` 
+                : filtroCategoria;
+        }
+
+
+        function renderizarProductos() {
+            let lista = [...productos];
+            if (filtroCategoria !== "todos") {
+                lista = lista.filter(p => p.categoria === filtroCategoria);
+                if (filtroSubcategoria) lista = lista.filter(p => p.subcategoria === filtroSubcategoria);
+            }
+
+            const busqueda = document.getElementById("search-input").value.toLowerCase().trim();
+            if (busqueda) {
+                lista = lista.filter(p => 
+                    (p.nombre||"").toLowerCase().includes(busqueda) ||
+                    (p.descripcion||"").toLowerCase().includes(busqueda)
+                );
+            }
+
+            const totalPag = Math.ceil(lista.length / PRODUCTS_PER_PAGE);
+            if (paginaActual > totalPag) paginaActual = totalPag;
+            const ini = (paginaActual-1)*PRODUCTS_PER_PAGE;
+            const paginado = lista.slice(ini, ini+PRODUCTS_PER_PAGE);
+
+            const grid = document.getElementById("products-grid");
+            if (!paginado.length) {
+                grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:#94a3b8;padding:40px;">No se encontraron productos.</p>`;
+                return;
+            }
+
+            grid.innerHTML = paginado.map(p => {
+                const img = p.imagenes?.[0] || p.imagen || "https://via.placeholder.com/220x160?text=Sin+Imagen";
+                const precio = Number(p.precio||0).toLocaleString("es-AR");
+                return `
+                    <div class="product-card">
+                        <img src="${img}" alt="${p.nombre}">
+                        <h3>${p.nombre||"Producto"}</h3>
+                        <div class="prod-price">$${precio}</div>
+                        <div class="prod-buttons">
+                            <button class="btn-view" data-id="${p.id}"><i class="fa-solid fa-file-text"></i> Ver Detalle</button>
+                            <button class="btn-add" data-id="${p.id}"><i class="fa-solid fa-cart-plus"></i> Agregar</button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+            const pag = document.getElementById("pagination");
+            if (totalPag > 1) {
+                pag.style.display = "flex";
+                document.getElementById("page-info").textContent = `Página ${paginaActual} de ${totalPag}`;
+                document.getElementById("page-prev").disabled = paginaActual === 1;
+                document.getElementById("page-next").disabled = paginaActual === totalPag;
+            } else {
+                pag.style.display = "none";
+            }
+        }
+
+
+        document.getElementById("search-input").addEventListener("input", renderizarProductos);
+        document.getElementById("page-prev").addEventListener("click", ()=>{paginaActual--;renderizarProductos();window.scrollTo(0,0);});
+        document.getElementById("page-next").addEventListener("click", ()=>{paginaActual++;renderizarProductos();window.scrollTo(0,0);});
+
+
+        function guardarCarrito() {
+            localStorage.setItem("carrito", JSON.stringify(carrito));
+        }
+
+
+        // ✅ FUNCIÓN MODIFICADA: SIN EL ALERT MOLESTO
+        function agregarAlCarrito(prod, cant, color) {
+            const existe = carrito.find(i => i.id === prod.id && (i.color||"") === (color||""));
+            if (existe) existe.cantidad += cant;
+            else carrito.push({id:prod.id, nombre:prod.nombre, precio:Number(prod.precio||0), cantidad:cant, color:color||""});
+            guardarCarrito();
+            actualizarVistaCarrito();
+        }
+
+
+        window.cambiarCantidad = function(id, color, delta) {
+            const item = carrito.find(i => i.id===id && (i.color||"")===color);
+            if (!item) return;
+            item.cantidad += delta;
+            if (item.cantidad <= 0) carrito = carrito.filter(i => !(i.id===id && (i.color||"")===color));
+            guardarCarrito();
+            actualizarVistaCarrito();
+        };
+
+
+        window.eliminarItem = function(id, color) {
+            carrito = carrito.filter(i => !(i.id===id && (i.color||"")===color));
+            guardarCarrito();
+            actualizarVistaCarrito();
+        };
+
+
+        function actualizarVistaCarrito() {
+            const list = document.getElementById("cart-list");
+            const totalEl = document.getElementById("cart-total");
+
+            if (!carrito.length) {
+                list.innerHTML = `<p class="cart-empty">Tu carrito está vacío.</p>`;
+                totalEl.textContent = "$0";
+                return;
+            }
+
+            let total = 0;
+            list.innerHTML = carrito.map(item => {
+                const subt = item.precio * item.cantidad;
+                total += subt;
+                const colorText = item.color ? `<br><small>Color: ${item.color}</small>` : "";
+                return `
+                    <div class="cart-item">
+                        <div class="cart-item-name">${item.nombre}${colorText}</div>
+                        <div class="cart-item-price">$${item.precio.toLocaleString("es-AR")} × ${item.cantidad} = $${subt.toLocaleString("es-AR")}</div>
+                        <div class="cart-item-qty">
+                            <button onclick="cambiarCantidad('${item.id}','${item.color||""}',-1)">−</button>
+                            <span>${item.cantidad}</span>
+                            <button onclick="cambiarCantidad('${item.id}','${item.color||""}',1)">+</button>
+                            <button class="cart-del-btn" onclick="eliminarItem('${item.id}','${item.color||""}')"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+            totalEl.textContent = `$${total.toLocaleString("es-AR")}`;
+        }
+
+
+        document.getElementById("btn-send-whatsapp").addEventListener("click", async () => {
+            if (!carrito.length) return alert("El carrito está vacío");
+
+            let nroOrden = 1;
+            try {
+                const ultimaOrdenSnap = await getDocs(query(collection(db, "pedidos"), orderBy("nroOrden", "desc"), limit(1)));
+                if (!ultimaOrdenSnap.empty) {
+                    nroOrden = ultimaOrdenSnap.docs[0].data().nroOrden + 1;
+                }
+            } catch(e) { console.log("Arrancando desde orden #1"); }
+
+            const nombreCliente = prompt("📝 Ingresa tu nombre:") || "Cliente Web";
+            const telefonoCliente = prompt("📱 Ingresa tu teléfono:") || "No especificado";
+            const direccionCliente = prompt("📍 Ingresa tu dirección o zona de entrega:") || "No especificada";
+            const notasCliente = prompt("✏️ ¿Alguna nota adicional? (opcional):") || "";
+
+            const total = carrito.reduce((s,i)=>s+i.precio*i.cantidad,0);
+
+            await addDoc(collection(db, "pedidos"), {
+                nroOrden,
+                items: carrito,
+                total,
+                cliente: {
+                    nombre: nombreCliente,
+                    telefono: telefonoCliente,
+                    direccion: direccionCliente,
+                    notas: notasCliente
+                },
+                estado: "Pendiente",
+                fecha: new Date()
+            });
+
+            const msg = [];
+            msg.push(`🛒 PEDIDO N° ${nroOrden} - Peque Elektro`);
+            msg.push("============================");
+            msg.push(`👤 Cliente: ${nombreCliente}`);
+            msg.push(`📞 Teléfono: ${telefonoCliente}`);
+            msg.push(`📍 Dirección: ${direccionCliente}`);
+            if (notasCliente) msg.push(`✏️ Notas: ${notasCliente}`);
+            msg.push("============================");
+            carrito.forEach(i => {
+                const colorInfo = i.color ? ` | Color: ${i.color}` : "";
+                msg.push(`• ${i.nombre}${colorInfo}`);
+                msg.push(`  $${i.precio.toLocaleString("es-AR")} × ${i.cantidad} = $${(i.precio*i.cantidad).toLocaleString("es-AR")}`);
+            });
+            msg.push("============================");
+            msg.push(`TOTAL: $${total.toLocaleString("es-AR")}`);
+            msg.push("\n¡Gracias por tu compra! Nos contactaremos para coordinar la entrega.");
+
+            const texto = encodeURIComponent(msg.join("\n"));
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${texto}`, "_blank");
+
+            carrito = [];
+            guardarCarrito();
+            actualizarVistaCarrito();
+        });
+
+
+        document.addEventListener("click", e => {
+            const btnVer = e.target.closest(".btn-view");
+            const btnAgregar = e.target.closest(".btn-add");
+            if (btnVer) abrirModal(btnVer.dataset.id);
+            if (btnAgregar) {
+                const p = productos.find(x=>x.id===btnAgregar.dataset.id);
+                if (p) agregarAlCarrito(p, 1, "");
+            }
+        });
+
+
+        window.abrirModal = function(id) {
+            const prod = productos.find(p=>p.id===id);
+            if (!prod) return;
+            productoModal = prod;
+            cantidadModal = 1;
+            colorElegido = "";
+
+            document.getElementById("qty-display").textContent = "1";
+            document.getElementById("modal-name").textContent = prod.nombre || "Producto";
+            document.getElementById("modal-price-val").textContent = "$" + Number(prod.precio||0).toLocaleString("es-AR");
+            document.getElementById("modal-desc-text").textContent = prod.descripcion || "Sin descripción disponible.";
+
+            const imgs = prod.imagenes?.length ? prod.imagenes : [prod.imagen || "https://via.placeholder.com/400x400?text=Sin+Imagen"];
+            document.getElementById("modal-main-img").src = imgs[0];
+            document.getElementById("modal-thumbs").innerHTML = imgs.map((img,i)=>`<img src="${img}" class="thumb-img ${i===0?'active':''}" data-src="${img}">`).join("");
+
+            const colores = prod.colores || [];
+            const colorRow = document.getElementById("modal-color-row");
+            const colorBtns = document.getElementById("color-buttons");
+            if (colores.length) {
+                colorRow.style.display = "flex";
+                colorBtns.innerHTML = colores.map((c,i)=>`<button class="color-btn ${i===0?'selected':''}" data-color="${c}">${c}</button>`).join("");
+                colorElegido = colores[0];
+                document.getElementById("chosen-color").value = colorElegido;
+            } else {
+                colorRow.style.display = "none";
+                colorElegido = "";
+            }
+
+            document.getElementById("product-modal").classList.add("open");
+            document.body.style.overflow = "hidden";
+        };
+
+
+        document.getElementById("modal-close").addEventListener("click", cerrarModal);
+        document.getElementById("product-modal").addEventListener("click", e=>{if(e.target.id==="product-modal") cerrarModal();});
+        function cerrarModal() {
+            document.getElementById("product-modal").classList.remove("open");
+            document.body.style.overflow = "";
+            productoModal = null;
+        }
+
+
+        document.getElementById("modal-thumbs").addEventListener("click", e=>{
+            const thumb = e.target.closest(".thumb-img");
+            if (!thumb) return;
+            document.getElementById("modal-main-img").src = thumb.dataset.src;
+            document.querySelectorAll(".thumb-img").forEach(t=>t.classList.remove("active"));
+            thumb.classList.add("active");
+        });
+
+
+        document.getElementById("color-buttons").addEventListener("click", e=>{
+            const btn = e.target.closest(".color-btn");
+            if (!btn) return;
+            document.querySelectorAll(".color-btn").forEach(b=>b.classList.remove("selected"));
+            btn.classList.add("selected");
+            colorElegido = btn.dataset.color;
+            document.getElementById("chosen-color").value = colorElegido;
+        });
+
+
+        document.getElementById("qty-minus").addEventListener("click", ()=>{
+            if (cantidadModal>1) { cantidadModal--; document.getElementById("qty-display").textContent = cantidadModal; }
+        });
+        document.getElementById("qty-plus").addEventListener("click", ()=>{
+            cantidadModal++; document.getElementById("qty-display").textContent = cantidadModal;
+        });
+
+
+        document.getElementById("modal-add-btn").addEventListener("click", ()=>{
+            if (!productoModal) return;
+            agregarAlCarrito(productoModal, cantidadModal, colorElegido);
+            cerrarModal();
+        });
+
+
+        document.getElementById("modal-main-img").addEventListener("click", ()=>{
+            document.getElementById("lightbox-img").src = document.getElementById("modal-main-img").src;
+            document.getElementById("lightbox").classList.add("active");
+            document.body.style.overflow = "hidden";
+        });
+        document.getElementById("lightbox-close").addEventListener("click", cerrarLightbox);
+        document.getElementById("lightbox").addEventListener("click", e=>{if(e.target.id==="lightbox") cerrarLightbox();});
+        function cerrarLightbox() {
+            document.getElementById("lightbox").classList.remove("active");
+            document.body.style.overflow = "";
+        }
+
+
+        iniciar();
+    </script>
 </body>
 </html>
