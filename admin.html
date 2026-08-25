@@ -111,13 +111,11 @@
     </div>
   </div>
 
-
   <!-- CONTENIDO PROTEGIDO -->
   <div id="admin-content" style="display: none;">
     <header class="banner-header">
       <img src="logo.jpg" alt="Peque Elektro" class="banner-img">
     </header>
-
 
     <main class="main-container" style="padding: 20px; max-width: 1200px; margin: 0 auto;">
       
@@ -135,7 +133,6 @@
         </div>
       </div>
 
-
       <!-- 1. GESTIÓN DE ÓRDENES -->
       <section style="margin-bottom: 40px; background: #0f172a; padding: 20px; border-radius: 12px; border: 2px solid #0284c7;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
@@ -150,7 +147,6 @@
           <p style="text-align:center; color: #94a3b8;">Cargando órdenes...</p>
         </div>
       </section>
-
 
       <!-- 2. PRODUCTOS -->
       <section class="add-review-box" style="margin-bottom: 40px;">
@@ -187,7 +183,6 @@
         </form>
       </section>
 
-
       <!-- CATÁLOGO ADMIN -->
       <section style="margin-bottom: 40px;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;">
@@ -196,7 +191,6 @@
         </div>
         <div id="grid-admin-productos" class="products-grid"></div>
       </section>
-
 
       <!-- ESLOGAN -->
       <section class="add-review-box" style="margin-bottom: 30px;">
@@ -214,7 +208,6 @@
         </form>
       </section>
 
-
       <!-- ENVÍOS -->
       <section class="add-review-box" style="margin-bottom: 30px;">
         <h3><i class="fa-solid fa-truck-fast"></i> Configuración de Envíos</h3>
@@ -227,7 +220,6 @@
       </section>
     </main>
   </div>
-
 
   <!-- SCRIPT PRINCIPAL -->
   <script type="module">
@@ -250,7 +242,6 @@
     let productos = [];
     let pedidosGlobales = [];
 
-
     // --- PROTECCIÓN DE SESIÓN ---
     const loginOverlay = document.getElementById("login-overlay");
     const adminContent = document.getElementById("admin-content");
@@ -266,7 +257,6 @@
       }
     });
 
-
     // LOGIN
     document.getElementById("form-login").addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -278,7 +268,6 @@
         alert("❌ Credenciales incorrectas: " + err.message);
       }
     });
-
 
     // RECUPERAR CONTRASEÑA
     document.getElementById("btn-olvido-pass-login").addEventListener("click", async (e) => {
@@ -294,12 +283,10 @@
       }
     });
 
-
     // CERRAR SESIÓN
     document.getElementById("btn-cerrar-sesion").addEventListener("click", () => {
       signOut(auth);
     });
-
 
     // CAMBIAR CONTRASEÑA
     document.getElementById("btn-cambiar-pass").addEventListener("click", async () => {
@@ -314,7 +301,6 @@
       }
     });
 
-
     // CARGAR DATOS INICIALES
     function cargarDatosIniciales() {
       cargarSlogan();
@@ -322,9 +308,8 @@
       cargarProductos().then(() => window.cargarPedidos());
     }
 
-
     // ==============================================
-    // GESTIÓN DE PEDIDOS
+    // GESTIÓN DE PEDIDOS - CORREGIDO PARA LEER AMBAS ESTRUCTURAS
     // ==============================================
     window.cargarPedidos = async () => {
       const contenedor = document.getElementById("lista-pedidos");
@@ -347,8 +332,14 @@
           const estadoActual = ped.estado || "Pendiente";
           const claseBadge = estadoActual === "En Proceso" ? "estado-Proceso" : `estado-${estadoActual}`;
           
-          const datosCliente = ped.cliente || {};
-          const itemsPedido = ped.items || ped.productos || [];
+          // ✅ LEE TANTO LA ESTRUCTURA ANTIGUA COMO LA NUEVA
+          const nombreCliente = ped.nombre || (ped.cliente?.nombre) || "No especificado";
+          const telCliente = ped.telefono || (ped.cliente?.telefono) || "No especificado";
+          const dirCliente = ped.direccion || (ped.cliente?.direccion) || "No especificada";
+          const notasCliente = ped.notas || (ped.cliente?.notas) || "";
+          
+          // ✅ LEE TANTO "productos" COMO "items"
+          const itemsPedido = ped.productos || ped.items || [];
           
           let itemsList = itemsPedido.map((item, idx) => `
             <li style="display:flex; justify-content:space-between; margin-bottom:6px; background:#0f172a; padding:8px 12px; border-radius:6px;">
@@ -359,13 +350,14 @@
           
           let opcionesProductos = productos.map(p => `<option value="${p.id}">${p.nombre} - $${p.precio}</option>`).join('');
           
+          const numeroOrdenMostrar = ped.numeroOrden || ped.orden || 'Orden de Trabajo';
           const fechaLegible = ped.fecha ? new Date(ped.fecha.toDate()).toLocaleString('es-AR') : 'Sin fecha';
           
           html += `
             <div style="background: #1e293b; border: 1px solid #334155; padding: 20px; border-radius: 12px;">
               <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 12px; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
                 <div>
-                  <span style="color: #38bdf8; font-weight: bold; font-size: 17px;"><i class="fa-solid fa-receipt"></i> ${ped.orden || ped.numeroOrden || 'Orden de Trabajo'}</span>
+                  <span style="color: #38bdf8; font-weight: bold; font-size: 17px;"><i class="fa-solid fa-receipt"></i> ${numeroOrdenMostrar}</span>
                   <span style="color: #94a3b8; font-size: 13px; margin-left: 10px;">(${fechaLegible})</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:10px;">
@@ -380,10 +372,10 @@
               </div>
               
               <div class="datos-cliente">
-                <strong><i class="fa-solid fa-user"></i> Cliente:</strong> ${datosCliente.nombre || 'No especificado'} | 
-                <strong><i class="fa-solid fa-phone"></i> Tel:</strong> ${datosCliente.telefono || 'No especificado'}<br>
-                <strong><i class="fa-solid fa-location-dot"></i> Dirección:</strong> ${datosCliente.direccion || 'No especificada'}
-                ${datosCliente.notas ? `<br><strong><i class="fa-solid fa-note-sticky"></i> Notas:</strong> ${datosCliente.notas}` : ''}
+                <strong><i class="fa-solid fa-user"></i> Cliente:</strong> ${nombreCliente} | 
+                <strong><i class="fa-solid fa-phone"></i> Tel:</strong> ${telCliente}<br>
+                <strong><i class="fa-solid fa-location-dot"></i> Dirección:</strong> ${dirCliente}
+                ${notasCliente ? `<br><strong><i class="fa-solid fa-note-sticky"></i> Notas:</strong> ${notasCliente}` : ''}
               </div>
               
               <ul style="list-style:none; padding:0; margin-bottom:15px;">${itemsList}</ul>
@@ -410,7 +402,6 @@
       }
     };
 
-
     // FUNCIONES DE GESTIÓN DE PEDIDOS
     window.agregarProductoSeleccionado = async (pedId) => {
       const select = document.getElementById(`select-prod-${pedId}`);
@@ -419,29 +410,28 @@
       const prod = productos.find(p => p.id === prodId);
       const ped = pedidosGlobales.find(p => p.id === pedId);
       if (prod && ped) {
-        if (!ped.items) ped.items = [];
-        ped.items.push({ nombre: prod.nombre, precio: parseFloat(prod.precio), cantidad: 1 });
-        const nuevoTotal = ped.items.reduce((acc, i) => acc + (parseFloat(i.precio) * i.cantidad), 0);
-        await updateDoc(doc(db, "pedidos", pedId), { items: ped.items, total: nuevoTotal });
+        if (!ped.productos) ped.productos = [];
+        ped.productos.push({ nombre: prod.nombre, precio: parseFloat(prod.precio), cantidad: 1 });
+        const nuevoTotal = ped.productos.reduce((acc, i) => acc + (parseFloat(i.precio) * i.cantidad), 0);
+        await updateDoc(doc(db, "pedidos", pedId), { productos: ped.productos, total: nuevoTotal });
         window.cargarPedidos();
       }
     };
-
 
     window.cambiarEstadoOrden = async (id, nuevoEstado) => {
       await updateDoc(doc(db, "pedidos", id), { estado: nuevoEstado });
     };
 
-
     window.eliminarItemOrden = async (pedId, itemIdx) => {
       const ped = pedidosGlobales.find(p => p.id === pedId);
       if (!ped) return;
-      ped.items.splice(itemIdx, 1);
-      const nuevoTotal = ped.items.reduce((acc, i) => acc + (parseFloat(i.precio) * i.cantidad), 0);
-      await updateDoc(doc(db, "pedidos", pedId), { items: ped.items, total: nuevoTotal });
+      if (ped.productos) {
+        ped.productos.splice(itemIdx, 1);
+        const nuevoTotal = ped.productos.reduce((acc, i) => acc + (parseFloat(i.precio) * i.cantidad), 0);
+        await updateDoc(doc(db, "pedidos", pedId), { productos: ped.productos, total: nuevoTotal });
+      }
       window.cargarPedidos();
     };
-
 
     window.eliminarOrden = async (id) => {
       if (confirm("¿Eliminar esta orden?")) {
@@ -449,7 +439,6 @@
         window.cargarPedidos();
       }
     };
-
 
     // ==============================================
     // GESTIÓN DE PRODUCTOS
@@ -460,7 +449,6 @@
       snap.forEach(d => productos.push({ id: d.id, ...d.data() }));
       renderProductosAdmin(productos);
     }
-
 
     function renderProductosAdmin(lista) {
       const grid = document.getElementById("grid-admin-productos");
@@ -484,12 +472,10 @@
       }).join('');
     }
 
-
     document.getElementById("buscar-admin").addEventListener("input", (e) => {
       const termino = e.target.value.toLowerCase().trim();
       renderProductosAdmin(productos.filter(p => p.nombre.toLowerCase().includes(termino)));
     });
-
 
     document.getElementById("form-producto").addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -518,7 +504,6 @@
       alert("✅ Producto guardado correctamente.");
     });
 
-
     window.editarProducto = (id) => {
       const p = productos.find(item => item.id === id);
       if (!p) return;
@@ -537,7 +522,6 @@
       document.getElementById("btn-cancelar-edit").style.display = "block";
     };
 
-
     window.eliminarProducto = async (id) => {
       if (confirm("¿Eliminar este producto?")) {
         await deleteDoc(doc(db, "productos", id));
@@ -545,16 +529,13 @@
       }
     };
 
-
     document.getElementById("btn-cancelar-edit").onclick = resetForm;
-
 
     function resetForm() {
       document.getElementById("form-producto").reset();
       document.getElementById("prod-id").value = "";
       document.getElementById("btn-cancelar-edit").style.display = "none";
     }
-
 
     // ==============================================
     // CONFIGURACIÓN (ESLOGAN Y ENVÍOS)
@@ -572,7 +553,6 @@
       }
     }
 
-
     document.getElementById("form-slogan").addEventListener("submit", async (e) => {
       e.preventDefault();
       await setDoc(doc(db, "configuracion", "slogan"), {
@@ -586,7 +566,6 @@
       alert("✅ Presentación guardada.");
     });
 
-
     async function cargarConfigEnvios() {
       const snap = await getDoc(doc(db, "configuracion", "envios"));
       if (snap.exists()) {
@@ -596,7 +575,6 @@
         document.getElementById("envio-condicion").value = d.condicion || "";
       }
     }
-
 
     document.getElementById("form-envios").addEventListener("submit", async (e) => {
       e.preventDefault();
