@@ -36,7 +36,7 @@
     .login-card button:hover { background: var(--accent-hover); }
     #login-error { color: var(--danger); font-size: 0.85rem; margin-top: 15px; display: none; }
 
-    /* CONTENEDOR PRINCIPAL (Oculto hasta autenticarse) */
+    /* CONTENEDOR PRINCIPAL */
     #app-container { display: none; width: 100%; height: 100vh; }
 
     .sidebar {
@@ -99,9 +99,16 @@
 
     .form-group { margin-bottom: 20px; }
     .form-group label { display: block; font-weight: bold; margin-bottom: 8px; color: #475569; }
-    .form-group input, .form-group textarea, .form-group select {
+    .form-group input, .form-group select {
       width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; background: #fff;
     }
+    /* ÁREA DE DESCRIPCIÓN GRANDE */
+    .form-group textarea {
+      width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; background: #fff;
+      height: 180px;
+      resize: vertical;
+    }
+
     .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
 
     .modal { display: none; position: fixed; inset: 0; background: white; z-index: 1000; overflow-y: auto; }
@@ -139,7 +146,7 @@
     </div>
   </div>
 
-  <!-- APLICACIÓN ADMIN (Oculta por defecto) -->
+  <!-- APLICACIÓN ADMIN -->
   <div id="app-container">
     <aside class="sidebar">
       <div class="logo-area">
@@ -237,7 +244,14 @@
             <div class="form-group"><label>Nombre</label><input type="text" id="prod-nombre" required></div>
             <div class="form-group"><label>Precio ($)</label><input type="number" id="prod-precio" required></div>
             <div class="form-group"><label>Categoría</label><input type="text" id="prod-categoria" required></div>
-            <div class="form-group"><label>URL Imagen</label><input type="text" id="prod-imagen" required></div>
+            
+            <!-- CAMPOS PARA 5 FOTOS -->
+            <div class="form-group"><label>URL Imagen 1 (Principal)</label><input type="text" id="prod-img1" required placeholder="https://..."></div>
+            <div class="form-group"><label>URL Imagen 2</label><input type="text" id="prod-img2" placeholder="Opcional"></div>
+            <div class="form-group"><label>URL Imagen 3</label><input type="text" id="prod-img3" placeholder="Opcional"></div>
+            <div class="form-group"><label>URL Imagen 4</label><input type="text" id="prod-img4" placeholder="Opcional"></div>
+            <div class="form-group full-width"><label>URL Imagen 5</label><input type="text" id="prod-img5" placeholder="Opcional"></div>
+
             <div class="form-group full-width"><label>Colores (separados por coma)</label><input type="text" id="prod-colores"></div>
             <div class="form-group full-width"><label>Descripción</label><textarea id="prod-descripcion"></textarea></div>
           </div>
@@ -306,24 +320,20 @@
     let todasOrdenes = [];
     let ordenActualItems = [];
 
-    // Control de Autenticación en tiempo real
     onAuthStateChanged(auth, (user) => {
       const loginScreen = document.getElementById('login-screen');
       const appContainer = document.getElementById('app-container');
 
       if (user) {
-        // Usuario logueado: mostrar panel y ocultar login
         loginScreen.style.display = 'none';
         appContainer.style.display = 'flex';
         cargarDatosAdmin();
       } else {
-        // No logueado: mostrar login y ocultar panel
         loginScreen.style.display = 'flex';
         appContainer.style.display = 'none';
       }
     });
 
-    // Manejar el formulario de inicio de sesión
     document.getElementById('form-login').addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('login-email').value;
@@ -339,7 +349,6 @@
       }
     });
 
-    // Botón Cerrar Sesión
     document.getElementById('btn-cerrar-sesion').addEventListener('click', () => {
       if(confirm("¿Estás seguro de cerrar sesión?")) {
         signOut(auth).then(() => {
@@ -349,10 +358,9 @@
     });
 
     document.getElementById('btn-cambiar-pass').addEventListener('click', () => {
-      alert("Para cambiar tu contraseña, ve a tu consola de Firebase o utiliza la opción de recuperación.");
+      alert("Para cambiar tu contraseña, ve a tu consola de Firebase.");
     });
 
-    // Función que carga los listeners una vez autenticado
     function cargarDatosAdmin() {
       document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -609,7 +617,15 @@
       document.getElementById('prod-nombre').value = prod.nombre || '';
       document.getElementById('prod-precio').value = prod.precio || '';
       document.getElementById('prod-categoria').value = prod.categoria || '';
-      document.getElementById('prod-imagen').value = prod.imagen || prod.imagenes?.[0] || '';
+      
+      // Rellenar las 5 URLs de fotos si existen
+      const imgs = prod.imagenes || [prod.imagen] || [];
+      document.getElementById('prod-img1').value = imgs[0] || '';
+      document.getElementById('prod-img2').value = imgs[1] || '';
+      document.getElementById('prod-img3').value = imgs[2] || '';
+      document.getElementById('prod-img4').value = imgs[3] || '';
+      document.getElementById('prod-img5').value = imgs[4] || '';
+
       document.getElementById('prod-colores').value = (prod.colores || []).join(', ');
       document.getElementById('prod-descripcion').value = prod.descripcion || '';
       
@@ -622,20 +638,31 @@
     document.getElementById('form-producto').addEventListener('submit', async (e) => {
       e.preventDefault();
       const id = document.getElementById('prod-id').value;
+
+      // Recopilar las URLs que no estén vacías
+      const imgsArray = [
+        document.getElementById('prod-img1').value,
+        document.getElementById('prod-img2').value,
+        document.getElementById('prod-img3').value,
+        document.getElementById('prod-img4').value,
+        document.getElementById('prod-img5').value
+      ].filter(url => url && url.trim() !== '');
+
       const data = {
         nombre: document.getElementById('prod-nombre').value,
         precio: document.getElementById('prod-precio').value,
         categoria: document.getElementById('prod-categoria').value,
-        imagen: document.getElementById('prod-imagen').value,
-        imagenes: [document.getElementById('prod-imagen').value],
+        imagen: imgsArray[0] || '', // Primera foto como principal
+        imagenes: imgsArray,        // Array con todas las fotos cargadas
         descripcion: document.getElementById('prod-descripcion').value,
         colores: document.getElementById('prod-colores').value.split(',').map(c => c.trim()).filter(c => c)
       };
+
       try {
         if(id) await updateDoc(doc(db, "productos", id), data);
         else await addDoc(collection(db, "productos"), data);
         modalProd.style.display = 'none';
-        alert("✅ Guardado correctamente.");
+        alert("✅ Producto guardado correctamente.");
       } catch (err) { alert("❌ Error: " + err.message); }
     });
 
@@ -664,7 +691,7 @@
       await setDoc(doc(db, "configuracion", "slogan"), {
         titulo: document.getElementById('slog-titulo').value,
         intro: document.getElementById('slog-intro').value,
-        item1: document.getElementById('slog-item1'.value),
+        item1: document.getElementById('slog-item1').value,
         item2: document.getElementById('slog-item2').value,
         item3: document.getElementById('slog-item3').value,
         badge: document.getElementById('slog-badge').value
