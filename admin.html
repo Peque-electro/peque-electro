@@ -102,7 +102,6 @@
     .form-group input, .form-group select {
       width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; background: #fff;
     }
-    /* ÁREA DE DESCRIPCIÓN GRANDE */
     .form-group textarea {
       width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; background: #fff;
       height: 180px;
@@ -243,7 +242,9 @@
           <div class="form-grid">
             <div class="form-group"><label>Nombre</label><input type="text" id="prod-nombre" required></div>
             <div class="form-group"><label>Precio ($)</label><input type="number" id="prod-precio" required></div>
-            <div class="form-group"><label>Categoría</label><input type="text" id="prod-categoria" required></div>
+            
+            <div class="form-group"><label>Categoría</label><input type="text" id="prod-categoria" required placeholder="Ej: Electrodomésticos"></div>
+            <div class="form-group"><label>Subcategoría</label><input type="text" id="prod-subcategoria" placeholder="Ej: Licuadoras, Taladros..."></div>
             
             <!-- CAMPOS PARA 5 FOTOS -->
             <div class="form-group"><label>URL Imagen 1 (Principal)</label><input type="text" id="prod-img1" required placeholder="https://..."></div>
@@ -387,7 +388,8 @@
         const texto = e.target.value.toLowerCase();
         const filtrados = todosProductos.filter(p => 
           p.nombre.toLowerCase().includes(texto) || 
-          (p.categoria && p.categoria.toLowerCase().includes(texto))
+          (p.categoria && p.categoria.toLowerCase().includes(texto)) ||
+          (p.subcategoria && p.subcategoria.toLowerCase().includes(texto))
         );
         renderizarProductos(filtrados);
       });
@@ -488,6 +490,7 @@
           <div class="prod-card">
             <img src="${img}" alt="${p.nombre}">
             <h3>${p.nombre}</h3>
+            <p><small style="color: #64748b;">${p.categoria || ''} ${p.subcategoria ? '› ' + p.subcategoria : ''}</small></p>
             <p><strong>$${parseFloat(p.precio).toLocaleString('es-AR')}</strong></p>
             <div class="prod-actions">
               <button class="btn-edit" data-id="${p.id}"><i class="fa-solid fa-pen"></i></button>
@@ -617,8 +620,8 @@
       document.getElementById('prod-nombre').value = prod.nombre || '';
       document.getElementById('prod-precio').value = prod.precio || '';
       document.getElementById('prod-categoria').value = prod.categoria || '';
+      document.getElementById('prod-subcategoria').value = prod.subcategoria || '';
       
-      // Rellenar las 5 URLs de fotos si existen
       const imgs = prod.imagenes || [prod.imagen] || [];
       document.getElementById('prod-img1').value = imgs[0] || '';
       document.getElementById('prod-img2').value = imgs[1] || '';
@@ -639,7 +642,6 @@
       e.preventDefault();
       const id = document.getElementById('prod-id').value;
 
-      // Recopilar las URLs que no estén vacías
       const imgsArray = [
         document.getElementById('prod-img1').value,
         document.getElementById('prod-img2').value,
@@ -652,8 +654,9 @@
         nombre: document.getElementById('prod-nombre').value,
         precio: document.getElementById('prod-precio').value,
         categoria: document.getElementById('prod-categoria').value,
-        imagen: imgsArray[0] || '', // Primera foto como principal
-        imagenes: imgsArray,        // Array con todas las fotos cargadas
+        subcategoria: document.getElementById('prod-subcategoria').value,
+        imagen: imgsArray[0] || '',
+        imagenes: imgsArray,
         descripcion: document.getElementById('prod-descripcion').value,
         colores: document.getElementById('prod-colores').value.split(',').map(c => c.trim()).filter(c => c)
       };

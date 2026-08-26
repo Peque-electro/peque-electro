@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- ESTILOS AGREGADOS PARA GRILLA, PAGINACIÓN Y RESEÑAS -->
+  <!-- ESTILOS AGREGADOS PARA GRILLA, PAGINACIÓN, RESEÑAS Y SUBCATEGORÍAS -->
   <style>
     /* Asegurar 5 productos a lo ancho */
     .products-grid {
@@ -21,6 +21,47 @@
     @media (max-width: 900px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 600px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
     
+    /* Estilos para Categorías y Subcategorías en el Sidebar */
+    .cat-group { margin-bottom: 5px; }
+    .cat-item {
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+    }
+    .cat-item:hover, .subcat-item:hover { background-color: #f1f5f9; }
+    .cat-item.activa {
+      background-color: #333;
+      color: white;
+      font-weight: bold;
+    }
+    .subcat-container {
+      margin-top: 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding-left: 12px;
+      border-left: 2px solid #e2e8f0;
+      margin-left: 10px;
+    }
+    .subcat-item {
+      padding: 8px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      color: #555;
+      transition: background 0.2s;
+    }
+    .subcat-item.activa {
+      background-color: #555;
+      color: white;
+      font-weight: bold;
+    }
+
     /* Paginación */
     .paginacion-container {
       display: flex;
@@ -234,7 +275,7 @@
 
     let todosLosProductos = [];
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-    let categorias = new Set();
+    let categoriasMap = new Map(); // Mapa para almacenar Categoría -> Set de Subcategorías
 
     // VARIABLES PARA PAGINACIÓN
     let listaActualFiltrada = [];
@@ -272,12 +313,23 @@
     async function cargarProductos() {
       const snap = await getDocs(collection(db, "productos"));
       todosLosProductos = [];
-      categorias.clear();
+      categoriasMap.clear();
+      
       snap.forEach(d => {
         const prod = { id: d.id, ...d.data() };
         todosLosProductos.push(prod);
-        if (prod.categoria) categorias.add(prod.categoria);
+        
+        if (prod.categoria) {
+          const cat = prod.categoria.trim();
+          if (!categoriasMap.has(cat)) {
+            categoriasMap.set(cat, new Set());
+          }
+          if (prod.subcategoria && prod.subcategoria.trim()) {
+            categoriasMap.get(cat).add(prod.subcategoria.trim());
+          }
+        }
       });
+      
       renderizarCategorias();
       
       // Iniciamos con todos los productos
@@ -288,34 +340,87 @@
     function renderizarCategorias() {
       const cont = document.getElementById("categorias-lista");
       let html = `<div class="cat-item activa" data-cat="todas">Todas las Categorías</div>`;
-      categorias.forEach(c => {
-        html += `<div class="cat-item" data-cat="${c}">${c}</div>`;
+      
+      categoriasMap.forEach((subcats, cat) => {
+        const hasSub = subcats.size > 0;
+        html += `
+          <div class="cat-group">
+            <div class="cat-item" data-cat="${cat}">
+              <span>${cat}</span>
+              ${hasSub ? `<i class="fa-solid fa-chevron-down toggle-sub"></i>` : ''}
+            </div>
+            ${hasSub ? `
+              <div class="subcat-container" style="display: none;">
+                <div class="subcat-item" data-cat="${cat}" data-sub="todas">Ver todo de ${cat}</div>
+                ${Array.from(subcats).map(sub => `
+                  <div class="subcat-item" data-cat="${cat}" data-sub="${sub}">${sub}</div>
+                `).join('')}
+              </div>
+            ` : ''}
+          </div>
+        `;
       });
+      
       cont.innerHTML = html;
+
+      // Evento al hacer clic en una Categoría principal
       document.querySelectorAll(".cat-item").forEach(item => {
         item.addEventListener("click", () => {
-          document.querySelectorAll(".cat-item").forEach(i => i.classList.remove("activa"));
-          item.classList.add("activa");
           const cat = item.dataset.cat;
           
           if (cat === "todas") {
+            document.querySelectorAll(".cat-item, .subcat-item").forEach(i => i.classList.remove("activa"));
+            item.classList.add("activa");
+            document.querySelectorAll(".subcat-container").forEach(sc => sc.style.display = "none");
             listaActualFiltrada = todosLosProductos;
           } else {
+            const group = item.parentElement;
+            const subContainer = group.querySelector(".subcat-container");
+            
+            // Alternar despliegue de subcategorías
+            if (subContainer) {
+              const isOpen = subContainer.style.display === "block";
+              document.querySelectorAll(".subcat-container").forEach(sc => sc.style.display = "none");
+              subContainer.style.display = isOpen ? "none" : "block";
+            }
+
+            document.querySelectorAll(".cat-item, .subcat-item").forEach(i => i.classList.remove("activa"));
+            item.classList.add("activa");
+
             listaActualFiltrada = todosLosProductos.filter(p => p.categoria === cat);
           }
           
-          // Al cambiar de categoría, volvemos a la página 1
+          paginaActual = 1;
+          renderizarProductosPaginados();
+        });
+      });
+
+      // Evento al hacer clic en una Subcategoría
+      document.querySelectorAll(".subcat-item").forEach(subItem => {
+        subItem.addEventListener("click", (e) => {
+          e.stopPropagation(); // Evitar colisión con el evento del padre
+          document.querySelectorAll(".cat-item, .subcat-item").forEach(i => i.classList.remove("activa"));
+          subItem.classList.add("activa");
+
+          const cat = subItem.dataset.cat;
+          const sub = subItem.dataset.sub;
+
+          if (sub === "todas") {
+            listaActualFiltrada = todosLosProductos.filter(p => p.categoria === cat);
+          } else {
+            listaActualFiltrada = todosLosProductos.filter(p => p.categoria === cat && p.subcategoria === sub);
+          }
+
           paginaActual = 1;
           renderizarProductosPaginados();
         });
       });
     }
 
-    // NUEVA FUNCIÓN PARA RENDERIZAR CON PAGINACIÓN
+    // RENDERIZAR CON PAGINACIÓN
     function renderizarProductosPaginados() {
       const totalPaginas = Math.ceil(listaActualFiltrada.length / PRODUCTOS_POR_PAGINA);
       
-      // Ajuste por si el filtro deja menos páginas
       if (paginaActual > totalPaginas) paginaActual = totalPaginas || 1;
 
       const indiceInicio = (paginaActual - 1) * PRODUCTOS_POR_PAGINA;
@@ -342,7 +447,6 @@
         }).join('');
       }
 
-      // Asignar eventos a los botones de los productos
       document.querySelectorAll(".btn-ver").forEach(btn => {
         btn.addEventListener("click", () => verDetalle(btn.dataset.id));
       });
@@ -350,13 +454,11 @@
         btn.addEventListener("click", () => agregarAlCarrito(btn.dataset.id));
       });
 
-      // Actualizar interfaz de paginación
       document.getElementById("info-pagina").textContent = `Página ${paginaActual} de ${totalPaginas || 1}`;
       document.getElementById("btn-prev").disabled = paginaActual === 1;
       document.getElementById("btn-next").disabled = paginaActual === totalPaginas || totalPaginas === 0;
     }
 
-    // EVENTOS DE BOTONES DE PAGINACIÓN
     document.getElementById("btn-prev").addEventListener("click", () => {
       if (paginaActual > 1) {
         paginaActual--;
@@ -374,11 +476,10 @@
       }
     });
 
-    // BÚSQUEDA ADAPTADA A PAGINACIÓN
     document.getElementById("buscador").addEventListener("input", e => {
       const t = e.target.value.toLowerCase().trim();
       listaActualFiltrada = todosLosProductos.filter(p => p.nombre.toLowerCase().includes(t));
-      paginaActual = 1; // Volver a la pag 1 al buscar
+      paginaActual = 1;
       renderizarProductosPaginados();
     });
 
@@ -542,7 +643,6 @@
 
       try {
         await addDoc(collection(db, "pedidos"), nuevoPedido);
-        console.log("✅ Pedido guardado:", numeroOrden);
       } catch (err) {
         console.error("❌ Error:", err);
         alert("⚠️ No se pudo registrar el pedido.");
@@ -566,10 +666,7 @@
       window.open(url, "_blank");
     });
 
-    // ==========================================
-    // LÓGICA DE RESEÑAS Y ANTI-BOT
-    // ==========================================
-
+    // RESEÑAS Y ANTI-BOT
     async function cargarResenas() {
       const contenedor = document.getElementById("lista-resenas");
       try {
@@ -599,12 +696,10 @@
       }
     }
 
-    // Activar/Desactivar botón según el Checkbox Anti-bot
     document.getElementById("check-antibot").addEventListener("change", (e) => {
       document.getElementById("btn-enviar-resena").disabled = !e.target.checked;
     });
 
-    // Enviar Reseña
     document.getElementById("form-resena").addEventListener("submit", async (e) => {
       e.preventDefault();
       
@@ -623,20 +718,19 @@
           fecha: serverTimestamp()
         });
         
-        // Limpiar formulario
         nombreInput.value = "";
         textoInput.value = "";
         checkAntibot.checked = false;
         
         alert("¡Muchas gracias por tu reseña!");
-        cargarResenas(); // Recargar la lista
+        cargarResenas();
 
       } catch (error) {
         console.error("Error al guardar reseña: ", error);
         alert("Hubo un error al enviar tu reseña. Por favor intenta más tarde.");
       } finally {
         btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publicar Reseña';
-        btn.disabled = true; // Se mantiene deshabilitado hasta que vuelva a marcar el anti-bot
+        btn.disabled = true;
       }
     });
 
@@ -645,7 +739,7 @@
     cargarSloganDinamico();
     cargarProductos();
     renderizarCarrito();
-    cargarResenas(); // Cargar opiniones al iniciar
+    cargarResenas();
 
   </script>
 </body>
